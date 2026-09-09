@@ -1,3 +1,4 @@
+// home.module.ts
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { IonicModule } from '@ionic/angular/lazy';
@@ -12,8 +13,9 @@ import { HomePageRoutingModule } from './home-routing.module';
     CommonModule,
     FormsModule,
     IonicModule,
-    HomePageRoutingModule
+    HomePageRoutingModule,
+    HomePage
   ],
-  declarations: [HomePage]
+  declarations: []
 })
 export class HomePageModule {}
