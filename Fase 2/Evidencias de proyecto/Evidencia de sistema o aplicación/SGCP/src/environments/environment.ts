@@ -4,6 +4,7 @@
 
 export const environment = {
   production: false,
+  //apiUrl con localhost debe ser cambiada una vez esto entra a producción!!!!!!
   apiUrl: 'http://localhost:3000/api'
 };
 
