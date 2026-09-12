@@ -1,0 +1,37 @@
+<ion-content class="ion-padding">
+  <h2>Crear cuenta</h2>
+  <ion-item>
+    <ion-input label="Nombre" [(ngModel)]="nombre"></ion-input>
+  </ion-item>
+  <ion-item>
+    <ion-input label="Apellido" [(ngModel)]="apellido"></ion-input>
+  </ion-item>
+  <ion-item>
+    <ion-input label="Email" type="email" [(ngModel)]="email"></ion-input>
+  </ion-item>
+  <ion-item>
+    <ion-select label="Tipo de cuenta" [(ngModel)]="rol">
+      <ion-select-option *ngFor="let r of roles" [value]="r.valor">
+        {{ r.etiqueta }}
+      </ion-select-option>
+    </ion-select>
+  </ion-item>
+  <ion-item>
+    <ion-input label="Contraseña" type="password" [(ngModel)]="contrasena"></ion-input>
+  </ion-item>
+  <ion-item>
+    <ion-input label="Confirmar contraseña" type="password" [(ngModel)]="confirmarContrasena"></ion-input>
+  </ion-item>
+
+  <ion-text color="danger" *ngIf="error">
+    <p>{{ error }}</p>
+  </ion-text>
+
+  <ion-button expand="block" (click)="registrarse()" [disabled]="cargando">
+    {{ cargando ? 'Creando cuenta...' : 'Registrarse' }}
+  </ion-button>
+
+  <ion-button expand="block" fill="clear" routerLink="/login">
+    ¿Ya tienes cuenta? Inicia sesión
+  </ion-button>
+</ion-content>
