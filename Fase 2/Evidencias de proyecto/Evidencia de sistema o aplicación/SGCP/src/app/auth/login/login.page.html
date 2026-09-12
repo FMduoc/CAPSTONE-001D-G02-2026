@@ -1,0 +1,12 @@
+<ion-content class="ion-padding">
+  <h2>Iniciar sesión</h2>
+  <ion-item>
+    <ion-input label="Email" [(ngModel)]="email" type="email"></ion-input>
+  </ion-item>
+  <ion-item>
+    <ion-input label="Contraseña" [(ngModel)]="contrasena" type="password"></ion-input>
+  </ion-item>
+  <ion-text color="danger" *ngIf="error">{{ error }}</ion-text>
+  <ion-button expand="block" (click)="iniciarSesion()">Entrar</ion-button>
+  <ion-button expand="block" fill="clear" routerLink="/register">¿No tienes cuenta? Regístrate</ion-button>
+</ion-content>

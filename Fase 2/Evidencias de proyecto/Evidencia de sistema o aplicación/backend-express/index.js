@@ -58,4 +58,8 @@ app.get('/api/solicitudes', async (req, res) => {
   res.json(result.rows);
 });
 
+// backend-express/index.js
+const authRoutes = require('./routes/auth');
+app.use('/api/auth', authRoutes);
+
 app.listen(3000, () => console.log('Servidor corriendo en puerto 3000'));
