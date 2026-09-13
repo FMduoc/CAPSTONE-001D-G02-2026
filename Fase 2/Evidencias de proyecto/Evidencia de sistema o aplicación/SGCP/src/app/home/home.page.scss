@@ -1,27 +1,662 @@
-#container {
+:host {
+  display: block;
+  color-scheme: light;
+
+  --duoc-blue: #003b5c;
+  --duoc-blue-dark: #002c46;
+  --duoc-blue-soft: #0c5578;
+
+  --duoc-yellow: #fdbb30;
+  --duoc-yellow-dark: #e5a51a;
+
+  --surface: #ffffff;
+  --surface-soft: #f8fafc;
+
+  --text-primary: #17212b;
+  --text-secondary: #64748b;
+
+  --border: #d8e0e7;
+}
+
+
+/* ================================================= */
+/* FONDO                                             */
+/* ================================================= */
+
+.home-page {
+  --background:
+    linear-gradient(
+      160deg,
+      var(--duoc-blue) 0%,
+      var(--duoc-blue) 42%,
+      #ffffff 42%,
+      #ffffff 100%
+    );
+
+  --color:
+    var(--text-primary);
+}
+
+
+/* ================================================= */
+/* ESTRUCTURA GENERAL                                */
+/* ================================================= */
+
+.home-layout {
+  width: 100%;
+  min-height: 100%;
+
+  display: flex;
+  flex-direction: column;
+
+  align-items: center;
+
+  padding:
+    max(32px, env(safe-area-inset-top))
+    20px
+    50px;
+}
+
+
+/* ================================================= */
+/* IDENTIDAD                                         */
+/* ================================================= */
+
+.brand-section {
+  width: 100%;
+  max-width: 850px;
+
   text-align: center;
 
-  position: absolute;
-  left: 0;
-  right: 0;
-  top: 50%;
-  transform: translateY(-50%);
+  margin-bottom: 28px;
+
+  color: white;
 }
 
-#container strong {
-  font-size: 20px;
-  line-height: 26px;
+
+.duoc-logo {
+  display: block;
+
+  width: min(330px, 80%);
+  height: auto;
+
+  margin:
+    0 auto
+    18px;
+
+  object-fit: contain;
+
+  filter:
+    drop-shadow(
+      0 8px 18px
+      rgba(0, 0, 0, 0.18)
+    );
 }
 
-#container p {
-  font-size: 16px;
-  line-height: 22px;
 
-  color: #8c8c8c;
+.brand-section h1 {
+  margin:
+    0 0
+    6px;
 
+  font-size: 34px;
+  font-weight: 800;
+
+  letter-spacing: -0.8px;
+
+  color: white;
+}
+
+
+.brand-section p {
   margin: 0;
+
+  font-size: 14px;
+  font-weight: 500;
+
+  color:
+    rgba(
+      255,
+      255,
+      255,
+      0.82
+    );
 }
 
-#container a {
-  text-decoration: none;
+
+/* ================================================= */
+/* TARJETA PRINCIPAL                                 */
+/* ================================================= */
+
+.home-card {
+  position: relative;
+
+  width: 100%;
+  max-width: 850px;
+
+  padding: 38px;
+
+  background:
+    rgba(
+      255,
+      255,
+      255,
+      0.98
+    );
+
+  border-radius: 24px;
+
+  box-shadow:
+    0 25px 70px
+    rgba(
+      0,
+      35,
+      60,
+      0.26
+    );
+
+  overflow: hidden;
+}
+
+
+/* DETALLE AMARILLO */
+
+.home-card::before {
+  content: '';
+
+  position: absolute;
+
+  top: 0;
+  left: 0;
+
+  width: 100%;
+  height: 5px;
+
+  background:
+    linear-gradient(
+      90deg,
+      var(--duoc-yellow),
+      #ffd76d
+    );
+}
+
+
+/* ================================================= */
+/* CABECERA INTERIOR                                 */
+/* ================================================= */
+
+.card-header {
+  display: flex;
+
+  justify-content: space-between;
+  align-items: flex-start;
+
+  margin-bottom: 30px;
+}
+
+
+.card-heading {
+  max-width: 650px;
+}
+
+
+.eyebrow {
+  display: inline-block;
+
+  margin-bottom: 8px;
+
+  color:
+    var(--duoc-blue);
+
+  font-size: 11px;
+  font-weight: 800;
+
+  letter-spacing: 1.8px;
+}
+
+
+.card-heading h2 {
+  margin:
+    0 0
+    8px;
+
+  color:
+    var(--duoc-blue);
+
+  font-size: 27px;
+  font-weight: 800;
+
+  letter-spacing: -0.4px;
+}
+
+
+.card-heading p {
+  margin: 0;
+
+  color:
+    var(--text-secondary);
+
+  font-size: 14px;
+
+  line-height: 1.5;
+}
+
+
+.card-accent {
+  width: 44px;
+  height: 44px;
+
+  flex-shrink: 0;
+
+  border-radius: 12px;
+
+  background:
+    linear-gradient(
+      135deg,
+      var(--duoc-yellow),
+      #ffd768
+    );
+
+  box-shadow:
+    0 8px 20px
+    rgba(
+      253,
+      187,
+      48,
+      0.30
+    );
+}
+
+
+/* ================================================= */
+/* BOTÓN PRINCIPAL                                   */
+/* ================================================= */
+
+.actions-section {
+  margin-bottom: 34px;
+}
+
+
+.create-button {
+  width: 100%;
+  height: 54px;
+
+  --background:
+    var(--duoc-blue);
+
+  --background-hover:
+    var(--duoc-blue-soft);
+
+  --background-activated:
+    var(--duoc-blue-dark);
+
+  --color:
+    white;
+
+  --border-radius:
+    12px;
+
+  font-size: 16px;
+  font-weight: 800;
+
+  text-transform: none;
+
+  letter-spacing: 0.1px;
+}
+
+
+.create-button::part(native) {
+  box-shadow:
+    0 10px 25px
+    rgba(
+      0,
+      59,
+      92,
+      0.22
+    );
+}
+
+
+/* ================================================= */
+/* SECCIÓN SOLICITUDES                               */
+/* ================================================= */
+
+.requests-section {
+  padding-top: 25px;
+
+  border-top:
+    1px solid
+    #e2e8f0;
+}
+
+
+.section-title {
+  display: flex;
+
+  justify-content: space-between;
+  align-items: center;
+
+  margin-bottom: 20px;
+}
+
+
+.section-eyebrow {
+  display: inline-block;
+
+  margin-bottom: 5px;
+
+  color:
+    var(--duoc-blue);
+
+  font-size: 10px;
+  font-weight: 800;
+
+  letter-spacing: 1.5px;
+}
+
+
+.section-title h3 {
+  margin: 0;
+
+  color:
+    var(--text-primary);
+
+  font-size: 20px;
+  font-weight: 800;
+}
+
+
+.request-counter {
+  min-width: 38px;
+  height: 38px;
+
+  display: flex;
+
+  align-items: center;
+  justify-content: center;
+
+  padding:
+    0 10px;
+
+  background:
+    var(--duoc-yellow);
+
+  border-radius: 12px;
+
+  color:
+    var(--duoc-blue);
+
+  font-size: 14px;
+  font-weight: 800;
+}
+
+
+/* ================================================= */
+/* LISTA                                             */
+/* ================================================= */
+
+.requests-list {
+  display: flex;
+
+  flex-direction: column;
+
+  gap: 13px;
+}
+
+
+.request-card {
+  position: relative;
+
+  display: flex;
+
+  gap: 15px;
+
+  padding: 18px;
+
+  background:
+    var(--surface-soft);
+
+  border:
+    1px solid
+    #e2e8f0;
+
+  border-radius: 14px;
+
+  transition:
+    transform 0.2s ease,
+    box-shadow 0.2s ease,
+    border-color 0.2s ease;
+}
+
+
+.request-card:hover {
+  transform:
+    translateY(-2px);
+
+  border-color:
+    #c4d4df;
+
+  box-shadow:
+    0 10px 25px
+    rgba(
+      0,
+      59,
+      92,
+      0.08
+    );
+}
+
+
+.request-indicator {
+  width: 5px;
+
+  align-self: stretch;
+
+  flex-shrink: 0;
+
+  background:
+    var(--duoc-yellow);
+
+  border-radius: 20px;
+}
+
+
+.request-content {
+  flex: 1;
+}
+
+
+.request-label {
+  display: block;
+
+  margin-bottom: 5px;
+
+  color:
+    var(--duoc-blue);
+
+  font-size: 10px;
+  font-weight: 800;
+
+  letter-spacing: 1.3px;
+
+  text-transform: uppercase;
+}
+
+
+.request-content h4 {
+  margin:
+    0 0
+    8px;
+
+  color:
+    var(--text-primary);
+
+  font-size: 15px;
+  font-weight: 700;
+
+  line-height: 1.4;
+}
+
+
+.request-location {
+  display: inline-block;
+
+  padding:
+    5px 9px;
+
+  background:
+    #eaf1f5;
+
+  border-radius: 7px;
+
+  color:
+    var(--duoc-blue);
+
+  font-size: 12px;
+  font-weight: 700;
+}
+
+
+/* ================================================= */
+/* SIN SOLICITUDES                                   */
+/* ================================================= */
+
+.empty-state {
+  padding:
+    40px
+    20px;
+
+  text-align: center;
+
+  background:
+    var(--surface-soft);
+
+  border:
+    1px dashed
+    #cbd5e1;
+
+  border-radius:
+    14px;
+}
+
+
+.empty-icon {
+  width: 48px;
+  height: 48px;
+
+  display: flex;
+
+  align-items: center;
+  justify-content: center;
+
+  margin:
+    0 auto
+    15px;
+
+  background:
+    var(--duoc-yellow);
+
+  border-radius:
+    14px;
+
+  color:
+    var(--duoc-blue);
+
+  font-size: 22px;
+  font-weight: 900;
+}
+
+
+.empty-state h4 {
+  margin:
+    0 0
+    7px;
+
+  color:
+    var(--duoc-blue);
+
+  font-size: 17px;
+  font-weight: 800;
+}
+
+
+.empty-state p {
+  margin: 0;
+
+  color:
+    var(--text-secondary);
+
+  font-size: 13px;
+
+  line-height: 1.5;
+}
+
+
+/* ================================================= */
+/* RESPONSIVE                                        */
+/* ================================================= */
+
+@media (max-width: 650px) {
+
+  .home-layout {
+    padding:
+      25px
+      15px
+      35px;
+  }
+
+
+  .duoc-logo {
+    width:
+      min(
+        260px,
+        85%
+      );
+  }
+
+
+  .brand-section h1 {
+    font-size:
+      28px;
+  }
+
+
+  .home-card {
+    padding:
+      28px
+      20px;
+
+    border-radius:
+      20px;
+  }
+
+
+  .card-header {
+    margin-bottom:
+      26px;
+  }
+
+
+  .card-accent {
+    display: none;
+  }
+
+
+  .card-heading h2 {
+    font-size:
+      24px;
+  }
+
+
+  .section-title h3 {
+    font-size:
+      18px;
+  }
+
+
+  .request-card {
+    padding:
+      15px;
+  }
+
 }
