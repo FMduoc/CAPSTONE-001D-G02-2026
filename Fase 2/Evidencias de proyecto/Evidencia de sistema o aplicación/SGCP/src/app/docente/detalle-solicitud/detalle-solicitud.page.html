@@ -1,0 +1,38 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-title>Detalle de la solicitud</ion-title>
+    <ion-buttons slot="start">
+      <ion-back-button defaultHref="/escanear-qr"></ion-back-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content class="ion-padding">
+  <div *ngIf="!enviado">
+    <h2>Sala: {{ salaNombre }}</h2>
+
+    <ion-item>
+      <ion-textarea
+        label="Descripción del problema"
+        [(ngModel)]="descripcion"
+        placeholder="ej. El proyector no enciende"
+        rows="4"
+      ></ion-textarea>
+    </ion-item>
+
+    <ion-text color="danger" *ngIf="error">
+      <p>{{ error }}</p>
+    </ion-text>
+
+    <ion-button expand="block" (click)="enviarSolicitud()" [disabled]="enviando || !salaId">
+      {{ enviando ? 'Enviando...' : 'Enviar solicitud' }}
+    </ion-button>
+  </div>
+
+  <div *ngIf="enviado" class="ion-text-center" style="margin-top: 30%;">
+    <ion-icon name="checkmark-circle-outline" style="font-size: 96px; color: var(--ion-color-success);"></ion-icon>
+    <h2>Solicitud enviada</h2>
+    <p>Tu solicitud para {{ salaNombre }} fue registrada correctamente.</p>
+    <ion-button expand="block" (click)="volverAlInicio()">Volver al inicio</ion-button>
+  </div>
+</ion-content>
