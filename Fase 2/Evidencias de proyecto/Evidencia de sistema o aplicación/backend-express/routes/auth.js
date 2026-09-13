@@ -17,7 +17,8 @@ router.post('/register', async (req, res) => {
     return res.status(400).json({ error: 'La contraseña debe tener al menos 8 caracteres' });
   }
 
-  const rolesPermitidos = ['docente', 'staff']; // Antes era ['solicitante', 'tecnico', 'personal_salud']
+ 
+  const rolesPermitidos = ['solicitante', 'tecnico', 'personal_salud', 'staff', 'docente'];
   if (!rolesPermitidos.includes(rol)) {
     return res.status(400).json({ error: 'Rol no válido' });
   }
@@ -76,6 +77,7 @@ router.post('/login', async (req, res) => {
       usuario: { id: usuario.id, nombre: usuario.nombre, apellido: usuario.apellido, email: usuario.email, rol: usuario.rol }
     });
   } catch (err) {
+    console.error('Error en /login:', err); //
     res.status(500).json({ error: err.message });
   }
 });

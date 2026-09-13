@@ -1,0 +1,182 @@
+/* =========================
+   COLORES DUOC UC
+========================= */
+
+:host {
+  --duoc-azul: #0d2c54;
+  --duoc-azul-oscuro: #0a1f3d;
+  --duoc-amarillo: #ffc20e;
+}
+
+/* =========================
+   FRANJA AMARILLA SUPERIOR
+========================= */
+
+ion-content::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 6px;
+  background: var(--duoc-amarillo);
+  z-index: 10;
+}
+
+/* =========================
+   FONDO GENERAL CON DIAGONAL
+========================= */
+
+ion-content {
+  --background: linear-gradient(
+    135deg,
+    var(--duoc-azul) 0%,
+    var(--duoc-azul) 50%,
+    #ffffff 50.5%
+  );
+}
+
+ion-content::part(scroll) {
+  max-width: 900px;
+  margin: 0 auto;
+}
+
+/* =========================
+   ENCABEZADO
+========================= */
+
+.header-bienvenida {
+  text-align: left;
+  max-width: 55%; // se mantiene dentro de la franja azul en cualquier ancho
+  margin-top: 40px;
+  margin-bottom: 32px;
+  padding-left: 4px;
+
+  h1 {
+    font-size: 28px;
+    font-weight: 700;
+    color: #ffffff;
+    margin-bottom: 6px;
+  }
+
+  p {
+    font-size: 15px;
+    color: rgba(255, 255, 255, 0.9);
+    margin: 0;
+  }
+
+  @media (max-width: 600px) {
+    max-width: 70%;
+
+    h1 {
+      font-size: 24px;
+    }
+  }
+}
+
+/* =========================
+   GRID DE TARJETAS
+========================= */
+
+.tarjetas-container {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 24px;
+  margin-bottom: 32px;
+
+  @media (max-width: 700px) {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* =========================
+   TARJETA
+========================= */
+
+.tarjeta {
+  display: flex;
+  flex-direction: column;
+  background: #ffffff;
+  border-radius: 18px;
+  overflow: hidden; // clave: recorta todo lo que se salga de la tarjeta
+  box-shadow: 0 10px 28px rgba(10, 31, 61, 0.35);
+  cursor: pointer;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+
+  &:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 14px 34px rgba(10, 31, 61, 0.4);
+  }
+}
+
+.tarjeta-imagen {
+  width: 100%;
+  height: 180px;
+  overflow: hidden;
+  position: relative;
+  flex-shrink: 0;
+  background: #f4f6fb;
+
+  img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover; // vuelve a "cover" para que llene todo el ancho, sin espacios vacíos
+    object-position: center;
+    display: block;
+    // quitamos el padding para que la imagen toque los bordes del contenedor
+  }
+}
+.tarjeta-contenido {
+  padding: 22px 20px 26px;
+
+  h2 {
+    font-size: 20px;
+    font-weight: 700;
+    color: var(--duoc-azul);
+    margin: 0 0 10px;
+  }
+
+  p {
+    font-size: 14px;
+    color: #6b7280;
+    line-height: 1.5;
+    margin: 0;
+  }
+}
+
+/* =========================
+   BOTÓN CERRAR SESIÓN
+========================= */
+
+ion-button[fill="clear"] {
+  --color: rgba(255, 255, 255, 0.85);
+  font-size: 14px;
+  font-weight: 500;
+  text-transform: none;
+  max-width: 300px;
+  margin: 0 auto;
+  display: block;
+
+  &:hover {
+    --color: var(--duoc-amarillo);
+  }
+}
+
+/* =========================
+   RESPONSIVE
+========================= */
+
+@media (max-width: 600px) {
+  ion-content {
+    --background: linear-gradient(
+      160deg,
+      var(--duoc-azul) 0%,
+      var(--duoc-azul) 50%,
+      #ffffff 50.5%
+    );
+  }
+
+  .header-bienvenida h1 {
+    font-size: 24px;
+  }
+}

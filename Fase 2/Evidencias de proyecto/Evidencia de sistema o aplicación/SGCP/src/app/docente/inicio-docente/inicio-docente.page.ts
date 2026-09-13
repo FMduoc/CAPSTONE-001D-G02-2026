@@ -7,6 +7,7 @@ import { AuthService } from '../../services/auth';
 @Component({
   selector: 'app-inicio-docente',
   templateUrl: './inicio-docente.page.html',
+  styleUrls: ['./inicio-docente.page.scss'],
   standalone: true,
   imports: [CommonModule, IonicModule],
 })
@@ -21,7 +22,11 @@ export class InicioDocentePage implements OnInit {
   }
 
   realizarPeticion() {
-    this.router.navigate(['/escanear-qr']); // aún no existe, la construimos en el próximo paso
+    this.router.navigate(['/escanear-qr']); // misma ruta de antes
+  }
+
+  verHistorial() {
+    this.router.navigate(['/historial-peticiones']); // hay que crear esta página después
   }
 
   async cerrarSesion() {
