@@ -5,7 +5,8 @@ import { Service } from '@angular/core';
 export class Auth {
 }
 */
-
+/* auth.ts(service)
+*/
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Preferences } from '@capacitor/preferences';
