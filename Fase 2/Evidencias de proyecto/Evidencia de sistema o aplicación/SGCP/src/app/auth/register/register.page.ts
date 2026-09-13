@@ -1,4 +1,3 @@
-// src/app/auth/register/register.page.ts
 import { Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
@@ -18,19 +17,25 @@ export class RegisterPage {
   email = '';
   contrasena = '';
   confirmarContrasena = '';
-  rol = 'solicitante'; // valor por defecto
+  rol: 'solicitante' | 'staff' = 'solicitante'; // valor por defecto
   error = '';
   cargando = false;
 
-  roles = [
-    { valor: 'solicitante', etiqueta: 'Solicitante (profesor / personal)' },
-    { valor: 'tecnico', etiqueta: 'Técnico de soporte' },
-    { valor: 'personal_salud', etiqueta: 'Personal de salud' },
-  ];
-
   constructor(private authService: AuthService, private router: Router) {}
 
+
+seleccionarRol(valor: 'solicitante' | 'staff') {
+  this.rol = valor;
+}
+
   registrarse() {
+    console.log({
+      nombre: this.nombre,
+      apellido: this.apellido,
+      email: this.email,
+      contrasena: this.contrasena,
+      rol: this.rol,
+  });
     this.error = '';
 
     if (!this.nombre || !this.apellido || !this.email || !this.contrasena) {
