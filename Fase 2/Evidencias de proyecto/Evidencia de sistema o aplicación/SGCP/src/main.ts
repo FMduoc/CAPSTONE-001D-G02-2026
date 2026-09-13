@@ -1,18 +1,17 @@
-import { bootstrapApplication } from '@angular/platform-browser';
-import { importProvidersFrom } from '@angular/core';
-import { RouteReuseStrategy } from '@angular/router';
-import { HttpClientModule } from '@angular/common/http';
-import { IonicModule, IonicRouteStrategy } from '@ionic/angular/lazy';
-import { defineCustomElements } from '@ionic/core/loader';
+/*
+import { platformBrowserDynamic } from '@angular/platform-browser-dynamic';
 
-import { AppComponent } from './app/app.component';
-import { AppRoutingModule } from './app/app-routing.module';
+import { AppModule } from './app/app.module';
 
-bootstrapApplication(AppComponent, {
-  providers: [
-    importProvidersFrom(IonicModule.forRoot(), AppRoutingModule, HttpClientModule),
-    { provide: RouteReuseStrategy, useClass: IonicRouteStrategy },
-  ],
-}).catch(err => console.error(err));
+platformBrowserDynamic().bootstrapModule(AppModule)
+  .catch(err => console.log(err));
+*/
 
-defineCustomElements(window);
+//main.ts
+import { platformBrowserDynamic } from '@angular/platform-browser-dynamic'; 
+import { AppModule } from './app/app.module';
+
+// Ensure the AppModule is correctly bootstrapped
+platformBrowserDynamic()
+  .bootstrapModule(AppModule)
+  .catch(err => console.error(err));
