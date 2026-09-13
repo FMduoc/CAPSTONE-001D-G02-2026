@@ -1,549 +1,155 @@
-:host {
-  display: block;
-  color-scheme: light;
+/* =========================
+   FONDO GENERAL
+========================= */
 
-  --duoc-blue: #003b5c;
-  --duoc-blue-dark: #002c46;
-  --duoc-blue-soft: #0c5578;
-
-  --duoc-yellow: #fdbb30;
-  --duoc-yellow-dark: #e5a51a;
-
-  --surface: #ffffff;
-  --surface-soft: #f8fafc;
-
-  --text-primary: #17212b;
-  --text-secondary: #64748b;
-
-  --border: #d8e0e7;
+ion-content {
+  --background: linear-gradient(180deg, #f4f6fb 0%, #eef1f7 100%);
 }
 
-
-/* ================================================= */
-/* FONDO                                             */
-/* ================================================= */
-
-.register-page {
-  --background:
-    linear-gradient(
-      160deg,
-      var(--duoc-blue) 0%,
-      var(--duoc-blue) 42%,
-      #ffffff 42%,
-      #ffffff 100%
-    );
-
-  --color: var(--text-primary);
+ion-content::part(scroll) {
+  max-width: 460px;
+  margin: 0 auto;
+  padding: 24px 16px 40px;
 }
 
-/* ================================================= */
-/* LAYOUT                                            */
-/* ================================================= */
+/* =========================
+   TÍTULO
+========================= */
 
-.register-layout {
-  min-height: 100%;
-
-  display: flex;
-  flex-direction: column;
-
-  align-items: center;
-  justify-content: center;
-
-  padding:
-    max(32px, env(safe-area-inset-top))
-    20px
-    50px;
-}
-
-
-/* ================================================= */
-/* MARCA                                             */
-/* ================================================= */
-
-.brand-section {
-  width: 100%;
-  max-width: 650px;
-
+h2 {
   text-align: center;
-
+  margin-top: 16px;
   margin-bottom: 28px;
-
-  color: white;
-}
-
-
-.duoc-logo {
-  display: block;
-
-  width: min(330px, 80%);
-  height: auto;
-
-  margin: 0 auto 18px;
-
-  object-fit: contain;
-
-  filter:
-    drop-shadow(
-      0 8px 18px
-      rgba(0, 0, 0, 0.18)
-    );
-}
-
-
-.brand-section h1 {
-  margin: 0 0 6px;
-
-  font-size: 34px;
-  font-weight: 800;
-
-  letter-spacing: -0.8px;
-
-  color: white;
-}
-
-
-.brand-section p {
-  margin: 0;
-
-  font-size: 14px;
-  font-weight: 500;
-
-  color:
-    rgba(255, 255, 255, 0.82);
-}
-
-
-/* ================================================= */
-/* TARJETA                                           */
-/* ================================================= */
-
-.register-card {
-  position: relative;
-
-  width: 100%;
-  max-width: 650px;
-
-  padding: 38px;
-
-  background:
-    rgba(255, 255, 255, 0.98);
-
-  border-radius: 24px;
-
-  box-shadow:
-    0 25px 70px
-    rgba(0, 35, 60, 0.26);
-
-  overflow: hidden;
-}
-
-
-/* Línea premium superior */
-
-.register-card::before {
-  content: '';
-
-  position: absolute;
-
-  top: 0;
-  left: 0;
-
-  width: 100%;
-  height: 5px;
-
-  background:
-    linear-gradient(
-      90deg,
-      var(--duoc-yellow),
-      #ffd76d
-    );
-}
-
-
-/* ================================================= */
-/* CABECERA INTERIOR                                 */
-/* ================================================= */
-
-.card-header {
-  display: flex;
-
-  justify-content: space-between;
-  align-items: flex-start;
-
-  margin-bottom: 32px;
-}
-
-
-.card-heading {
-  max-width: 500px;
-}
-
-
-.eyebrow {
-  display: inline-block;
-
-  margin-bottom: 8px;
-
-  color: var(--duoc-blue);
-
-  font-size: 11px;
-  font-weight: 800;
-
-  letter-spacing: 1.8px;
-}
-
-
-.card-heading h2 {
-  margin: 0 0 8px;
-
-  color: var(--duoc-blue);
-
-  font-size: 27px;
-  font-weight: 800;
-
-  letter-spacing: -0.4px;
-}
-
-
-.card-heading p {
-  margin: 0;
-
-  color: var(--text-secondary);
-
-  font-size: 14px;
-  line-height: 1.5;
-}
-
-
-.card-accent {
-  width: 44px;
-  height: 44px;
-
-  flex-shrink: 0;
-
-  border-radius: 12px;
-
-  background:
-    linear-gradient(
-      135deg,
-      var(--duoc-yellow),
-      #ffd768
-    );
-
-  box-shadow:
-    0 8px 20px
-    rgba(253, 187, 48, 0.30);
-}
-
-
-/* ================================================= */
-/* GRID DEL FORMULARIO                               */
-/* ================================================= */
-
-.form-grid {
-  display: grid;
-
-  grid-template-columns:
-    repeat(2, minmax(0, 1fr));
-
-  gap:
-    20px
-    18px;
-}
-
-
-.full-width {
-  grid-column:
-    1 / -1;
-}
-
-
-/* ================================================= */
-/* CAMPOS                                            */
-/* ================================================= */
-
-.field-group {
-  display: flex;
-
-  flex-direction: column;
-
-  gap: 8px;
-}
-
-
-.field-label {
-  color: var(--text-primary);
-
-  font-size: 13px;
+  font-size: 28px;
   font-weight: 700;
+  color: #1f2430;
+  letter-spacing: -0.5px;
 }
 
+/* =========================
+   TARJETA CONTENEDORA (opcional, agrupa todo el form)
+========================= */
 
-.premium-input {
-  width: 100%;
-
-  min-height: 56px;
-
-  --background:
-    var(--surface-soft);
-
-  --color:
-    var(--text-primary);
-
-  --placeholder-color:
-    #94a3b8;
-
-  --placeholder-opacity:
-    1;
-
-  --border-color:
-    var(--border);
-
-  --border-radius:
-    12px;
-
-  --highlight-color-focused:
-    var(--duoc-blue);
-
-  --highlight-color-valid:
-    var(--duoc-blue);
-
-  font-size: 15px;
-
-  transition:
-    transform 0.2s ease,
-    filter 0.2s ease;
-}
-
-
-.premium-input:focus-within {
-  filter:
-    drop-shadow(
-      0 4px 8px
-      rgba(0, 59, 92, 0.08)
-    );
-}
-
-
-/* ================================================= */
-/* ERROR                                             */
-/* ================================================= */
-
-.error-box {
-  margin-top: 20px;
-
-  padding:
-    12px
-    15px;
-
-  background:
-    #fff1f2;
-
-  border:
-    1px solid
-    #fecdd3;
-
-  border-left:
-    4px solid
-    #e11d48;
-
-  border-radius:
-    10px;
-
-  color:
-    #be123c;
-
-  font-size:
-    13px;
-
-  font-weight:
-    600;
-}
-
-
-/* ================================================= */
-/* BOTÓN PRINCIPAL                                   */
-/* ================================================= */
-
-.register-button {
-  width: 100%;
-
-  height: 54px;
-
-  margin-top: 28px;
-
-  --background:
-    var(--duoc-blue);
-
-  --background-hover:
-    var(--duoc-blue-soft);
-
-  --background-activated:
-    var(--duoc-blue-dark);
-
-  --color:
-    white;
-
-  --border-radius:
-    12px;
-
-  font-size: 16px;
-  font-weight: 800;
-
-  text-transform: none;
-
-  letter-spacing:
-    0.1px;
-}
-
-
-.register-button::part(native) {
-  box-shadow:
-    0 10px 25px
-    rgba(0, 59, 92, 0.22);
-}
-
-
-/* ================================================= */
-/* LOGIN                                             */
-/* ================================================= */
-
-.login-section {
-  margin-top: 28px;
-
-  text-align: center;
-}
-
-
-.separator {
-  display: flex;
-
-  align-items: center;
-
-  gap: 12px;
+ion-item {
+  --background: #ffffff;
+  --border-color: transparent;
+  --highlight-height: 0px;
+  --inner-padding-end: 12px;
+  --padding-start: 14px;
+  --min-height: 62px;
 
   margin-bottom: 14px;
+  border-radius: 14px;
+  box-shadow: 0 2px 10px rgba(20, 20, 43, 0.06);
+  transition: box-shadow 0.2s ease, transform 0.15s ease;
+
+  &:focus-within {
+    box-shadow: 0 4px 16px rgba(var(--ion-color-primary-rgb), 0.18);
+    transform: translateY(-1px);
+  }
 }
 
+/* =========================
+   LABELS (el problema del texto invisible)
+========================= */
 
-.separator span {
-  flex: 1;
-
-  height: 1px;
-
-  background:
-    #e2e8f0;
+ion-item ion-label,
+ion-input,
+ion-select {
+  --color: #1f2430;
+  color: #1f2430;
 }
 
-
-.separator p {
-  margin: 0;
-
-  white-space: nowrap;
-
-  color:
-    var(--text-secondary);
-
-  font-size:
-    12px;
+ion-item {
+  // El label flotante debe verse siempre oscuro, no blanco
+  --label-color: #6b7280 !important;
 }
 
-
-.login-section a {
-  display: inline-block;
-
-  color:
-    var(--duoc-blue);
-
-  font-size:
-    14px;
-
-  font-weight:
-    800;
-
-  text-decoration:
-    none;
-
-  transition:
-    color 0.2s ease;
+ion-input::part(label),
+ion-select::part(label) {
+  color: #6b7280 !important;
+  font-size: 13px;
+  font-weight: 500;
 }
 
-
-.login-section a:hover {
-  color:
-    var(--duoc-yellow-dark);
+ion-input::part(native),
+ion-select::part(text) {
+  color: #1f2430 !important;
+  font-size: 15px;
+  font-weight: 500;
 }
 
+/* =========================
+   SELECT (Tipo de cuenta)
+========================= */
 
-/* ================================================= */
-/* RESPONSIVE                                        */
-/* ================================================= */
+ion-select {
+  width: 100%;
+  --padding-start: 0;
 
-@media (max-width: 650px) {
+  &::part(icon) {
+    color: var(--ion-color-primary);
+    opacity: 1;
+  }
+}
 
-  .register-layout {
-    justify-content:
-      flex-start;
+/* =========================
+   MENSAJE DE ERROR
+========================= */
 
-    padding:
-      25px
-      15px
-      35px;
+ion-text[color="danger"] p {
+  margin: -4px 4px 16px;
+  padding: 10px 14px;
+  border-radius: 10px;
+  background: rgba(235, 68, 90, 0.08);
+  color: var(--ion-color-danger);
+  font-size: 13px;
+  font-weight: 500;
+}
+
+/* =========================
+   BOTÓN REGISTRARSE
+========================= */
+
+ion-button[expand="block"]:not([fill="clear"]) {
+  height: 52px;
+  margin-top: 22px;
+  margin-bottom: 6px;
+
+  --border-radius: 14px;
+  --background: linear-gradient(135deg, var(--ion-color-primary) 0%, var(--ion-color-primary-shade) 100%);
+  --box-shadow: 0 6px 16px rgba(var(--ion-color-primary-rgb), 0.3);
+
+  font-size: 16px;
+  font-weight: 600;
+  text-transform: none;
+  letter-spacing: 0.2px;
+}
+
+/* =========================
+   BOTÓN "¿YA TIENES CUENTA?"
+========================= */
+
+ion-button[fill="clear"] {
+  margin-top: 4px;
+  --color: var(--ion-color-primary);
+  font-size: 14px;
+  font-weight: 500;
+  text-transform: none;
+}
+
+/* =========================
+   RESPONSIVE
+========================= */
+
+@media (max-width: 600px) {
+  h2 {
+    font-size: 24px;
+    margin-top: 8px;
+    margin-bottom: 20px;
   }
 
-
-  .duoc-logo {
-    width:
-      min(260px, 85%);
+  ion-item {
+    --min-height: 58px;
   }
-
-
-  .brand-section h1 {
-    font-size:
-      28px;
-  }
-
-
-  .register-card {
-    padding:
-      28px
-      20px;
-
-    border-radius:
-      20px;
-  }
-
-
-  .card-header {
-    margin-bottom:
-      26px;
-  }
-
-
-  .card-accent {
-    display:
-      none;
-  }
-
-
-  .card-heading h2 {
-    font-size:
-      24px;
-  }
-
-
-  .form-grid {
-    grid-template-columns:
-      1fr;
-
-    gap:
-      17px;
-  }
-
-
-  .full-width {
-    grid-column:
-      auto;
-  }
-
 }

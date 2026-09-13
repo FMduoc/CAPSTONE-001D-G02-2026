@@ -1,3 +1,4 @@
+// src/app/auth/register/register.page.ts
 import { Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
@@ -8,60 +9,31 @@ import { AuthService } from '../../services/auth';
 @Component({
   selector: 'app-register',
   templateUrl: './register.page.html',
-  styleUrls: ['./register.page.scss'],
   standalone: true,
-  imports: [
-    CommonModule,
-    FormsModule,
-    IonicModule,
-    RouterLink
-  ],
+  styleUrls: ['./register.page.scss'],
+  imports: [CommonModule, FormsModule, IonicModule, RouterLink],
 })
 export class RegisterPage {
-
   nombre = '';
   apellido = '';
   email = '';
   contrasena = '';
   confirmarContrasena = '';
-
-  rol = 'solicitante';
-
+  rol = 'solicitante'; // valor por defecto. Anteriormente solicitante.
   error = '';
   cargando = false;
 
   roles = [
-    {
-      valor: 'solicitante',
-      etiqueta: 'Solicitante'
-    },
-    {
-      valor: 'staff',
-      etiqueta: 'Staff'
-    }
+    { valor: 'solicitante', etiqueta: 'Docente (solicitante)' },
+    { valor: 'staff', etiqueta: 'Personal (staff)' },
   ];
 
-  constructor(
-    private authService: AuthService,
-    private router: Router
-  ) {}
+  constructor(private authService: AuthService, private router: Router) {}
 
   registrarse() {
-
     this.error = '';
 
-    const nombre = this.nombre.trim();
-    const apellido = this.apellido.trim();
-    const email = this.email.trim().toLowerCase();
-
-    if (
-      !nombre ||
-      !apellido ||
-      !email ||
-      !this.contrasena ||
-      !this.confirmarContrasena ||
-      !this.rol
-    ) {
+    if (!this.nombre || !this.apellido || !this.email || !this.contrasena) {
       this.error = 'Todos los campos son obligatorios';
       return;
     }
@@ -79,40 +51,20 @@ export class RegisterPage {
     this.cargando = true;
 
     this.authService.register({
-      nombre: nombre,
-      apellido: apellido,
-      email: email,
+      nombre: this.nombre,
+      apellido: this.apellido,
+      email: this.email,
       contrasena: this.contrasena,
-      rol: this.rol
+      rol: this.rol,
     }).subscribe({
-
       next: () => {
-
         this.cargando = false;
-
-        this.router.navigate(
-          ['/login'],
-          {
-            queryParams: {
-              registrado: 'true'
-            }
-          }
-        );
-
+        this.router.navigate(['/login'], { queryParams: { registrado: 'true' } });
       },
-
       error: (err) => {
-
         this.cargando = false;
-
-        this.error =
-          err.error?.error ||
-          'No se pudo completar el registro';
-
-      }
-
+        this.error = err.error?.error || 'No se pudo completar el registro';
+      },
     });
-
   }
-
 }

@@ -10,70 +10,36 @@ router.post('/register', async (req, res) => {
   const { nombre, apellido, email, contrasena, rol } = req.body;
 
   if (!nombre || !apellido || !email || !contrasena || !rol) {
-    return res.status(400).json({
-      error: 'Todos los campos son obligatorios'
-    });
+    return res.status(400).json({ error: 'Todos los campos son obligatorios' });
   }
 
   if (contrasena.length < 8) {
-    return res.status(400).json({
-      error: 'La contraseña debe tener al menos 8 caracteres'
-    });
+    return res.status(400).json({ error: 'La contraseña debe tener al menos 8 caracteres' });
   }
 
-  const rolesPermitidos = ['solicitante', 'staff'];
-
+ 
+  const rolesPermitidos = ['solicitante', 'tecnico', 'personal_salud', 'staff', 'docente'];
   if (!rolesPermitidos.includes(rol)) {
-    return res.status(400).json({
-      error: 'Rol no válido'
-    });
+    return res.status(400).json({ error: 'Rol no válido' });
   }
 
   try {
-    const correoNormalizado = email.trim().toLowerCase();
-
-    const existente = await pool.query(
-      'SELECT id FROM usuario WHERE email = $1',
-      [correoNormalizado]
-    );
-
+    const existente = await pool.query('SELECT id FROM usuario WHERE email = $1', [email]);
     if (existente.rows.length > 0) {
-      return res.status(409).json({
-        error: 'Ese email ya está registrado'
-      });
+      return res.status(409).json({ error: 'Ese email ya está registrado' });
     }
 
     const contrasena_hash = await bcrypt.hash(contrasena, 10);
 
     const result = await pool.query(
-      `INSERT INTO usuario
-        (nombre, apellido, email, contrasena_hash, rol)
-       VALUES
-        ($1, $2, $3, $4, $5)
-       RETURNING
-        id,
-        nombre,
-        apellido,
-        email,
-        rol,
-        fecha_creacion`,
-      [
-        nombre.trim(),
-        apellido.trim(),
-        correoNormalizado,
-        contrasena_hash,
-        rol
-      ]
+      `INSERT INTO usuario (nombre, apellido, email, contrasena_hash, rol)
+       VALUES ($1, $2, $3, $4, $5) RETURNING id, nombre, apellido, email, rol`,
+      [nombre, apellido, email, contrasena_hash, rol]
     );
 
     res.status(201).json(result.rows[0]);
-
   } catch (err) {
-    console.error(err);
-
-    res.status(500).json({
-      error: err.message
-    });
+    res.status(500).json({ error: err.message });
   }
 });
 
@@ -110,6 +76,31 @@ router.post('/login', async (req, res) => {
       token,
       usuario: { id: usuario.id, nombre: usuario.nombre, apellido: usuario.apellido, email: usuario.email, rol: usuario.rol }
     });
+  } catch (err) {
+    console.error('Error en /login:', err); //
+    res.status(500).json({ error: err.message });
+  }
+});
+
+
+// Verificación del rol. Cuando un usuario crea su cuenta de staff, su token estará vinculado a esa existencia.
+// Esto se debe resetear al momento de cambiar su rol dentro del admin dashboard, para volver a generar un token.
+// Este método consulta el rol ACTUAL en la sesión y el rol REAL directo de la base de datos, que fue cambiado por el admin.
+// Esto se comunica con SGCP/src/app/services/auth.js
+const verificarToken = require('../middleware/auth');
+
+router.get('/me', verificarToken, async (req, res) => {
+  try {
+    const result = await pool.query(
+      'SELECT id, nombre, apellido, email, rol FROM usuario WHERE id = $1', //  AND activo = TRUE
+      [req.usuario.id]
+    );
+
+    if (result.rows.length === 0) {
+      return res.status(404).json({ error: 'Usuario no encontrado' });
+    }
+
+    res.json(result.rows[0]);
   } catch (err) {
     res.status(500).json({ error: err.message });
   }
