@@ -10,6 +10,7 @@ import { AuthService } from '../../services/auth';
   selector: 'app-register',
   templateUrl: './register.page.html',
   standalone: true,
+  styleUrls: ['./register.page.scss'],
   imports: [CommonModule, FormsModule, IonicModule, RouterLink],
 })
 export class RegisterPage {
@@ -18,12 +19,12 @@ export class RegisterPage {
   email = '';
   contrasena = '';
   confirmarContrasena = '';
-  rol = 'docente'; // valor por defecto. Anteriormente solicitante.
+  rol = 'solicitante'; // valor por defecto. Anteriormente solicitante.
   error = '';
   cargando = false;
 
   roles = [
-    { valor: 'docente', etiqueta: 'Docente (solicitante)' },
+    { valor: 'solicitante', etiqueta: 'Docente (solicitante)' },
     { valor: 'staff', etiqueta: 'Personal (staff)' },
   ];
 

@@ -1,14 +1,34 @@
 <ion-content class="ion-padding">
-  <div class="ion-text-center" style="margin-top: 30%;">
-    <h1>Hola, {{ nombre }}</h1>
-    <p>Escanea el código QR de tu sala para realizar una solicitud.</p>
-
-    <ion-button expand="block" size="large" (click)="realizarPeticion()">
-      Realizar petición
-    </ion-button>
-
-    <ion-button expand="block" fill="clear" (click)="cerrarSesion()">
-      Cerrar sesión
-    </ion-button>
+  <div class="header-diagonal">
+    <div class="header-bienvenida">
+      <h1>Hola, {{ nombre }}</h1>
+      <p>¿Qué necesitas hacer hoy?</p>
+    </div>
   </div>
+
+  <div class="tarjetas-container">
+    <div class="tarjeta" (click)="realizarPeticion()">
+      <div class="tarjeta-imagen tarjeta-imagen--peticion">
+        <img src="assets/img/QR.jpg" alt="Realizar petición">
+      </div>
+      <div class="tarjeta-contenido">
+        <h2>Realizar Petición</h2>
+        <p>Escanea el código QR de tu sala para generar una nueva solicitud de forma rápida y sencilla.</p>
+      </div>
+    </div>
+
+    <div class="tarjeta" (click)="verHistorial()">
+      <div class="tarjeta-imagen tarjeta-imagen--historial">
+        <img src="assets/img/HistorialPeticiones.png" alt="Historial">
+      </div>
+      <div class="tarjeta-contenido">
+        <h2>Historial de peticiones</h2>
+        <p>Revisa el estado y el detalle de todas las solicitudes que has realizado anteriormente.</p>
+      </div>
+    </div>
+  </div>
+
+  <ion-button expand="block" fill="clear" (click)="cerrarSesion()">
+    Cerrar sesión
+  </ion-button>
 </ion-content>
