@@ -1,0 +1,36 @@
+<!-- src/app/docente/escanear-qr/escanear-qr.page.html -->
+<ion-header>
+  <ion-toolbar>
+    <ion-title>Escanear sala</ion-title>
+    <ion-buttons slot="start">
+      <ion-back-button defaultHref="/inicio-docente"></ion-back-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content class="ion-padding">
+  <div class="ion-text-center" style="margin-top: 15%;">
+    <ion-icon name="qr-code-outline" style="font-size: 96px;"></ion-icon>
+    <p>Apunta la cámara al código QR de la sala.</p>
+
+    <ion-button expand="block" (click)="escanearConCamara()" [disabled]="buscando">
+      {{ buscando ? 'Buscando sala...' : 'Escanear con cámara' }}
+    </ion-button>
+
+    <ion-text color="danger" *ngIf="error">
+      <p>{{ error }}</p>
+    </ion-text>
+  </div>
+
+  <!-- Solo para pruebas en navegador, sin cámara nativa disponible -->
+  <ion-item style="margin-top: 24px;">
+    <ion-input
+      label="Código manual (solo pruebas)"
+      [(ngModel)]="codigoManual"
+      placeholder="ej. a3f9c21b8e4d6f10"
+    ></ion-input>
+  </ion-item>
+  <ion-button expand="block" fill="outline" (click)="buscarManual()" [disabled]="buscando">
+    Buscar por código
+  </ion-button>
+</ion-content>
