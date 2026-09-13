@@ -1,16 +1,143 @@
-<ion-header [translucent]="true">
-  <ion-toolbar>
-    <ion-title>
-      Blank
-    </ion-title>
-  </ion-toolbar>
-</ion-header>
+<ion-content class="home-page">
 
-<ion-content>
-  <ion-button (click)="crearPrueba()">Crear solicitud de prueba</ion-button>
-  <ion-list>
-    <ion-item *ngFor="let s of solicitudes">
-      {{ s.descripcion }} — Sala {{ s.sala_id }}
-    </ion-item>
-  </ion-list>
+  <div class="home-layout">
+
+    <!-- IDENTIDAD DUOC -->
+    <header class="brand-section">
+
+      <img
+        src="assets/duoc-uc-logo-png_seeklogo-208299.png"
+        alt="Duoc UC"
+        class="duoc-logo"
+      />
+
+      <h1>Panel de solicitudes</h1>
+
+      <p>
+        Sistema de Gestión y Control de Peticiones
+      </p>
+
+    </header>
+
+
+    <!-- CONTENIDO PRINCIPAL -->
+    <section class="home-card">
+
+      <div class="card-header">
+
+        <div class="card-heading">
+
+          <span class="eyebrow">
+            SOLICITUDES
+          </span>
+
+          <h2>
+            Gestión de peticiones
+          </h2>
+
+          <p>
+            Consulta las solicitudes registradas y genera nuevas peticiones de prueba.
+          </p>
+
+        </div>
+
+        <div class="card-accent"></div>
+
+      </div>
+
+
+      <!-- ACCIÓN PRINCIPAL -->
+      <div class="actions-section">
+
+        <ion-button
+          expand="block"
+          class="create-button"
+          (click)="crearPrueba()">
+
+          Crear solicitud de prueba
+
+        </ion-button>
+
+      </div>
+
+
+      <!-- LISTADO -->
+      <div class="requests-section">
+
+        <div class="section-title">
+
+          <div>
+            <span class="section-eyebrow">
+              ACTIVIDAD
+            </span>
+
+            <h3>
+              Solicitudes registradas
+            </h3>
+          </div>
+
+          <span class="request-counter">
+            {{ solicitudes.length }}
+          </span>
+
+        </div>
+
+
+        <!-- SIN SOLICITUDES -->
+        <div
+          class="empty-state"
+          *ngIf="solicitudes.length === 0">
+
+          <div class="empty-icon">
+            !
+          </div>
+
+          <h4>
+            No hay solicitudes
+          </h4>
+
+          <p>
+            Cuando se registren solicitudes aparecerán en esta sección.
+          </p>
+
+        </div>
+
+
+        <!-- SOLICITUDES -->
+        <div
+          class="requests-list"
+          *ngIf="solicitudes.length > 0">
+
+          <div
+            class="request-card"
+            *ngFor="let s of solicitudes">
+
+            <div class="request-indicator"></div>
+
+            <div class="request-content">
+
+              <span class="request-label">
+                Solicitud
+              </span>
+
+              <h4>
+                {{ s.descripcion }}
+              </h4>
+
+              <div class="request-location">
+                Sala {{ s.sala_id }}
+              </div>
+
+            </div>
+
+          </div>
+
+        </div>
+
+      </div>
+
+    </section>
+
+  </div>
+
 </ion-content>
