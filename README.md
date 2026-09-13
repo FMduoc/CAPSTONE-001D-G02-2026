@@ -8,6 +8,12 @@ Repositorio para el proceso de Capstone 2026, sección 001D, Grupo 02.
 
 # SGCP
 
+## Instalación
+
+Se incluye dentro de evidencias de sistema/aplicación, los tres componentes principales de la solución. Para cada componente, se debe correr npm install para instalar dependencias.
+
+La aplicación móvil se inicia con `ionic serve`, mientras que backend-express y admin-dashboard se inician con `npm run dev`.
+
 ## Diseño UI/UX
 
 Los prototipos de UI/UX fueron diseñados en Figma.

@@ -18,14 +18,13 @@ export class RegisterPage {
   email = '';
   contrasena = '';
   confirmarContrasena = '';
-  rol = 'solicitante'; // valor por defecto
+  rol = 'docente'; // valor por defecto. Anteriormente solicitante.
   error = '';
   cargando = false;
 
   roles = [
-    { valor: 'solicitante', etiqueta: 'Solicitante (profesor / personal)' },
-    { valor: 'tecnico', etiqueta: 'Técnico de soporte' },
-    { valor: 'personal_salud', etiqueta: 'Personal de salud' },
+    { valor: 'docente', etiqueta: 'Docente (solicitante)' },
+    { valor: 'staff', etiqueta: 'Personal (staff)' },
   ];
 
   constructor(private authService: AuthService, private router: Router) {}
