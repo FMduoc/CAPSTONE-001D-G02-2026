@@ -1,37 +1,210 @@
-<ion-content class="ion-padding">
-  <h2>Crear cuenta</h2>
-  <ion-item>
-    <ion-input label="Nombre" [(ngModel)]="nombre"></ion-input>
-  </ion-item>
-  <ion-item>
-    <ion-input label="Apellido" [(ngModel)]="apellido"></ion-input>
-  </ion-item>
-  <ion-item>
-    <ion-input label="Email" type="email" [(ngModel)]="email"></ion-input>
-  </ion-item>
-  <ion-item>
-    <ion-select label="Tipo de cuenta" [(ngModel)]="rol">
-      <ion-select-option *ngFor="let r of roles" [value]="r.valor">
-        {{ r.etiqueta }}
-      </ion-select-option>
-    </ion-select>
-  </ion-item>
-  <ion-item>
-    <ion-input label="Contraseña" type="password" [(ngModel)]="contrasena"></ion-input>
-  </ion-item>
-  <ion-item>
-    <ion-input label="Confirmar contraseña" type="password" [(ngModel)]="confirmarContrasena"></ion-input>
-  </ion-item>
+<ion-content class="register-page">
 
-  <ion-text color="danger" *ngIf="error">
-    <p>{{ error }}</p>
-  </ion-text>
+  <div class="register-layout">
 
-  <ion-button expand="block" (click)="registrarse()" [disabled]="cargando">
-    {{ cargando ? 'Creando cuenta...' : 'Registrarse' }}
-  </ion-button>
+    <!-- IDENTIDAD -->
+    <header class="brand-section">
 
-  <ion-button expand="block" fill="clear" routerLink="/login">
-    ¿Ya tienes cuenta? Inicia sesión
-  </ion-button>
+      <img
+        src="assets/duoc-uc-logo-png_seeklogo-208299.png"
+        alt="Duoc UC"
+        class="duoc-logo"
+      />
+
+      <h1>Crear cuenta</h1>
+
+      <p>
+        Sistema de Gestión y Control de Peticiones
+      </p>
+
+    </header>
+
+
+    <!-- FORMULARIO -->
+    <section class="register-card">
+
+      <div class="card-header">
+
+        <div class="card-heading">
+          <span class="eyebrow">
+            NUEVA CUENTA
+          </span>
+
+          <h2>
+            Registro de usuario
+          </h2>
+
+          <p>
+            Ingresa tus datos para comenzar a utilizar la plataforma.
+          </p>
+        </div>
+
+        <div class="card-accent"></div>
+
+      </div>
+
+
+      <div class="form-grid">
+
+        <!-- NOMBRE -->
+        <div class="field-group">
+
+          <span class="field-label">
+            Nombre
+          </span>
+
+          <ion-input
+            class="premium-input"
+            fill="outline"
+            placeholder="Ej. Álvaro"
+            [(ngModel)]="nombre">
+          </ion-input>
+
+        </div>
+
+
+        <!-- APELLIDO -->
+        <div class="field-group">
+
+          <span class="field-label">
+            Apellido
+          </span>
+
+          <ion-input
+            class="premium-input"
+            fill="outline"
+            placeholder="Ej. Araya"
+            [(ngModel)]="apellido">
+          </ion-input>
+
+        </div>
+
+
+        <!-- CORREO -->
+        <div class="field-group full-width">
+
+          <span class="field-label">
+            Correo electrónico
+          </span>
+
+          <ion-input
+            class="premium-input"
+            fill="outline"
+            type="email"
+            placeholder="nombre@correo.com"
+            [(ngModel)]="email">
+          </ion-input>
+
+        </div>
+
+
+        <!-- TIPO CUENTA -->
+        <div class="field-group full-width">
+
+          <span class="field-label">
+            Tipo de cuenta
+          </span>
+
+          <ion-select
+            class="premium-input"
+            fill="outline"
+            interface="popover"
+            [(ngModel)]="rol">
+
+            <ion-select-option
+              *ngFor="let r of roles"
+              [value]="r.valor">
+
+              {{ r.etiqueta }}
+
+            </ion-select-option>
+
+          </ion-select>
+
+        </div>
+
+
+        <!-- CONTRASEÑA -->
+        <div class="field-group">
+
+          <span class="field-label">
+            Contraseña
+          </span>
+
+          <ion-input
+            class="premium-input"
+            fill="outline"
+            type="password"
+            placeholder="Mínimo 8 caracteres"
+            [(ngModel)]="contrasena">
+          </ion-input>
+
+        </div>
+
+
+        <!-- CONFIRMAR -->
+        <div class="field-group">
+
+          <span class="field-label">
+            Confirmar contraseña
+          </span>
+
+          <ion-input
+            class="premium-input"
+            fill="outline"
+            type="password"
+            placeholder="Repite tu contraseña"
+            [(ngModel)]="confirmarContrasena">
+          </ion-input>
+
+        </div>
+
+      </div>
+
+
+      <!-- ERROR -->
+      <div
+        class="error-box"
+        *ngIf="error">
+
+        {{ error }}
+
+      </div>
+
+
+      <!-- BOTÓN -->
+      <ion-button
+        expand="block"
+        class="register-button"
+        (click)="registrarse()"
+        [disabled]="cargando">
+
+        {{ cargando ? 'Creando cuenta...' : 'Crear cuenta' }}
+
+      </ion-button>
+
+
+      <!-- LOGIN -->
+      <div class="login-section">
+
+        <div class="separator">
+          <span></span>
+
+          <p>
+            ¿Ya tienes cuenta?
+          </p>
+
+          <span></span>
+        </div>
+
+        <a routerLink="/login">
+          Iniciar sesión
+        </a>
+
+      </div>
+
+    </section>
+
+  </div>
+
 </ion-content>

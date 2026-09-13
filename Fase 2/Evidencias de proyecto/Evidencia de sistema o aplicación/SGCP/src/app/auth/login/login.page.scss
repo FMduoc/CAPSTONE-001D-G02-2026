@@ -1,0 +1,690 @@
+:host {
+  display: block;
+  color-scheme: light;
+
+  --duoc-blue: #003b5c;
+  --duoc-blue-dark: #002c46;
+  --duoc-blue-soft: #0c5578;
+
+  --duoc-yellow: #fdbb30;
+  --duoc-yellow-dark: #e5a51a;
+
+  --surface: #ffffff;
+  --surface-soft: #f8fafc;
+
+  --text-primary: #17212b;
+  --text-secondary: #64748b;
+
+  --border: #d8e0e7;
+}
+
+
+/* ================================================= */
+/* FONDO                                             */
+/* ================================================= */
+
+.login-page {
+
+  --background:
+    linear-gradient(
+      160deg,
+      var(--duoc-blue) 0%,
+      var(--duoc-blue) 42%,
+      #ffffff 42%,
+      #ffffff 100%
+    );
+
+  --color:
+    var(--text-primary);
+
+}
+
+
+/* ================================================= */
+/* ESTRUCTURA GENERAL                                */
+/* ================================================= */
+
+.login-layout {
+
+  width: 100%;
+  min-height: 100%;
+
+  display: flex;
+  flex-direction: column;
+
+  align-items: center;
+  justify-content: center;
+
+  padding:
+    max(32px, env(safe-area-inset-top))
+    20px
+    50px;
+
+}
+
+
+/* ================================================= */
+/* IDENTIDAD                                         */
+/* ================================================= */
+
+.brand-section {
+
+  width: 100%;
+  max-width: 650px;
+
+  text-align: center;
+
+  margin-bottom: 28px;
+
+  color: white;
+
+}
+
+
+/* LOGO */
+
+.duoc-logo {
+
+  display: block;
+
+  width: min(330px, 80%);
+  height: auto;
+
+  margin:
+    0 auto
+    18px;
+
+  object-fit: contain;
+
+  filter:
+    drop-shadow(
+      0 8px 18px
+      rgba(0, 0, 0, 0.18)
+    );
+
+}
+
+
+/* TÍTULO PRINCIPAL */
+
+.brand-section h1 {
+
+  margin:
+    0 0
+    6px;
+
+  font-size: 34px;
+  font-weight: 800;
+
+  letter-spacing: -0.8px;
+
+  color: white;
+
+}
+
+
+/* SUBTÍTULO */
+
+.brand-section p {
+
+  margin: 0;
+
+  font-size: 14px;
+  font-weight: 500;
+
+  color:
+    rgba(
+      255,
+      255,
+      255,
+      0.82
+    );
+
+}
+
+
+/* ================================================= */
+/* TARJETA                                           */
+/* ================================================= */
+
+.login-card {
+
+  position: relative;
+
+  width: 100%;
+  max-width: 650px;
+
+  padding: 38px;
+
+  background:
+    rgba(
+      255,
+      255,
+      255,
+      0.98
+    );
+
+  border-radius: 24px;
+
+  box-shadow:
+    0 25px 70px
+    rgba(
+      0,
+      35,
+      60,
+      0.26
+    );
+
+  overflow: hidden;
+
+}
+
+
+/* DETALLE AMARILLO SUPERIOR */
+
+.login-card::before {
+
+  content: '';
+
+  position: absolute;
+
+  top: 0;
+  left: 0;
+
+  width: 100%;
+  height: 5px;
+
+  background:
+    linear-gradient(
+      90deg,
+      var(--duoc-yellow),
+      #ffd76d
+    );
+
+}
+
+
+/* ================================================= */
+/* ENCABEZADO INTERIOR                               */
+/* ================================================= */
+
+.card-header {
+
+  display: flex;
+
+  justify-content:
+    space-between;
+
+  align-items:
+    flex-start;
+
+  margin-bottom:
+    32px;
+
+}
+
+
+.card-heading {
+
+  max-width:
+    500px;
+
+}
+
+
+.eyebrow {
+
+  display:
+    inline-block;
+
+  margin-bottom:
+    8px;
+
+  color:
+    var(--duoc-blue);
+
+  font-size:
+    11px;
+
+  font-weight:
+    800;
+
+  letter-spacing:
+    1.8px;
+
+}
+
+
+.card-heading h2 {
+
+  margin:
+    0 0
+    8px;
+
+  color:
+    var(--duoc-blue);
+
+  font-size:
+    27px;
+
+  font-weight:
+    800;
+
+  letter-spacing:
+    -0.4px;
+
+}
+
+
+.card-heading p {
+
+  margin: 0;
+
+  color:
+    var(--text-secondary);
+
+  font-size:
+    14px;
+
+  line-height:
+    1.5;
+
+}
+
+
+/* CUADRADO AMARILLO DECORATIVO */
+
+.card-accent {
+
+  width: 44px;
+  height: 44px;
+
+  flex-shrink: 0;
+
+  border-radius:
+    12px;
+
+  background:
+    linear-gradient(
+      135deg,
+      var(--duoc-yellow),
+      #ffd768
+    );
+
+  box-shadow:
+    0 8px 20px
+    rgba(
+      253,
+      187,
+      48,
+      0.30
+    );
+
+}
+
+
+/* ================================================= */
+/* FORMULARIO                                        */
+/* ================================================= */
+
+.form-grid {
+
+  display: grid;
+
+  grid-template-columns:
+    1fr;
+
+  gap:
+    20px;
+
+}
+
+
+.field-group {
+
+  display: flex;
+
+  flex-direction:
+    column;
+
+  gap: 8px;
+
+}
+
+
+.field-label {
+
+  color:
+    var(--text-primary);
+
+  font-size:
+    13px;
+
+  font-weight:
+    700;
+
+}
+
+
+/* ================================================= */
+/* INPUTS PREMIUM                                    */
+/* ================================================= */
+
+.premium-input {
+
+  width: 100%;
+
+  min-height:
+    56px;
+
+  --background:
+    var(--surface-soft);
+
+  --color:
+    var(--text-primary);
+
+  --placeholder-color:
+    #94a3b8;
+
+  --placeholder-opacity:
+    1;
+
+  --border-color:
+    var(--border);
+
+  --border-radius:
+    12px;
+
+  --highlight-color-focused:
+    var(--duoc-blue);
+
+  --highlight-color-valid:
+    var(--duoc-blue);
+
+  font-size:
+    15px;
+
+  transition:
+    filter
+    0.2s ease;
+
+}
+
+
+.premium-input:focus-within {
+
+  filter:
+    drop-shadow(
+      0 4px 8px
+      rgba(
+        0,
+        59,
+        92,
+        0.08
+      )
+    );
+
+}
+
+
+/* ================================================= */
+/* ERROR                                             */
+/* ================================================= */
+
+.error-box {
+
+  margin-top:
+    20px;
+
+  padding:
+    12px
+    15px;
+
+  background:
+    #fff1f2;
+
+  border:
+    1px solid
+    #fecdd3;
+
+  border-left:
+    4px solid
+    #e11d48;
+
+  border-radius:
+    10px;
+
+  color:
+    #be123c;
+
+  font-size:
+    13px;
+
+  font-weight:
+    600;
+
+}
+
+
+/* ================================================= */
+/* BOTÓN                                             */
+/* ================================================= */
+
+.login-button {
+
+  width: 100%;
+
+  height:
+    54px;
+
+  margin-top:
+    28px;
+
+  --background:
+    var(--duoc-blue);
+
+  --background-hover:
+    var(--duoc-blue-soft);
+
+  --background-activated:
+    var(--duoc-blue-dark);
+
+  --color:
+    white;
+
+  --border-radius:
+    12px;
+
+  font-size:
+    16px;
+
+  font-weight:
+    800;
+
+  text-transform:
+    none;
+
+  letter-spacing:
+    0.1px;
+
+}
+
+
+.login-button::part(native) {
+
+  box-shadow:
+    0 10px 25px
+    rgba(
+      0,
+      59,
+      92,
+      0.22
+    );
+
+}
+
+
+/* ================================================= */
+/* REGISTRO                                          */
+/* ================================================= */
+
+.register-section {
+
+  margin-top:
+    28px;
+
+  text-align:
+    center;
+
+}
+
+
+.separator {
+
+  display: flex;
+
+  align-items:
+    center;
+
+  gap: 12px;
+
+  margin-bottom:
+    14px;
+
+}
+
+
+.separator span {
+
+  flex: 1;
+
+  height:
+    1px;
+
+  background:
+    #e2e8f0;
+
+}
+
+
+.separator p {
+
+  margin: 0;
+
+  white-space:
+    nowrap;
+
+  color:
+    var(--text-secondary);
+
+  font-size:
+    12px;
+
+}
+
+
+.register-section a {
+
+  display:
+    inline-block;
+
+  color:
+    var(--duoc-blue);
+
+  font-size:
+    14px;
+
+  font-weight:
+    800;
+
+  text-decoration:
+    none;
+
+}
+
+
+.register-section a:hover {
+
+  color:
+    var(--duoc-yellow-dark);
+
+  text-decoration:
+    underline;
+
+}
+
+
+/* ================================================= */
+/* RESPONSIVE                                        */
+/* ================================================= */
+
+@media (max-width: 650px) {
+
+  .login-layout {
+
+    justify-content:
+      flex-start;
+
+    padding:
+      25px
+      15px
+      35px;
+
+  }
+
+
+  .duoc-logo {
+
+    width:
+      min(
+        260px,
+        85%
+      );
+
+  }
+
+
+  .brand-section h1 {
+
+    font-size:
+      28px;
+
+  }
+
+
+  .login-card {
+
+    padding:
+      28px
+      20px;
+
+    border-radius:
+      20px;
+
+  }
+
+
+  .card-header {
+
+    margin-bottom:
+      26px;
+
+  }
+
+
+  .card-accent {
+
+    display:
+      none;
+
+  }
+
+
+  .card-heading h2 {
+
+    font-size:
+      24px;
+
+  }
+
+}
