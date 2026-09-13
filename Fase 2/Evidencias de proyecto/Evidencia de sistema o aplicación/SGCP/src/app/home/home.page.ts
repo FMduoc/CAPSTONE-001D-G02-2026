@@ -47,14 +47,16 @@ export class HomePage implements OnInit {
     });
   }
 
-  crearPrueba() {
-    this.solicitudService.crear({
-      sala_id: 1,
-      nombre_solicitante: 'Prueba desde Ionic',
-      descripcion: 'Proyector no enciende'
-    }).subscribe({
-      next: () => this.cargarSolicitudes(),
-      error: (err: unknown) => console.error('Error al crear:', err)
-    });
+  // BORRAR ESTO DESPUÉS, HOME ES SOLO PARA PRUEBAS!!!!
+  async crearPrueba() {
+    try {
+      await this.solicitudService.crear({
+        sala_id: 1,
+        descripcion: 'Proyector no enciende'
+      });
+      this.cargarSolicitudes();
+    } catch (err) {
+      console.error('Error al crear:', err);
+    }
   }
 }

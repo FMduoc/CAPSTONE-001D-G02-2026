@@ -17,7 +17,7 @@ router.post('/register', async (req, res) => {
     return res.status(400).json({ error: 'La contraseña debe tener al menos 8 caracteres' });
   }
 
-  const rolesPermitidos = ['solicitante', 'tecnico', 'personal_salud'];
+  const rolesPermitidos = ['docente', 'staff']; // Antes era ['solicitante', 'tecnico', 'personal_salud']
   if (!rolesPermitidos.includes(rol)) {
     return res.status(400).json({ error: 'Rol no válido' });
   }
@@ -75,6 +75,30 @@ router.post('/login', async (req, res) => {
       token,
       usuario: { id: usuario.id, nombre: usuario.nombre, apellido: usuario.apellido, email: usuario.email, rol: usuario.rol }
     });
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+});
+
+
+// Verificación del rol. Cuando un usuario crea su cuenta de staff, su token estará vinculado a esa existencia.
+// Esto se debe resetear al momento de cambiar su rol dentro del admin dashboard, para volver a generar un token.
+// Este método consulta el rol ACTUAL en la sesión y el rol REAL directo de la base de datos, que fue cambiado por el admin.
+// Esto se comunica con SGCP/src/app/services/auth.js
+const verificarToken = require('../middleware/auth');
+
+router.get('/me', verificarToken, async (req, res) => {
+  try {
+    const result = await pool.query(
+      'SELECT id, nombre, apellido, email, rol FROM usuario WHERE id = $1', //  AND activo = TRUE
+      [req.usuario.id]
+    );
+
+    if (result.rows.length === 0) {
+      return res.status(404).json({ error: 'Usuario no encontrado' });
+    }
+
+    res.json(result.rows[0]);
   } catch (err) {
     res.status(500).json({ error: err.message });
   }
