@@ -9,28 +9,41 @@
 </ion-header>
 
 <ion-content class="ion-padding">
-  <div class="ion-text-center" style="margin-top: 15%;">
-    <ion-icon name="qr-code-outline" style="font-size: 96px;"></ion-icon>
-    <p>Apunta la cámara al código QR de la sala.</p>
+  <div class="ion-text-center" style="margin-top: 8%;">
 
-    <ion-button expand="block" (click)="escanearConCamara()" [disabled]="buscando">
-      {{ buscando ? 'Buscando sala...' : 'Escanear con cámara' }}
-    </ion-button>
+    <!-- Vista previa de cámara SOLO quan estamos escaneando en navegador -->
+    <div class="video-container" *ngIf="escaneandoWeb">
+      <video #videoElement></video>
+      <p class="hint-text">Apunta la cámara al código QR de la sala</p>
+      <ion-button expand="block" fill="outline" color="danger" (click)="detenerEscaneoWeb()">
+        Cancelar escaneo
+      </ion-button>
+    </div>
+
+    <!-- Estado inicial (sin cámara activa) -->
+    <div *ngIf="!escaneandoWeb">
+      <ion-icon name="qr-code-outline" style="font-size: 96px;"></ion-icon>
+      <p>Apunta la cámara al código QR de la sala.</p>
+
+      <ion-button expand="block" (click)="escanear()" [disabled]="buscando">
+        {{ buscando ? 'Buscando sala...' : 'Escanear con cámara' }}
+      </ion-button>
+    </div>
 
     <ion-text color="danger" *ngIf="error">
       <p>{{ error }}</p>
     </ion-text>
   </div>
 
-  <!-- Solo para pruebas en navegador, sin cámara nativa disponible -->
-  <ion-item style="margin-top: 24px;">
+  <!-- Solo para pruebas manuales -->
+  <ion-item style="margin-top: 24px;" *ngIf="!escaneandoWeb">
     <ion-input
       label="Código manual (solo pruebas)"
       [(ngModel)]="codigoManual"
       placeholder="ej. a3f9c21b8e4d6f10"
     ></ion-input>
   </ion-item>
-  <ion-button expand="block" fill="outline" (click)="buscarManual()" [disabled]="buscando">
+  <ion-button expand="block" fill="outline" (click)="buscarManual()" [disabled]="buscando" *ngIf="!escaneandoWeb">
     Buscar por código
   </ion-button>
 </ion-content>
