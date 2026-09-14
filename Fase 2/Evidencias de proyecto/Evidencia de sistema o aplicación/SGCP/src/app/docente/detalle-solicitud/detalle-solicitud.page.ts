@@ -1,3 +1,4 @@
+//detalle-solicitud.page.ts
 import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
@@ -32,6 +33,7 @@ export class DetalleSolicitudPage implements OnInit {
   }
 
   async enviarSolicitud() {
+    console.log('Enviando con sala_id:', this.salaId, typeof this.salaId);
     if (!this.descripcion.trim()) {
       this.error = 'Describe brevemente el problema antes de enviar';
       return;

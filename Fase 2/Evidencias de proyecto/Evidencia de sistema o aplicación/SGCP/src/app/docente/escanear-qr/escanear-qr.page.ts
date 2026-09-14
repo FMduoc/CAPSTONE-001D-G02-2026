@@ -88,12 +88,14 @@ export class EscanearQrPage implements OnDestroy {
         ?? videoInputDevices[0].deviceId;
 
       const constraints: MediaStreamConstraints = {
-        video: {
+          video: {
           deviceId: { exact: deviceId },
-          width: { ideal: 1280 },
-          height: { ideal: 720 },
-        },
-      };
+          width: { ideal: 800 },
+          height: { ideal: 600 },
+    // Pide auto-enfoque continuo si el navegador/cámara lo soporta
+          advanced: [{ focusMode: 'continuous' } as any],
+  },
+};
 
       // Dejamos que ZXing maneje todo el ciclo de vida del stream/video
       this.controlsWeb = await this.codeReader.decodeFromConstraints(
