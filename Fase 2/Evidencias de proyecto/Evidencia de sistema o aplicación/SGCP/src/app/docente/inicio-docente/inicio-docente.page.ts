@@ -7,6 +7,7 @@ import { AuthService } from '../../services/auth';
 @Component({
   selector: 'app-inicio-docente',
   templateUrl: './inicio-docente.page.html',
+  styleUrls: ['./inicio-docente.page.scss'],
   standalone: true,
   imports: [CommonModule, IonicModule],
 })

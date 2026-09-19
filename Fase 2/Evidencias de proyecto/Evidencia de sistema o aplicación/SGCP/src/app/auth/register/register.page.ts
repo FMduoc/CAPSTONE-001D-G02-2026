@@ -9,6 +9,7 @@ import { AuthService } from '../../services/auth';
 @Component({
   selector: 'app-register',
   templateUrl: './register.page.html',
+  styleUrls: ['./register.page.scss'],
   standalone: true,
   imports: [CommonModule, FormsModule, IonicModule, RouterLink],
 })
