@@ -1,0 +1,139 @@
+.seccion-titulo {
+  font-size: 14px;
+  font-weight: 600;
+  color: #6b7280;
+  margin: 20px 0 10px 4px;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.categorias-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+  margin-bottom: 24px;
+}
+
+.categoria-card {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  padding: 18px 10px;
+  background: #ffffff;
+  border: 2px solid #e5e7eb;
+  border-radius: 14px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  text-align: center;
+
+  ion-icon {
+    font-size: 32px;
+    color: #6b7280;
+    transition: color 0.2s ease;
+  }
+
+  span {
+    font-size: 13px;
+    font-weight: 600;
+    color: #374151;
+  }
+
+  &:active {
+    transform: scale(0.96);
+  }
+
+  &.seleccionada {
+    border-color: var(--ion-color-primary);
+    background: rgba(var(--ion-color-primary-rgb), 0.06);
+    box-shadow: 0 4px 12px rgba(var(--ion-color-primary-rgb), 0.15);
+
+    ion-icon {
+      color: var(--ion-color-primary);
+    }
+
+    span {
+      color: var(--ion-color-primary);
+    }
+  }
+}
+
+/* =========================
+   LISTA DE MOTIVOS
+========================= */
+
+.motivos-lista {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  margin-bottom: 20px;
+}
+
+.motivo-item {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 16px;
+  background: #ffffff;
+  border: 2px solid #e5e7eb;
+  border-radius: 12px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+
+  ion-icon {
+    font-size: 24px;
+    color: #d1d5db;
+    flex-shrink: 0;
+    transition: all 0.2s ease;
+  }
+
+  span {
+    font-size: 14px;
+    color: #374151;
+    font-weight: 500;
+  }
+
+  &:active {
+    transform: scale(0.98);
+  }
+
+  &.seleccionado {
+    border-color: var(--ion-color-primary);
+    border-width: 2px;
+    background: var(--ion-color-primary);
+    box-shadow: 0 4px 12px rgba(var(--ion-color-primary-rgb), 0.3);
+
+    ion-icon {
+      color: #ffffff;
+      font-size: 26px;
+    }
+
+    span {
+      color: #ffffff;
+      font-weight: 700;
+    }
+  }
+
+  &.motivo-otro {
+    border-style: dashed;
+  }
+}
+
+/* =========================
+   RESPONSIVE
+========================= */
+
+@media (max-width: 400px) {
+  .categoria-card {
+    padding: 14px 8px;
+
+    ion-icon {
+      font-size: 26px;
+    }
+
+    span {
+      font-size: 12px;
+    }
+  }
+}

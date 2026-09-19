@@ -1,12 +1,12 @@
 // ESTE SERVICIO CONTIENE LA CONEXIÓN CON EL BACKEND.
-
+console.log('ESTE ARCHIVO SE ESTÁ CARGANDO');
 import axios from 'axios';
 
 const api = axios.create({
   baseURL: import.meta.env.VITE_API_URL,
-  // import.meta.env.VITE_API_URL expone a las variables de entorno, similar a environment.ts en Angular.
 });
 
+console.log('baseURL configurado:', import.meta.env.VITE_API_URL); // temporal, para debug
 // Interceptor: agrega el token automáticamente a cada petición, si existe
 api.interceptors.request.use((config) => {
   const token = localStorage.getItem('auth_token');

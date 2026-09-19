@@ -11,11 +11,52 @@
   <div *ngIf="!enviado">
     <h2>Sala: {{ salaNombre }}</h2>
 
-    <ion-item>
+    <!-- Paso 1: elegir categoría -->
+    <p class="seccion-titulo">Selecciona una categoría</p>
+
+    <div class="categorias-grid">
+      <div
+        class="categoria-card"
+        *ngFor="let c of categorias"
+        [class.seleccionada]="categoria === c.valor"
+        (click)="seleccionarCategoria(c.valor)">
+        <ion-icon [name]="c.icono"></ion-icon>
+        <span>{{ c.etiqueta }}</span>
+      </div>
+    </div>
+
+    <!-- Paso 2: elegir motivo sugerido (solo si ya hay categoría) -->
+    <div *ngIf="categoria">
+      <p class="seccion-titulo">¿Cuál es el motivo?</p>
+
+      <div class="motivos-lista">
+        <div
+          class="motivo-item"
+          *ngFor="let sugerencia of sugerenciasActuales"
+          [class.seleccionado]="motivoSeleccionado === sugerencia"
+          (click)="seleccionarMotivo(sugerencia)">
+          <ion-icon name="checkmark-circle" *ngIf="motivoSeleccionado === sugerencia"></ion-icon>
+          <ion-icon name="ellipse-outline" *ngIf="motivoSeleccionado !== sugerencia"></ion-icon>
+          <span>{{ sugerencia }}</span>
+        </div>
+
+        <div
+          class="motivo-item motivo-otro"
+          [class.seleccionado]="motivoSeleccionado === 'otro'"
+          (click)="seleccionarOtro()">
+          <ion-icon name="checkmark-circle" *ngIf="motivoSeleccionado === 'otro'"></ion-icon>
+          <ion-icon name="create-outline" *ngIf="motivoSeleccionado !== 'otro'"></ion-icon>
+          <span>Otro (especificar)</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Paso 3: descripción libre, solo si eligió "Otro" -->
+    <ion-item *ngIf="mostrarCampoDescripcion">
       <ion-textarea
-        label="Descripción del problema"
+        label="Describe el problema"
         [(ngModel)]="descripcion"
-        placeholder="ej. El proyector no enciende"
+        placeholder="ej. El proyector hace un ruido extraño al encenderlo"
         rows="4"
       ></ion-textarea>
     </ion-item>
