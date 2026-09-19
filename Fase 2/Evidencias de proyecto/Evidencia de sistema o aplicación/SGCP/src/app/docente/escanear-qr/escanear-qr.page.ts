@@ -11,6 +11,7 @@ import { SalaService } from '../../services/sala';
 @Component({
   selector: 'app-escanear-qr',
   templateUrl: './escanear-qr.page.html',
+  styleUrls: ['./escanear-qr.page.scss'],
   standalone: true,
   imports: [CommonModule, FormsModule, IonicModule],
 })

@@ -1,17 +1,19 @@
-<ion-header>
+<ion-header class="header-transparente">
   <ion-toolbar>
-    <ion-title>Detalle de la solicitud</ion-title>
     <ion-buttons slot="start">
-      <ion-back-button defaultHref="/escanear-qr"></ion-back-button>
+      <ion-back-button defaultHref="/escanear-qr" text=""></ion-back-button>
     </ion-buttons>
   </ion-toolbar>
 </ion-header>
 
-<ion-content class="ion-padding">
-  <div *ngIf="!enviado">
-    <h2>Sala: {{ salaNombre }}</h2>
+<ion-content>
+  <div *ngIf="!enviado" class="contenido-central">
 
-    <!-- Paso 1: elegir categoría -->
+    <div class="sala-header">
+      <ion-icon name="business-outline"></ion-icon>
+      <h1>{{ salaNombre }}</h1>
+    </div>
+
     <p class="seccion-titulo">Selecciona una categoría</p>
 
     <div class="categorias-grid">
@@ -25,7 +27,6 @@
       </div>
     </div>
 
-    <!-- Paso 2: elegir motivo sugerido (solo si ya hay categoría) -->
     <div *ngIf="categoria">
       <p class="seccion-titulo">¿Cuál es el motivo?</p>
 
@@ -51,29 +52,27 @@
       </div>
     </div>
 
-    <!-- Paso 3: descripción libre, solo si eligió "Otro" -->
-    <ion-item *ngIf="mostrarCampoDescripcion">
+    <div class="campo-manual" *ngIf="mostrarCampoDescripcion">
+      <label class="campo-label">Describe el problema</label>
       <ion-textarea
-        label="Describe el problema"
+        fill="outline"
         [(ngModel)]="descripcion"
         placeholder="ej. El proyector hace un ruido extraño al encenderlo"
-        rows="4"
-      ></ion-textarea>
-    </ion-item>
+        rows="4">
+      </ion-textarea>
+    </div>
 
-    <ion-text color="danger" *ngIf="error">
+    <ion-text class="mensaje-error" color="danger" *ngIf="error">
       <p>{{ error }}</p>
     </ion-text>
 
-    <ion-button expand="block" (click)="enviarSolicitud()" [disabled]="enviando || !salaId">
+    <ion-button class="btn-principal" expand="block" (click)="enviarSolicitud()" [disabled]="enviando || !salaId">
+      <ion-icon slot="start" name="paper-plane-outline" *ngIf="!enviando"></ion-icon>
       {{ enviando ? 'Enviando...' : 'Enviar solicitud' }}
     </ion-button>
   </div>
 
-  <div *ngIf="enviado" class="ion-text-center" style="margin-top: 30%;">
-    <ion-icon name="checkmark-circle-outline" style="font-size: 96px; color: var(--ion-color-success);"></ion-icon>
+  <div *ngIf="enviado" class="estado-exito">
+    <ion-icon name="checkmark-circle" class="icono-exito"></ion-icon>
     <h2>Solicitud enviada</h2>
-    <p>Tu solicitud para {{ salaNombre }} fue registrada correctamente.</p>
-    <ion-button expand="block" (click)="volverAlInicio()">Volver al inicio</ion-button>
-  </div>
-</ion-content>
+    <p>Tu solicitud para
