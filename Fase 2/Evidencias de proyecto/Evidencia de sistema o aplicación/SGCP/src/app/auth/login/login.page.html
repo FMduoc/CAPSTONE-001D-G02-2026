@@ -1,3 +1,93 @@
+<ion-content class="login-page">
+  <div class="login-layout">
+    <!-- IDENTIDAD DUOC -->
+    <header class="brand-section">
+      <img
+        src="assets/duoc-uc-logo-png_seeklogo-208299.png"
+        alt="Duoc UC"
+        class="duoc-logo"
+      />
+      <h1>Iniciar sesión</h1>
+      <p>
+        Sistema de Gestión y Control de Peticiones
+      </p>
+    </header>
+    <!-- TARJETA LOGIN -->
+    <section class="login-card">
+      <div class="card-header">
+        <div class="card-heading">
+          <span class="eyebrow">
+            BIENVENIDO
+          </span>
+          <h2>
+            Acceso a la plataforma
+          </h2>
+          <p>
+            Ingresa tus credenciales para continuar.
+          </p>
+        </div>
+        <div class="card-accent"></div>
+      </div>
+      <!-- FORMULARIO -->
+      <div class="form-grid">
+        <!-- EMAIL -->
+        <div class="field-group">
+          <span class="field-label">
+            Correo electrónico
+          </span>
+          <ion-input
+            class="premium-input"
+            fill="outline"
+            type="email"
+            placeholder="nombre@correo.com"
+            [(ngModel)]="email">
+          </ion-input>
+        </div>
+        <!-- CONTRASEÑA -->
+        <div class="field-group">
+          <span class="field-label">
+            Contraseña
+          </span>
+          <ion-input
+            class="premium-input"
+            fill="outline"
+            type="password"
+            placeholder="Ingresa tu contraseña"
+            [(ngModel)]="contrasena">
+          </ion-input>
+        </div>
+      </div>
+      <!-- ERROR -->
+      <div
+        class="error-box"
+        *ngIf="error">
+        {{ error }}
+      </div>
+      <!-- BOTÓN LOGIN -->
+      <ion-button
+        expand="block"
+        class="login-button"
+        (click)="iniciarSesion()">
+        Iniciar sesión
+      </ion-button>
+      <!-- IR A REGISTRO -->
+      <div class="register-section">
+        <div class="separator">
+          <span></span>
+          <p>
+            ¿No tienes una cuenta?
+          </p>
+          <span></span>
+        </div>
+        <a routerLink="/register">
+          Crear una cuenta
+        </a>
+      </div>
+    </section>
+  </div>
+</ion-content>
+
+<!--
 <ion-content class="ion-padding">
   <h2>Iniciar sesión</h2>
   <ion-item>
@@ -10,3 +100,4 @@
   <ion-button expand="block" (click)="iniciarSesion()">Entrar</ion-button>
   <ion-button expand="block" fill="clear" routerLink="/register">¿No tienes cuenta? Regístrate</ion-button>
 </ion-content>
+-->
