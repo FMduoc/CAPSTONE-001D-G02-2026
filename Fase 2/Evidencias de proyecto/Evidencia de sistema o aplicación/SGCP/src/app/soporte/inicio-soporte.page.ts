@@ -114,8 +114,8 @@ export class InicioSoportePage implements OnInit {
 
   mostrarCategoria(categoria: string): string {
     const categorias: any = {
-      servicio_tecnico: 'Servicio técnico',
-      emergencia_medica: 'Emergencia médica',
+      tecnico: 'Servicio técnico',
+      enfermeria: 'Emergencia médica',
       limpieza: 'Limpieza',
       seguridad: 'Seguridad', // agregado, faltaba en la versión original
     };

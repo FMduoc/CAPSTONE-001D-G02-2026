@@ -1,3 +1,4 @@
+//soporte.js
 const express = require('express');
 const pool = require('../db');
 const verificarToken = require('../middleware/auth');
@@ -9,7 +10,7 @@ const router = express.Router();
 // =====================================================
 
 const categoriaPorRol = {
-  tecnico: 'servicio_tecnico',
+  tecnico: 'tecnico',
   enfermeria: 'enfermeria',
   limpieza: 'limpieza',
   seguridad: 'seguridad'
