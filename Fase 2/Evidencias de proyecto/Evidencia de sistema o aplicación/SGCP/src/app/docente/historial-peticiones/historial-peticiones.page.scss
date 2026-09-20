@@ -1,22 +1,51 @@
 @use '../../../theme/duoc-shared' as duoc;
 
 @include duoc.fondo-diagonal-duoc;
-@include duoc.header-duoc;
-@include duoc.franja-amarilla;
+/* =========================================
+   HEADER TRANSPARENTE + BOTÓN VOLVER FLOTANTE
+   ========================================= */
+
+
+
+// Fuerza transparencia también a nivel del propio ion-header (fuera del :host)
+ion-header {
+  background: transparent;
+}
 
 ion-content::part(scroll) {
   max-width: 640px;
   margin: 0 auto;
 }
 
+/* =========================================
+   TÍTULO DE LA PÁGINA
+   ========================================= */
+
+.titulo-pagina {
+  position: relative;
+  z-index: 2;
+
+  color: #ffffff;
+  font-size: 24px;
+  font-weight: 800;
+  margin: 16px 0 20px 4px;
+  text-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+}
+
+/* =========================================
+   ESTADOS DE CARGA / VACÍO / ERROR
+   ========================================= */
+
 .estado-carga,
 .estado-vacio {
-  margin-top: 60px;
+  position: relative;
+  z-index: 2;
+  margin-top: 40px;
   color: #ffffff;
 
   ion-icon {
     font-size: 56px;
-    color: rgba(255, 255, 255, 0.7);
+    color: rgba(255, 255, 255, 0.75);
     margin-bottom: 8px;
   }
 
@@ -26,12 +55,19 @@ ion-content::part(scroll) {
   }
 }
 
+/* =========================================
+   TARJETA DE SOLICITUD
+   ========================================= */
+
 .solicitud-card {
+  position: relative;
+  z-index: 2;
+
   background: #ffffff;
-  border-radius: 14px;
+  border-radius: 16px;
   padding: 16px;
   margin-bottom: 14px;
-  box-shadow: 0 4px 16px rgba(10, 31, 61, 0.15);
+  box-shadow: 0 6px 20px rgba(10, 31, 61, 0.18);
 }
 
 .solicitud-header {
@@ -116,4 +152,96 @@ ion-content::part(scroll) {
   color: #4b5563;
   line-height: 1.5;
   margin: 0;
+}
+
+/* =========================================
+   RESPONSIVE
+   ========================================= */
+
+@media (max-width: 420px) {
+  .titulo-pagina {
+    font-size: 21px;
+  }
+}
+
+ion-footer.footer-volver {
+  background: transparent !important;
+
+  &::before {
+    display: none !important;
+  }
+
+  &::part(background) {
+    background: transparent !important;
+  }
+
+  ion-toolbar {
+    --background: transparent !important;
+    --border-width: 0 !important;
+
+    &::part(background) {
+      background: transparent !important;
+    }
+  }
+}
+
+:host {
+  --ion-background-color: transparent;
+}
+
+ion-footer.footer-volver {
+  background: linear-gradient(
+    135deg,
+    var(--duoc-azul) 10%,
+    var(--duoc-azul) 10%,
+    #ffffff 50%
+  ) !important;
+
+  ion-toolbar {
+    --background: transparent !important;
+    --border-width: 0 !important;
+  }
+}
+
+@media (max-width: 600px) {
+  ion-footer.footer-volver {
+    background: linear-gradient(
+      160deg,
+      var(--duoc-azul) 0%,
+      var(--duoc-azul) 30%,
+      #ffffff 30.5%
+    ) !important;
+  }
+}
+
+.btn-volver-footer {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+
+  width: 100%;
+  max-width: 400px;
+  margin: 0 auto;
+  padding: 13px 0;
+
+  background: #ffffff;
+  border-radius: 30px;
+  box-shadow: 0 8px 24px rgba(10, 31, 61, 0.25);
+
+  border: none;
+  cursor: pointer;
+
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--duoc-azul);
+
+  ion-icon {
+    font-size: 18px;
+    color: var(--duoc-azul);
+  }
+
+  &:active {
+    transform: scale(0.97);
+  }
 }

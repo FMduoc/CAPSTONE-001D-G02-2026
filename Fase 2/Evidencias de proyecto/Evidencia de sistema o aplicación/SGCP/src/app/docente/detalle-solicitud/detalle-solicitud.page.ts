@@ -132,4 +132,7 @@ export class DetalleSolicitudPage implements OnInit {
   volverAlInicio() {
     this.router.navigate(['/inicio-docente']);
   }
+cancelar() {
+  this.router.navigate(['/escanear-qr']);
+}
 }

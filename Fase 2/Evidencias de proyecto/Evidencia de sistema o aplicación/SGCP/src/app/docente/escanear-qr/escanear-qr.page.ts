@@ -146,6 +146,10 @@ export class EscanearQrPage implements OnDestroy {
     });
   }
 
+volver() {
+  this.router.navigate(['/inicio-docente']);
+}
+
   ngOnDestroy() {
     this.controlsWeb?.stop();
   }

@@ -1,11 +1,3 @@
-<ion-header class="header-transparente">
-  <ion-toolbar>
-    <ion-buttons slot="start">
-      <ion-back-button defaultHref="/escanear-qr" text=""></ion-back-button>
-    </ion-buttons>
-  </ion-toolbar>
-</ion-header>
-
 <ion-content>
   <div *ngIf="!enviado" class="contenido-central">
 
@@ -70,9 +62,22 @@
       <ion-icon slot="start" name="paper-plane-outline" *ngIf="!enviando"></ion-icon>
       {{ enviando ? 'Enviando...' : 'Enviar solicitud' }}
     </ion-button>
+
+    <ion-button class="btn-cancelar-solido" expand="block" (click)="cancelar()">
+      <ion-icon slot="start" name="close-outline"></ion-icon>
+      Cancelar
+    </ion-button>
+
   </div>
 
   <div *ngIf="enviado" class="estado-exito">
-    <ion-icon name="checkmark-circle" class="icono-exito"></ion-icon>
+    <div class="icono-exito-circulo">
+      <img src="assets/img/Check_icon.png" alt="Solicitud enviada">
+    </div>
     <h2>Solicitud enviada</h2>
-    <p>Tu solicitud para
+    <p>Tu solicitud para {{ salaNombre }} fue registrada correctamente.</p>
+    <ion-button class="btn-principal" expand="block" (click)="volverAlInicio()">
+      Volver al inicio
+    </ion-button>
+  </div>
+</ion-content>

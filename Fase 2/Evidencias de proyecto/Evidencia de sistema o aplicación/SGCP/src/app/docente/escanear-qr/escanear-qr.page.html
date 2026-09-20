@@ -1,18 +1,5 @@
-<!-- src/app/docente/escanear-qr/escanear-qr.page.html -->
-
-<ion-header class="header-transparente">
-  <ion-toolbar>
-    <ion-buttons slot="start">
-      <ion-back-button defaultHref="/inicio-docente" text=""></ion-back-button>
-    </ion-buttons>
-  </ion-toolbar>
-</ion-header>
-
 <ion-content>
 
-  <!-- ============================= -->
-  <!-- ESCÁNER WEB -->
-  <!-- ============================= -->
   <div class="video-container" *ngIf="escaneandoWeb">
     <div class="video-wrapper">
       <video #videoElement autoplay muted playsinline></video>
@@ -26,9 +13,6 @@
     </ion-button>
   </div>
 
-  <!-- ============================= -->
-  <!-- ESTADO INICIAL -->
-  <!-- ============================= -->
   <div class="contenido-central" *ngIf="!escaneandoWeb">
 
     <div class="qr-icon">
@@ -52,15 +36,13 @@
 
     <div class="separador"><span>o</span></div>
 
-    <div class="codigo-manual">
-        <div class="campo-manual">
-          <label class="campo-label">Código de sala</label>
-          <ion-input
-            fill="outline"
-            [(ngModel)]="codigoManual"
-            placeholder="Ej. a3f9c21b8e4d6f10">
-          </ion-input>
-        </div>
+    <div class="campo-manual">
+      <label class="campo-label">Código de sala</label>
+      <ion-input
+        fill="outline"
+        [(ngModel)]="codigoManual"
+        placeholder="Ej. a3f9c21b8e4d6f10">
+      </ion-input>
 
       <ion-button class="btn-manual" expand="block" fill="outline" (click)="buscarManual()" [disabled]="buscando">
         <ion-icon slot="start" name="search-outline"></ion-icon>
@@ -69,5 +51,10 @@
     </div>
 
   </div>
+
+  <button class="btn-volver-flotante" *ngIf="!escaneandoWeb" (click)="volver()">
+    <ion-icon name="arrow-back-outline"></ion-icon>
+    Volver
+  </button>
 
 </ion-content>
