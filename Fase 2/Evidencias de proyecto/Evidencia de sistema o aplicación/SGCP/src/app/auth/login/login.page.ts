@@ -34,29 +34,72 @@ export class LoginPage implements OnInit {
       await this.authService.isAuthenticated();
 
     if (autenticado) {
-      this.router.navigate(['/home']);
+      this.redirigirSegunRol();
     }
 
   }
+
 
   iniciarSesion() {
 
     this.error = '';
 
     this.authService
-      .login(this.email, this.contrasena)
+      .login(
+        this.email.trim().toLowerCase(),
+        this.contrasena
+      )
       .subscribe({
 
         next: () => {
-          this.router.navigate(['/home']);
+          this.redirigirSegunRol();
         },
 
-        error: () => {
+        error: (err) => {
+
+          console.error(
+            'Error al iniciar sesión:',
+            err
+          );
+
           this.error =
+            err.error?.error ||
             'Email o contraseña incorrectos';
+
         }
 
       });
+
+  }
+
+
+  private redirigirSegunRol() {
+
+    const rol =
+      this.authService.getRol();
+
+    const rolesSoporte = [
+      'tecnico',
+      'enfermeria',
+      'limpieza'
+    ];
+
+    if (
+      rol &&
+      rolesSoporte.includes(rol)
+    ) {
+
+      this.router.navigate([
+        '/inicio-soporte'
+      ]);
+
+      return;
+
+    }
+
+    this.router.navigate([
+      '/home'
+    ]);
 
   }
 
