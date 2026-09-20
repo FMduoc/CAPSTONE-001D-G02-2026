@@ -8,23 +8,18 @@ const routes: Routes = [
   { path: '', redirectTo: 'login', pathMatch: 'full' },
   { path: 'login', loadComponent: () => import('./auth/login/login.page').then(m => m.LoginPage) },
   { path: 'register', loadComponent: () => import('./auth/register/register.page').then(m => m.RegisterPage) },
-  { path: 'pendiente-aprobacion', loadComponent: () => import('./pendiente-aprobacion/pendiente-aprobacion.page').then(m => m.PendienteAprobacionPage) },
+  { path: 'pendiente-aprobacion', loadComponent: () => import('./pendiente-aprobacion/pendiente-aprobacion.page').then(m => m.PendienteAprobacionPage), },
+  { path: 'inicio-docente', canActivate: [authGuard], loadComponent: () => import('./docente/inicio-docente/inicio-docente.page').then(m => m.InicioDocentePage), },
+  { path: 'escanear-qr', canActivate: [authGuard], loadComponent: () => import('./docente/escanear-qr/escanear-qr.page').then(m => m.EscanearQrPage), },
+  { path: 'docente/detalle-solicitud', canActivate: [authGuard], loadComponent: () => import('./docente/detalle-solicitud/detalle-solicitud.page').then(m => m.DetalleSolicitudPage), },
+  { path: 'historial-peticiones', loadComponent: () => import('./docente/historial-peticiones/historial-peticiones.page').then(m => m.HistorialPeticionesPage) },
 
-  // Docente
-  { path: 'inicio-docente', canActivate: [authGuard], loadComponent: () => import('./docente/inicio-docente/inicio-docente.page').then(m => m.InicioDocentePage) },
-  { path: 'escanear-qr', canActivate: [authGuard], loadComponent: () => import('./docente/escanear-qr/escanear-qr.page').then(m => m.EscanearQrPage) },
-  { path: 'docente/detalle-solicitud', canActivate: [authGuard], loadComponent: () => import('./docente/detalle-solicitud/detalle-solicitud.page').then(m => m.DetalleSolicitudPage) },
-  { path: 'historial-peticiones', canActivate: [authGuard], loadComponent: () => import('./docente/historial-peticiones/historial-peticiones.page').then(m => m.HistorialPeticionesPage) },
 
-  // Soporte / Staff (versión de tu compañero)
-  { path: 'inicio-soporte', canActivate: [authGuard], loadComponent: () => import('./soporte/inicio-soporte.page').then(m => m.InicioSoportePage) },
-
-  // Cualquier ruta que no exista
-  { path: '**', redirectTo: 'login' },
 ];
 
 @NgModule({
   imports: [RouterModule.forRoot(routes, { preloadingStrategy: PreloadAllModules })],
   exports: [RouterModule],
 })
+
 export class AppRoutingModule { }
