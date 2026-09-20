@@ -34,36 +34,20 @@ export class SolicitudService {
     );
   }
 
-  async listarMias(): Promise<Solicitud[]> {
+  async actualizarEstado(id: number, estado: string): Promise<Solicitud> {
     const token = await this.authService.getToken();
     return firstValueFrom(
-      this.http.get<Solicitud[]>(`${this.apiUrl}/mias`, {
+      this.http.patch<Solicitud>(`${this.apiUrl}/${id}/estado`, { estado }, {
         headers: { Authorization: `Bearer ${token}` },
       })
     );
   }
-
-  // Nuevo: marca como "en proceso" y asigna el usuario responsable
-  async atender(id: number): Promise<{ mensaje: string; solicitud: Solicitud }> {
-    const token = await this.authService.getToken();
-    return firstValueFrom(
-      this.http.patch<{ mensaje: string; solicitud: Solicitud }>(
-        `${this.apiUrl}/${id}/atender`,
-        {},
-        { headers: { Authorization: `Bearer ${token}` } }
-      )
-    );
-  }
-
-  // Nuevo: marca como "resuelta", solo si el mismo usuario la atendió
-  async terminar(id: number): Promise<{ mensaje: string; solicitud: Solicitud }> {
-    const token = await this.authService.getToken();
-    return firstValueFrom(
-      this.http.patch<{ mensaje: string; solicitud: Solicitud }>(
-        `${this.apiUrl}/${id}/terminar`,
-        {},
-        { headers: { Authorization: `Bearer ${token}` } }
-      )
-    );
-  }
+  async listarMias(): Promise<Solicitud[]> {
+  const token = await this.authService.getToken();
+  return firstValueFrom(
+    this.http.get<Solicitud[]>(`${this.apiUrl}/mias`, {
+      headers: { Authorization: `Bearer ${token}` },
+    })
+  );
+}
 }

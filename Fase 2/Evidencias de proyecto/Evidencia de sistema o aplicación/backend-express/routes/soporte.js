@@ -10,9 +10,8 @@ const router = express.Router();
 
 const categoriaPorRol = {
   tecnico: 'servicio_tecnico',
-  enfermeria: 'enfermeria',
-  limpieza: 'limpieza',
-  seguridad: 'seguridad'
+  enfermeria: 'emergencia_medica',
+  limpieza: 'limpieza'
 };
 
 function obtenerCategoriaPorRol(rol) {
