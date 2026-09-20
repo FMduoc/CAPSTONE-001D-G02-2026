@@ -8,6 +8,12 @@ import { Component } from '@angular/core';
 })
 export class HomePage {
 
+  solicitudes: any[] = [];
+
   constructor() {}
+
+  crearPrueba() {
+    console.log('Crear solicitud de prueba');
+  }
 
 }
