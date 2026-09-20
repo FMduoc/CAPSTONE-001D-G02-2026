@@ -22,6 +22,7 @@ const ROLES_ASIGNABLES = [
   { valor: 'tecnico', etiqueta: 'Soporte técnico' },
   { valor: 'enfermeria', etiqueta: 'Enfermería' },
   { valor: 'limpieza', etiqueta: 'Limpieza' },
+  { valor: 'seguridad', etiqueta: 'Seguridad' },
 ];
 
 export function UsuariosPage() {
