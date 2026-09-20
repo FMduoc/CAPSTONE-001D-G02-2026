@@ -1,2 +1,53 @@
 // For information on how to create your own theme, please refer to:
 // https://ionicframework.com/docs/theming/
+
+// src/theme/duoc-shared.scss
+// Estilos compartidos para todas las páginas con la identidad visual Duoc UC
+
+:root {
+  --duoc-azul: #0d2c54;
+  --duoc-azul-oscuro: #0a1f3d;
+  --duoc-amarillo: #ffc20e;
+}
+
+@mixin fondo-diagonal-duoc {
+  ion-content {
+    --background: linear-gradient(
+      135deg,
+      var(--duoc-azul) 0%,
+      var(--duoc-azul) 40%,
+      #ffffff 40.5%
+    );
+  }
+
+  @media (max-width: 600px) {
+    ion-content {
+      --background: linear-gradient(
+        160deg,
+        var(--duoc-azul) 0%,
+        var(--duoc-azul) 30%,
+        #ffffff 30.5%
+      );
+    }
+  }
+}
+
+@mixin header-duoc {
+  ion-toolbar {
+    --background: var(--duoc-azul);
+    --color: #ffffff;
+  }
+
+  ion-back-button {
+    --color: #ffffff;
+  }
+}
+
+@mixin franja-amarilla {
+  ion-header::after {
+    content: '';
+    display: block;
+    height: 4px;
+    background: var(--duoc-amarillo);
+  }
+}

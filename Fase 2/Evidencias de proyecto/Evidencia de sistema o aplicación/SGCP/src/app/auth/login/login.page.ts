@@ -36,7 +36,7 @@ export class LoginPage {
           this.error = 'No se pudo obtener la información del usuario';
           return;
         }
-        if (usuario.rol === 'docente') {
+        if (usuario.rol === 'solicitante') {
           this.router.navigate(['/inicio-docente']);
         } else if (usuario.rol === 'staff') {
           this.router.navigate(['/pendiente-aprobacion']);

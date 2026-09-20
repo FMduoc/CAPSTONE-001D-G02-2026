@@ -22,7 +22,11 @@ export class InicioDocentePage implements OnInit {
   }
 
   realizarPeticion() {
-    this.router.navigate(['/escanear-qr']); // aún no existe, la construimos en el próximo paso
+    this.router.navigate(['/escanear-qr']); // misma ruta de antes
+  }
+
+  verHistorial() {
+    this.router.navigate(['/historial-peticiones']); // hay que crear esta página después
   }
 
   async cerrarSesion() {

@@ -17,7 +17,7 @@
       </div>
     </div>
 
-    <div class="tarjeta" (click)="cerrarSesion()">
+    <div class="tarjeta" (click)="verHistorial()">
       <div class="tarjeta-imagen tarjeta-imagen--historial">
         <img src="assets/img/HistorialPeticiones.png" alt="Historial">
       </div>
@@ -28,24 +28,8 @@
     </div>
   </div>
 
-  <ion-button expand="block" fill="clear" (click)="cerrarSesion()">
-    Cerrar sesión
-  </ion-button>
+  <button class="btn-cerrar-sesion" (click)="cerrarSesion()">
+    <ion-icon name="log-out-outline"></ion-icon>
+    <span>Cerrar sesión</span>
+  </button>
 </ion-content>
-
-<!--
-<ion-content class="ion-padding">
-  <div class="ion-text-center" style="margin-top: 30%;">
-    <h1>Hola, {{ nombre }}</h1>
-    <p>Escanea el código QR de tu sala para realizar una solicitud.</p>
-
-    <ion-button expand="block" size="large" (click)="realizarPeticion()">
-      Realizar petición
-    </ion-button>
-
-    <ion-button expand="block" fill="clear" (click)="cerrarSesion()">
-      Cerrar sesión
-    </ion-button>
-  </div>
-</ion-content>
--->

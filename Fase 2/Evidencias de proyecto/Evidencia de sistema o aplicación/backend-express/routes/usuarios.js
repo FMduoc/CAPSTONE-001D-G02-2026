@@ -23,7 +23,7 @@ router.patch('/:id/rol', verificarToken, soloAdmin, async (req, res) => {
   const { id } = req.params;
   const { rol } = req.body;
 
-  const rolesAsignables = ['tecnico', 'enfermeria', 'limpieza'];
+  const rolesAsignables = ['tecnico', 'enfermeria', 'limpieza', 'seguridad'];
   if (!rolesAsignables.includes(rol)) {
     return res.status(400).json({ error: 'Rol no válido para asignar a personal staff' });
   }
