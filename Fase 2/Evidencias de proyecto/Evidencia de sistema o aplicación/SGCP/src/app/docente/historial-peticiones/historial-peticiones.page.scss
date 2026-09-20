@@ -1,21 +1,59 @@
 @use '../../../theme/duoc-shared' as duoc;
 
 @include duoc.fondo-diagonal-duoc;
+
 /* =========================================
    HEADER TRANSPARENTE + BOTÓN VOLVER FLOTANTE
    ========================================= */
 
+.btn-volver-flotante {
+  position: relative;
 
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  width: 130px;
+  margin: 20px auto 25px;
+  padding: 11px 18px;
+
+  background: #ffffff;
+  color: var(--duoc-azul);
+
+  border: 2px solid var(--duoc-azul);
+  border-radius: 12px;
+
+  font-size: 14px;
+  font-weight: 700;
+
+  box-shadow: 0 4px 12px rgba(10, 31, 61, 0.18);
+
+  cursor: pointer;
+  transition: all 0.2s ease;
+
+  ion-icon {
+    position: absolute;
+    left: 16px;
+
+    font-size: 18px;
+    color: var(--duoc-azul);
+  }
+
+  span {
+    text-align: center;
+  }
+
+  &:active {
+    transform: scale(0.96);
+  }
+}
 
 // Fuerza transparencia también a nivel del propio ion-header (fuera del :host)
 ion-header {
   background: transparent;
 }
 
-ion-content::part(scroll) {
-  max-width: 640px;
-  margin: 0 auto;
-}
+
 
 /* =========================================
    TÍTULO DE LA PÁGINA
