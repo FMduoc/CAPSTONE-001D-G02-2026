@@ -26,8 +26,8 @@
     </p>
 
     <ion-button class="btn-principal" expand="block" (click)="escanear()" [disabled]="buscando">
-      <ion-icon slot="start" name="camera-outline"></ion-icon>
-      {{ buscando ? 'Buscando sala...' : 'Escanear con cámara' }}
+      <ion-icon name="camera-outline"></ion-icon>
+      <span>{{ buscando ? 'Buscando sala...' : 'Escanear con cámara' }}</span>
     </ion-button>
 
     <ion-text class="mensaje-error" color="danger" *ngIf="error">

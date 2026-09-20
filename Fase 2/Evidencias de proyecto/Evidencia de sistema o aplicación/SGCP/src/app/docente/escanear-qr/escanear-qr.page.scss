@@ -105,14 +105,24 @@ ion-button.btn-principal {
     color: #ffffff;
     border-radius: 14px;
     box-shadow: 0 8px 20px rgba(10, 31, 61, 0.35);
-    font-size: 15px;
+
+    font-size: 13px;
     font-weight: 700;
     text-transform: none;
 
+    position: relative;
   }
 
   ion-icon {
+    position: absolute;
+    left: 18px;
     font-size: 20px;
+    color: #ffffff;
+  }
+
+  span {
+    width: 100%;
+    text-align: center;
   }
 }
 
