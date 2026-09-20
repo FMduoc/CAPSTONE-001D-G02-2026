@@ -12,7 +12,7 @@ import { AuthService } from '../../services/auth';
   standalone: true,
   imports: [CommonModule, FormsModule, IonicModule, RouterLink],
 })
-export class LoginPage {
+export class LoginPage implements OnInit {
   email = '';
   contrasena = '';
   error = '';
@@ -20,38 +20,45 @@ export class LoginPage {
   constructor(private authService: AuthService, private router: Router) {}
 
   async ngOnInit() {
-    // Si ya hay sesión activa, saltar directo a Home
     const autenticado = await this.authService.isAuthenticated();
-    if (autenticado) this.router.navigate(['/home']);
+    if (autenticado) {
+      const usuario = await this.authService.getUsuario();
+      this.redirigirSegunRol(usuario?.rol);
+    }
   }
 
-
-  // Redirección al hacer login. Contiene verififación según usuario clase "docente", "staff" u otros que son asignados por el admin.
   iniciarSesion() {
     this.error = '';
-    this.authService.login(this.email, this.contrasena).subscribe({
+
+    this.authService.login(this.email.trim().toLowerCase(), this.contrasena).subscribe({
       next: async () => {
         const usuario = await this.authService.getUsuario();
         if (!usuario) {
           this.error = 'No se pudo obtener la información del usuario';
           return;
         }
-        if (usuario.rol === 'solicitante') {
-          this.router.navigate(['/inicio-docente']);
-        } else if (usuario.rol === 'staff') {
-          this.router.navigate(['/pendiente-aprobacion']);
-        } else {
-          this.router.navigate(['/home']);
-        }
+        this.redirigirSegunRol(usuario.rol);
       },
-      error: () => (this.error = 'Email o contraseña incorrectos'),
+      error: (err) => {
+        console.error('Error al iniciar sesión:', err);
+        this.error = err.error?.error || 'Email o contraseña incorrectos';
+      },
     });
   }
-}
 
-/*
-// Navegar al usuario en caso de ser docente o staff
-if (usuario.rol === 'docente') {
-  this.router.navigate(['/enviar-solicitud']);
+  private redirigirSegunRol(rol?: string) {
+    const rolesSoporte = ['tecnico', 'enfermeria', 'seguridad', 'limpieza'];
+
+    if (rol === 'solicitante') {
+      this.router.navigate(['/inicio-docente']);
+    } else if (rol === 'staff') {
+      this.router.navigate(['/pendiente-aprobacion']);
+    } else if (rol && rolesSoporte.includes(rol)) {
+      this.router.navigate(['/inicio-soporte']);
+    } else if (rol === 'administrador') {
+      this.router.navigate(['/inicio-docente']); // ajusta si el admin debe ir a otro lado
+    } else {
+      this.router.navigate(['/login']);
+    }
+  }
 }
-*/
