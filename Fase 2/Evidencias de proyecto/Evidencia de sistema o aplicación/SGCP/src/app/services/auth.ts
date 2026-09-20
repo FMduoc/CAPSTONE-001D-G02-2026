@@ -1,8 +1,17 @@
+/* VESTIGIO
+import { Service } from '@angular/core';
+
+@Service()
+export class Auth {
+}
+*/
+
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Preferences } from '@capacitor/preferences';
-import { Observable, tap, firstValueFrom } from 'rxjs';
+import { Observable, tap } from 'rxjs';
 import { environment } from '../../environments/environment';
+import { firstValueFrom } from 'rxjs';
 
 interface Usuario {
   id: number;
@@ -14,7 +23,7 @@ interface Usuario {
 
 interface LoginResponse {
   token: string;
-  usuario: Usuario;
+  usuario: { id: number; nombre: string; apellido: string; email: string; rol: string };
 }
 
 @Injectable({ providedIn: 'root' })
@@ -51,24 +60,20 @@ export class AuthService {
     return !!token;
   }
 
+  // Verificación del rol del usuario. Funciona en conjunto con iniciarSesion() en login.page.ts
   async getUsuario(): Promise<Usuario | null> {
     const { value } = await Preferences.get({ key: 'usuario' });
     return value ? JSON.parse(value) : null;
   }
-
-  // Versión async, ya que Preferences no permite acceso síncrono
-  async getRol(): Promise<string | null> {
-    const usuario = await this.getUsuario();
-    return usuario?.rol ?? null;
-  }
-
+  
   // Conexión con verificación de rol en backend-express/routes/auth.js
-  async obtenerPerfilActual(): Promise<Usuario> {
+  async obtenerPerfilActual(): Promise<any> {
     const response = await firstValueFrom(
-      this.http.get<Usuario>(`${environment.apiUrl}/auth/me`, {
-        headers: { Authorization: `Bearer ${await this.getToken()}` },
+      this.http.get(`${environment.apiUrl}/auth/me`, {
+        headers: { Authorization: `Bearer ${await this.getToken()}` }
       })
     );
+    // Actualiza los datos guardados localmente con el rol más reciente
     await Preferences.set({ key: 'usuario', value: JSON.stringify(response) });
     return response;
   }
