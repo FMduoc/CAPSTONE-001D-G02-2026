@@ -1,13 +1,7 @@
-<ion-header>
-  <ion-toolbar>
-    <ion-title>Historial de peticiones</ion-title>
-    <ion-buttons slot="start">
-      <ion-back-button defaultHref="/inicio-docente"></ion-back-button>
-    </ion-buttons>
-  </ion-toolbar>
-</ion-header>
-
 <ion-content class="ion-padding">
+
+  <h1 class="titulo-pagina">Historial de peticiones</h1>
+
   <div *ngIf="cargando" class="ion-text-center estado-carga">
     <ion-spinner></ion-spinner>
     <p>Cargando tu historial...</p>
@@ -41,4 +35,10 @@
     <span class="categoria-label">{{ etiquetaCategoria(s.categoria) }}</span>
     <p class="descripcion">{{ s.descripcion }}</p>
   </div>
+
+  <button class="btn-volver-flotante" (click)="volver()">
+    <ion-icon name="arrow-back-outline"></ion-icon>
+    Volver
+  </button>
+
 </ion-content>

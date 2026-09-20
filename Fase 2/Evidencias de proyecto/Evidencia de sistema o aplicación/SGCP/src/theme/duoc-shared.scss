@@ -8,18 +8,29 @@
 }
 
 @mixin fondo-diagonal-duoc {
-  ion-content {
-    --background: linear-gradient(
+  :host {
+    display: block;
+    height: 100%;
+  }
+
+  :host::before {
+    content: '';
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    z-index: -1; // <-- cambio clave: detrás de todo, no solo con z-index bajo
+
+    background: linear-gradient(
       135deg,
       var(--duoc-azul) 0%,
       var(--duoc-azul) 40%,
       #ffffff 40.5%
     );
-  }
 
-  @media (max-width: 600px) {
-    ion-content {
-      --background: linear-gradient(
+    @media (max-width: 600px) {
+      background: linear-gradient(
         160deg,
         var(--duoc-azul) 0%,
         var(--duoc-azul) 30%,
@@ -27,24 +38,56 @@
       );
     }
   }
-}
 
-@mixin header-duoc {
-  ion-toolbar {
-    --background: var(--duoc-azul);
-    --color: #ffffff;
+  ion-content {
+    --background: transparent;
+    --overflow: auto; // fuerza que el scroll interno de Ionic siga funcionando
   }
 
-  ion-back-button {
-    --color: #ffffff;
+  ion-footer {
+    background: transparent !important;
+
+    ion-toolbar {
+      --background: transparent !important;
+      --border-width: 0 !important;
+    }
+  }
+}
+@mixin boton-volver-flotante {
+  .btn-volver-flotante {
+    position: fixed;
+    left: 50%;
+    bottom: 20px;
+    transform: translateX(-50%);
+
+    display: flex;
+    align-items: center;
+    justify-content: center; // <-- agregado
+
+    padding: 12px 26px;
+    background: #ffffff;
+    border-radius: 30px;
+    box-shadow: 0 8px 24px rgba(10, 31, 61, 0.3);
+
+    border: none;
+    cursor: pointer;
+
+    font-size: 20px;
+    font-weight: 600;
+    color: var(--duoc-azul);
+    white-space: nowrap;
+
+    ion-icon {
+      font-size: 18px;
+      color: var(--duoc-azul);
+      flex-shrink: 0;
+      align-items: center;
+    }
+
+    &:active {
+      transform: translateX(-50%) scale(0.96);
+    }
   }
 }
 
-@mixin franja-amarilla {
-  ion-header::after {
-    content: '';
-    display: block;
-    height: 4px;
-    background: var(--duoc-amarillo);
-  }
-}
+
