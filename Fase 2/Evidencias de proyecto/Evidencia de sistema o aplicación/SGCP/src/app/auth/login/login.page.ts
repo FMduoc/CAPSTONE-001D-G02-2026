@@ -22,7 +22,7 @@ export class LoginPage {
   async ngOnInit() {
     // Si ya hay sesión activa, saltar directo a Home
     const autenticado = await this.authService.isAuthenticated();
-    if (autenticado) this.router.navigate(['/home']);
+    if (autenticado) this.router.navigate(['/inicio-docente']);
   }
 
 
@@ -36,13 +36,13 @@ export class LoginPage {
           this.error = 'No se pudo obtener la información del usuario';
           return;
         }
-        if (usuario.rol === 'solicitante') {
+        if (usuario.rol === 'docente') {
           this.router.navigate(['/inicio-docente']);
         } else if (usuario.rol === 'staff') {
           this.router.navigate(['/pendiente-aprobacion']);
-        } else {
+        } /*else {
           this.router.navigate(['/home']);
-        }
+        } VESTIGIO DE CUANDO EXISTÍA LA PÁGINA HOME*/
       },
       error: () => (this.error = 'Email o contraseña incorrectos'),
     });
