@@ -6,6 +6,8 @@ export interface Solicitud {
   descripcion: string;
   categoria?: string;
   estado?: string;
+  atendido_por?: number;
   fecha_creacion?: string;
-  sala_nombre?: string; // viene del JOIN en el backend
+  fecha_actualizacion?: string;
+  sala_nombre?: string;
 }
