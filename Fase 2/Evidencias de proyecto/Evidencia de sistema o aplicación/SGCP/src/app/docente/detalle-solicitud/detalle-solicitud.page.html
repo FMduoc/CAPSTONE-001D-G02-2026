@@ -1,0 +1,83 @@
+<ion-content>
+  <div *ngIf="!enviado" class="contenido-central">
+
+    <div class="sala-header">
+      <ion-icon name="business-outline"></ion-icon>
+      <h1>{{ salaNombre }}</h1>
+    </div>
+
+    <p class="seccion-titulo">Selecciona una categoría</p>
+
+    <div class="categorias-grid">
+      <div
+        class="categoria-card"
+        *ngFor="let c of categorias"
+        [class.seleccionada]="categoria === c.valor"
+        (click)="seleccionarCategoria(c.valor)">
+        <ion-icon [name]="c.icono"></ion-icon>
+        <span>{{ c.etiqueta }}</span>
+      </div>
+    </div>
+
+    <div *ngIf="categoria">
+      <p class="seccion-titulo">¿Cuál es el motivo?</p>
+
+      <div class="motivos-lista">
+        <div
+          class="motivo-item"
+          *ngFor="let sugerencia of sugerenciasActuales"
+          [class.seleccionado]="motivoSeleccionado === sugerencia"
+          (click)="seleccionarMotivo(sugerencia)">
+          <ion-icon name="checkmark-circle" *ngIf="motivoSeleccionado === sugerencia"></ion-icon>
+          <ion-icon name="ellipse-outline" *ngIf="motivoSeleccionado !== sugerencia"></ion-icon>
+          <span>{{ sugerencia }}</span>
+        </div>
+
+        <div
+          class="motivo-item motivo-otro"
+          [class.seleccionado]="motivoSeleccionado === 'otro'"
+          (click)="seleccionarOtro()">
+          <ion-icon name="checkmark-circle" *ngIf="motivoSeleccionado === 'otro'"></ion-icon>
+          <ion-icon name="create-outline" *ngIf="motivoSeleccionado !== 'otro'"></ion-icon>
+          <span>Otro (especificar)</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="campo-manual" *ngIf="mostrarCampoDescripcion">
+      <label class="campo-label">Describe el problema</label>
+      <ion-textarea
+        fill="outline"
+        [(ngModel)]="descripcion"
+        placeholder="ej. El proyector hace un ruido extraño al encenderlo"
+        rows="4">
+      </ion-textarea>
+    </div>
+
+    <ion-text class="mensaje-error" color="danger" *ngIf="error">
+      <p>{{ error }}</p>
+    </ion-text>
+
+    <ion-button class="btn-principal" expand="block" (click)="enviarSolicitud()" [disabled]="enviando || !salaId">
+      <ion-icon slot="start" name="paper-plane-outline" *ngIf="!enviando"></ion-icon>
+      {{ enviando ? 'Enviando...' : 'Enviar solicitud' }}
+    </ion-button>
+
+    <ion-button class="btn-cancelar-solido" expand="block" (click)="cancelar()">
+      <ion-icon slot="start" name="close-outline"></ion-icon>
+      Cancelar
+    </ion-button>
+
+  </div>
+
+  <div *ngIf="enviado" class="estado-exito">
+    <div class="icono-exito-circulo">
+      <img src="assets/img/Check_icon.png" alt="Solicitud enviada">
+    </div>
+    <h2>Solicitud enviada</h2>
+    <p>Tu solicitud para {{ salaNombre }} fue registrada correctamente.</p>
+    <ion-button class="btn-principal" expand="block" (click)="volverAlInicio()">
+      Volver al inicio
+    </ion-button>
+  </div>
+</ion-content>

@@ -1,0 +1,60 @@
+<ion-content>
+
+  <div class="video-container" *ngIf="escaneandoWeb">
+    <div class="video-wrapper">
+      <video #videoElement autoplay muted playsinline></video>
+      <div class="scan-frame"></div>
+    </div>
+
+    <p class="hint-text">Centra el código QR dentro del recuadro</p>
+
+    <ion-button class="btn-cancelar" fill="outline" (click)="detenerEscaneoWeb()">
+      Cancelar escaneo
+    </ion-button>
+  </div>
+
+  <div class="contenido-central" *ngIf="!escaneandoWeb">
+
+    <div class="qr-icon">
+      <img src="assets/img/camara-logo.png" alt="Escanear QR">
+    </div>
+
+    <h1>Escanear sala</h1>
+
+    <p class="descripcion">
+      Apunta la cámara al código QR de la sala para identificar su ubicación.
+    </p>
+
+    <ion-button class="btn-principal" expand="block" (click)="escanear()" [disabled]="buscando">
+      <ion-icon name="camera-outline"></ion-icon>
+      <span>{{ buscando ? 'Buscando sala...' : 'Escanear con cámara' }}</span>
+    </ion-button>
+
+    <ion-text class="mensaje-error" color="danger" *ngIf="error">
+      <p>{{ error }}</p>
+    </ion-text>
+
+    <div class="separador"><span>o</span></div>
+
+    <div class="campo-manual">
+      <label class="campo-label">Código de sala</label>
+      <ion-input
+        fill="outline"
+        [(ngModel)]="codigoManual"
+        placeholder="Ej. a3f9c21b8e4d6f10">
+      </ion-input>
+
+      <ion-button class="btn-manual" expand="block" fill="outline" (click)="buscarManual()" [disabled]="buscando">
+        <ion-icon slot="start" name="search-outline"></ion-icon>
+        Buscar por código
+      </ion-button>
+    </div>
+
+  </div>
+
+  <button class="btn-volver-flotante" *ngIf="!escaneandoWeb" (click)="volver()">
+    <ion-icon name="arrow-back-outline"></ion-icon>
+    Volver
+  </button>
+
+</ion-content>
