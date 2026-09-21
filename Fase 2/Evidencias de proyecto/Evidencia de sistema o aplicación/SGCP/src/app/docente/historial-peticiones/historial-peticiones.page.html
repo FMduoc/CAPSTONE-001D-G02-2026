@@ -1,0 +1,45 @@
+
+<ion-content class="ion-padding">
+
+  <h1 class="titulo-pagina">Historial de peticiones</h1>
+
+  <div *ngIf="cargando" class="ion-text-center estado-carga">
+    <ion-spinner></ion-spinner>
+    <p>Cargando tu historial...</p>
+  </div>
+
+  <div *ngIf="!cargando && error" class="ion-text-center estado-vacio">
+    <ion-icon name="alert-circle-outline"></ion-icon>
+    <p>{{ error }}</p>
+    <ion-button fill="outline" size="small" (click)="cargarSolicitudes()">Reintentar</ion-button>
+  </div>
+
+  <div *ngIf="!cargando && !error && solicitudes.length === 0" class="ion-text-center estado-vacio">
+    <ion-icon name="document-text-outline"></ion-icon>
+    <p>Aún no has realizado ninguna solicitud.</p>
+  </div>
+
+  <div class="solicitud-card" *ngFor="let s of solicitudes">
+    <div class="solicitud-header">
+      <div class="categoria-badge" [class]="'categoria-' + s.categoria">
+        <ion-icon [name]="iconoPorCategoria(s.categoria)"></ion-icon>
+      </div>
+      <div class="solicitud-info">
+        <h3>{{ s.sala_nombre }}</h3>
+        <span class="fecha">{{ s.fecha_creacion | date:'dd/MM/yyyy HH:mm' }}</span>
+      </div>
+      <div class="estado-badge" [class]="'estado-' + s.estado">
+        {{ etiquetaEstado(s.estado) }}
+      </div>
+    </div>
+
+    <span class="categoria-label">{{ etiquetaCategoria(s.categoria) }}</span>
+    <p class="descripcion">{{ s.descripcion }}</p>
+  </div>
+
+  <button class="btn-volver-flotante" (click)="volver()">
+    <ion-icon name="arrow-back-outline"></ion-icon>
+    Volver
+  </button>
+
+</ion-content>

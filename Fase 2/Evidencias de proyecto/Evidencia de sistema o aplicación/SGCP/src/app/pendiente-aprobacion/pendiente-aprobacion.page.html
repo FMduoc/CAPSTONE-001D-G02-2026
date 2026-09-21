@@ -1,0 +1,23 @@
+<ion-content class="ion-padding">
+  <div class="ion-text-center" style="margin-top: 40%;">
+    <ion-icon name="time-outline" style="font-size: 64px;"></ion-icon>
+    <h2>Cuenta pendiente de aprobación</h2>
+    <p>
+      Tu cuenta fue registrada correctamente, pero un administrador todavía
+      no te ha asignado un rol específico dentro del personal de la institución.
+    </p>
+    <p>Vuelve a intentarlo más tarde, o contacta a un administrador si esto persiste.</p>
+
+    <ion-text color="medium" *ngIf="mensaje">
+      <p>{{ mensaje }}</p>
+    </ion-text>
+
+    <ion-button expand="block" (click)="verificarEstado()" [disabled]="verificando">
+      {{ verificando ? 'Verificando...' : 'Verificar estado' }}
+    </ion-button>
+
+    <ion-button expand="block" fill="clear" (click)="cerrarSesion()">
+      Cerrar sesión
+    </ion-button>
+  </div>
+</ion-content>

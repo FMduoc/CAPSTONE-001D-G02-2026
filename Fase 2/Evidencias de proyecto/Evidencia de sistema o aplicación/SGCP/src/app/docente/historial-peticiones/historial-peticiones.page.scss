@@ -1,0 +1,285 @@
+@use '../../../theme/duoc-shared' as duoc;
+
+@include duoc.fondo-diagonal-duoc;
+
+/* =========================================
+   HEADER TRANSPARENTE + BOTÓN VOLVER FLOTANTE
+   ========================================= */
+
+.btn-volver-flotante {
+  position: relative;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  width: 130px;
+  margin: 20px auto 25px;
+  padding: 11px 18px;
+
+  background: #ffffff;
+  color: var(--duoc-azul);
+
+  border: 2px solid var(--duoc-azul);
+  border-radius: 12px;
+
+  font-size: 14px;
+  font-weight: 700;
+
+  box-shadow: 0 4px 12px rgba(10, 31, 61, 0.18);
+
+  cursor: pointer;
+  transition: all 0.2s ease;
+
+  ion-icon {
+    position: absolute;
+    left: 16px;
+
+    font-size: 18px;
+    color: var(--duoc-azul);
+  }
+
+  span {
+    text-align: center;
+  }
+
+  &:active {
+    transform: scale(0.96);
+  }
+}
+
+// Fuerza transparencia también a nivel del propio ion-header (fuera del :host)
+ion-header {
+  background: transparent;
+}
+
+
+
+/* =========================================
+   TÍTULO DE LA PÁGINA
+   ========================================= */
+
+.titulo-pagina {
+  position: relative;
+  z-index: 2;
+
+  color: #ffffff;
+  font-size: 24px;
+  font-weight: 800;
+  margin: 16px 0 20px 4px;
+  text-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+}
+
+/* =========================================
+   ESTADOS DE CARGA / VACÍO / ERROR
+   ========================================= */
+
+.estado-carga,
+.estado-vacio {
+  position: relative;
+  z-index: 2;
+  margin-top: 40px;
+  color: #ffffff;
+
+  ion-icon {
+    font-size: 56px;
+    color: rgba(255, 255, 255, 0.75);
+    margin-bottom: 8px;
+  }
+
+  p {
+    font-size: 14px;
+    margin-bottom: 12px;
+  }
+}
+
+/* =========================================
+   TARJETA DE SOLICITUD
+   ========================================= */
+
+.solicitud-card {
+  position: relative;
+  z-index: 2;
+
+  background: #ffffff;
+  border-radius: 16px;
+  padding: 16px;
+  margin-bottom: 14px;
+  box-shadow: 0 6px 20px rgba(10, 31, 61, 0.18);
+}
+
+.solicitud-header {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 8px;
+}
+
+.categoria-badge {
+  width: 44px;
+  height: 44px;
+  border-radius: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+
+  ion-icon {
+    font-size: 22px;
+    color: #ffffff;
+  }
+
+  &.categoria-tecnico { background: #2563eb; }
+  &.categoria-enfermeria { background: #dc2626; }
+  &.categoria-seguridad { background: #d97706; }
+  &.categoria-limpieza { background: #059669; }
+}
+
+.solicitud-info {
+  flex: 1;
+  min-width: 0;
+
+  h3 {
+    font-size: 15px;
+    font-weight: 700;
+    color: var(--duoc-azul);
+    margin: 0 0 2px;
+  }
+
+  .fecha {
+    font-size: 12px;
+    color: #9ca3af;
+  }
+}
+
+.estado-badge {
+  font-size: 11px;
+  font-weight: 700;
+  padding: 4px 10px;
+  border-radius: 20px;
+  white-space: nowrap;
+
+  &.estado-pendiente {
+    background: rgba(217, 119, 6, 0.12);
+    color: #d97706;
+  }
+
+  &.estado-en_proceso {
+    background: rgba(37, 99, 235, 0.12);
+    color: #2563eb;
+  }
+
+  &.estado-resuelta {
+    background: rgba(5, 150, 105, 0.12);
+    color: #059669;
+  }
+}
+
+.categoria-label {
+  display: inline-block;
+  font-size: 11px;
+  font-weight: 600;
+  color: #6b7280;
+  text-transform: uppercase;
+  letter-spacing: 0.4px;
+  margin-bottom: 6px;
+}
+
+.descripcion {
+  font-size: 14px;
+  color: #4b5563;
+  line-height: 1.5;
+  margin: 0;
+}
+
+/* =========================================
+   RESPONSIVE
+   ========================================= */
+
+@media (max-width: 420px) {
+  .titulo-pagina {
+    font-size: 21px;
+  }
+}
+
+ion-footer.footer-volver {
+  background: transparent !important;
+
+  &::before {
+    display: none !important;
+  }
+
+  &::part(background) {
+    background: transparent !important;
+  }
+
+  ion-toolbar {
+    --background: transparent !important;
+    --border-width: 0 !important;
+
+    &::part(background) {
+      background: transparent !important;
+    }
+  }
+}
+
+:host {
+  --ion-background-color: transparent;
+}
+
+ion-footer.footer-volver {
+  background: linear-gradient(
+    135deg,
+    var(--duoc-azul) 10%,
+    var(--duoc-azul) 10%,
+    #ffffff 50%
+  ) !important;
+
+  ion-toolbar {
+    --background: transparent !important;
+    --border-width: 0 !important;
+  }
+}
+
+@media (max-width: 600px) {
+  ion-footer.footer-volver {
+    background: linear-gradient(
+      160deg,
+      var(--duoc-azul) 0%,
+      var(--duoc-azul) 30%,
+      #ffffff 30.5%
+    ) !important;
+  }
+}
+
+.btn-volver-footer {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+
+  width: 100%;
+  max-width: 400px;
+  margin: 0 auto;
+  padding: 13px 0;
+
+  background: #ffffff;
+  border-radius: 30px;
+  box-shadow: 0 8px 24px rgba(10, 31, 61, 0.25);
+
+  border: none;
+  cursor: pointer;
+
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--duoc-azul);
+
+  ion-icon {
+    font-size: 18px;
+    color: var(--duoc-azul);
+  }
+
+  &:active {
+    transform: scale(0.97);
+  }
+}
