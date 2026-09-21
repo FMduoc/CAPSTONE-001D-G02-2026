@@ -21,7 +21,7 @@ router.post('/register', async (req, res) => {
     });
   }
 
-  const rolesPermitidos = ['solicitante', 'staff'];
+  const rolesPermitidos = ['docente', 'staff'];
 
   if (!rolesPermitidos.includes(rol)) {
     return res.status(400).json({

@@ -5,6 +5,7 @@ import { UsuariosPage } from './pages/UsuariosPage';
 import { SalasPage } from './pages/SalasPage';
 import { ProtectedRoute } from './guards/ProtectedRoute';
 import { DashboardLayout } from './layouts/DashboardLayout';
+import { HistorialPage } from './pages/HistorialPage';
 
 function App() {
   return (
@@ -18,6 +19,7 @@ function App() {
           <Route element={<DashboardLayout />}>
             <Route path="/usuarios" element={<UsuariosPage />} />
             <Route path="/salas" element={<SalasPage />} />
+            <Route path="/historial" element={<HistorialPage />} />
           </Route>
         </Route>
 
