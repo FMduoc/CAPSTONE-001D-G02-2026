@@ -316,3 +316,8 @@ app.get('/api/solicitudes/notificaciones', verificarToken, async (req, res) => {
     res.status(500).json({ error: err.message });
   }
 });
+// Ruta a routes/solicitudes.js
+const solicitudesAdminRoutes = require('./routes/solicitudes');
+app.use('/api/admin/solicitudes', solicitudesAdminRoutes);
+
+app.listen(3000, () => console.log('Servidor corriendo en puerto 3000'));

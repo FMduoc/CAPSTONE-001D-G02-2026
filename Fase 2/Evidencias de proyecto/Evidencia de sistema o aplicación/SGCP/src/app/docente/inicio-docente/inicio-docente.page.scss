@@ -8,6 +8,23 @@
   --duoc-amarillo: #ffc20e;
 }
 
+// ESTO DABA PROBLEMAS
+/* =========================
+   FRANJA AMARILLA SUPERIOR
+========================= */
+
+ion-content::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 6px;
+  background: var(--duoc-amarillo);
+  z-index: 10;
+}
+
+// HASTA AQUÍ
 /* =========================
    FONDO GENERAL CON DIAGONAL
 ========================= */
