@@ -1,3 +1,4 @@
+<!--inicio-soporte.page.html-->
 <ion-content class="soporte-page">
 
   <div class="soporte-layout">
@@ -27,6 +28,14 @@
         </p>
 
       </div>
+    <ion-segment [value]="usuario?.disponible ? 'si' : 'no'" (ionChange)="toggleDisponibilidad($event.detail.value === 'si')">
+      <ion-segment-button value="si">
+        <ion-label>Disponible</ion-label>
+      </ion-segment-button>
+      <ion-segment-button value="no">
+        <ion-label>No disponible</ion-label>
+      </ion-segment-button>
+    </ion-segment>
 
       <ion-button
         fill="outline"
@@ -168,6 +177,9 @@
                 </h3>
 
               </div>
+              <span class="urgencia-badge" [ngClass]="solicitud.urgencia">
+                {{ mostrarUrgencia(solicitud.urgencia) }}
+              </span>
 
               <span
                 class="estado-badge"
@@ -252,14 +264,20 @@
 
               <!-- ATENDIDA -->
               <ion-button
-                *ngIf="solicitud.estado === 'atendida'"
+                *ngIf="solicitud.estado === 'atendida' && solicitud.atendido_por === usuario?.id"
                 expand="block"
                 class="terminar-button"
                 (click)="terminarSolicitud(solicitud.id)">
-
                 Marcar como terminada
-
               </ion-button>
+
+              <!-- Si está atendida pero por otro usuario, muestra quién la tiene, sin botón -->
+              <div
+                class="info-atendida-otro"
+                *ngIf="solicitud.estado === 'atendida' && solicitud.atendido_por !== usuario?.id">
+                Esta solicitud está siendo atendida por otro miembro del equipo.
+              </div>
+
 
             </div>
 

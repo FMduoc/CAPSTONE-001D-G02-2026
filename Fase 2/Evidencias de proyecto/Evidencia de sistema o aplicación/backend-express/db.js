@@ -1,3 +1,4 @@
+//db.js
 const { Pool } = require('pg');
 require('dotenv').config();
 // CREDENCIALES DE .ENV. VA EN EL ROOT DEL BACKEND

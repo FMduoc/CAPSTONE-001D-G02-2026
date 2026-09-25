@@ -12,13 +12,18 @@ export class SolicitudService {
 
   constructor(private http: HttpClient, private authService: AuthService) {}
 
-  async crear(datos: { sala_id: number; descripcion: string; categoria: string }): Promise<Solicitud> {
-    const token = await this.authService.getToken();
-    return firstValueFrom(
-      this.http.post<Solicitud>(this.apiUrl, datos, {
-        headers: { Authorization: `Bearer ${token}` },
-      })
-    );
+  async crear(datos: {
+      sala_id: number;
+      descripcion: string;
+      categoria: string;
+      urgencia?: string; // opcional: si no se envía, el backend usa 'media' por defecto
+    }): Promise<Solicitud> {
+      const token = await this.authService.getToken();
+      return firstValueFrom(
+        this.http.post<Solicitud>(this.apiUrl, datos, {
+          headers: { Authorization: `Bearer ${token}` },
+        })
+      );
   }
 
   listar(): Observable<Solicitud[]> {
@@ -66,4 +71,15 @@ export class SolicitudService {
       )
     );
   }
+
+async consultarCobertura(categoria: string): Promise<{ categoria: string; hayDisponibles: boolean }> {
+    const token = await this.authService.getToken();
+    return firstValueFrom(
+      this.http.get<{ categoria: string; hayDisponibles: boolean }>(
+        `${environment.apiUrl}/soporte/cobertura/${categoria}`,
+        { headers: { Authorization: `Bearer ${token}` } }
+      )
+    );
+  }
 }
+

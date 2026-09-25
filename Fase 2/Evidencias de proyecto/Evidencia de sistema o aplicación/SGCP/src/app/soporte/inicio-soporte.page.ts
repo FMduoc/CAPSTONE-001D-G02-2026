@@ -1,3 +1,4 @@
+//inicio-soporte.page.ts
 import { Component, OnInit, ChangeDetectorRef } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { IonicModule } from '@ionic/angular/lazy';
@@ -19,6 +20,7 @@ export class InicioSoportePage implements OnInit {
   usuario: any = null;
   cargando = false;
   error = '';
+  actualizandoDisponibilidad = false;
 
   private apiUrl = `${environment.apiUrl}/soporte`;
 
@@ -30,7 +32,7 @@ export class InicioSoportePage implements OnInit {
   ) {}
 
   async ngOnInit() {
-    this.usuario = await this.authService.getUsuario(); // <-- ahora con await
+    this.usuario = await this.authService.getUsuario();
     await this.cargarSolicitudes();
   }
 
@@ -45,14 +47,14 @@ export class InicioSoportePage implements OnInit {
   }
 
   private async obtenerHeaders(): Promise<HttpHeaders> {
-    const token = await this.authService.getToken(); // <-- ahora con await
+    const token = await this.authService.getToken();
     return new HttpHeaders({ Authorization: `Bearer ${token}` });
   }
 
   async cargarSolicitudes() {
     if (this.cargando) return;
 
-    const token = await this.authService.getToken(); // <-- ahora con await
+    const token = await this.authService.getToken();
     if (!token) {
       this.router.navigate(['/login']);
       return;
@@ -108,7 +110,28 @@ export class InicioSoportePage implements OnInit {
       await this.cargarSolicitudes();
     } catch (err: any) {
       console.error('Error al terminar solicitud:', err);
-      this.error = err.error?.error || 'No se pudo terminar la solicitud';
+      this.error = err.error?.error || 'No se pudo terminar la solicitud. Puede que ya haya sido actualizada por otro usuario.';
+      await this.cargarSolicitudes(); // refresca para reflejar el estado real
+    }
+  }
+
+  async toggleDisponibilidad(disponible: boolean) {
+    this.actualizandoDisponibilidad = true;
+    try {
+      const result = await firstValueFrom(
+        this.http.patch<any>(
+          `${this.apiUrl}/disponibilidad`,
+          { disponible },
+          { headers: await this.obtenerHeaders() }
+        )
+      );
+      this.usuario.disponible = result.disponible;
+    } catch (err) {
+      console.error('Error al actualizar disponibilidad:', err);
+      this.error = 'No se pudo actualizar tu disponibilidad';
+    } finally {
+      this.actualizandoDisponibilidad = false;
+      this.cdr.detectChanges();
     }
   }
 
@@ -117,13 +140,23 @@ export class InicioSoportePage implements OnInit {
       tecnico: 'Servicio técnico',
       enfermeria: 'Emergencia médica',
       limpieza: 'Limpieza',
-      seguridad: 'Seguridad', // agregado, faltaba en la versión original
+      seguridad: 'Seguridad',
     };
     return categorias[categoria] || categoria;
   }
 
+  mostrarUrgencia(urgencia: string): string {
+    const urgencias: any = {
+      baja: 'Baja',
+      media: 'Media',
+      alta: 'Alta',
+      critica: 'Crítica',
+    };
+    return urgencias[urgencia] || urgencia;
+  }
+
   async cerrarSesion() {
-    await this.authService.logout(); // <-- ahora con await
+    await this.authService.logout();
     this.router.navigate(['/login']);
   }
 }
