@@ -1,3 +1,4 @@
+//detalle-solicitud.ts
 import { Component, OnInit, ChangeDetectorRef } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
@@ -18,9 +19,11 @@ export class DetalleSolicitudPage implements OnInit {
   descripcion = '';
   categoria = '';
   motivoSeleccionado = '';
+  urgencia = 'media'; // valor por defecto
   error = '';
   enviando = false;
   enviado = false;
+  avisoCobertura = ''; // mensaje si no hay staff disponible
 
   categorias = [
     { valor: 'tecnico', etiqueta: 'Servicio técnico', icono: 'construct-outline' },
@@ -56,6 +59,37 @@ export class DetalleSolicitudPage implements OnInit {
     ],
   };
 
+  // Urgencia sugerida automáticamente según el motivo elegido
+  urgenciaPorMotivo: Record<string, string> = {
+    'El proyector no enciende': 'baja',
+    'No hay conexión a internet': 'media',
+    'El computador no enciende': 'media',
+    'El aire acondicionado no funciona': 'baja',
+
+    'Alumno con malestar general': 'media',
+    'Accidente o caída': 'alta',
+    'Persona con dificultad para respirar': 'critica',
+    'Necesita primeros auxilios': 'alta',
+
+    'Persona ajena a la institución en el lugar': 'alta',
+    'Conflicto o alteración de orden': 'alta',
+    'Objeto sospechoso': 'critica',
+    'Necesito apoyo de seguridad': 'alta',
+
+    'Derrame de líquido': 'media',
+    'Sala con basura acumulada': 'baja',
+    'Baño necesita limpieza': 'baja',
+    'Vidrio roto o algo que limpiar': 'media',
+  };
+
+  // Opciones para el selector manual (motivo "otro")
+  opcionesUrgencia = [
+    { valor: 'baja', etiqueta: 'Baja' },
+    { valor: 'media', etiqueta: 'Media' },
+    { valor: 'alta', etiqueta: 'Alta' },
+    { valor: 'critica', etiqueta: 'Crítica' },
+  ];
+
   constructor(
     private solicitudService: SolicitudService,
     private router: Router,
@@ -84,18 +118,21 @@ export class DetalleSolicitudPage implements OnInit {
     this.categoria = valor;
     this.motivoSeleccionado = '';
     this.descripcion = '';
+    this.urgencia = 'media';
     this.error = '';
   }
 
   seleccionarMotivo(texto: string) {
     this.motivoSeleccionado = texto;
     this.descripcion = texto;
+    this.urgencia = this.urgenciaPorMotivo[texto] || 'media';
     this.error = '';
   }
 
   seleccionarOtro() {
     this.motivoSeleccionado = 'otro';
     this.descripcion = '';
+    this.urgencia = 'media'; // el usuario la ajusta manualmente
     this.error = '';
   }
 
@@ -112,27 +149,39 @@ export class DetalleSolicitudPage implements OnInit {
 
     this.enviando = true;
     this.error = '';
-    this.cdr.detectChanges(); // refleja "Enviando..." de inmediato
+    this.avisoCobertura = '';
+    this.cdr.detectChanges();
 
     try {
       await this.solicitudService.crear({
         sala_id: this.salaId,
         descripcion: this.descripcion.trim(),
         categoria: this.categoria,
+        urgencia: this.urgencia,
       });
       this.enviado = true;
+
+      // Consulta no bloqueante: avisa si no hay staff disponible ahora
+      this.solicitudService.consultarCobertura(this.categoria).then((res) => {
+        if (!res.hayDisponibles) {
+          this.avisoCobertura =
+            'Tu solicitud fue registrada, pero actualmente no hay personal disponible en esta área. Podría tardar más de lo habitual.';
+        }
+        this.cdr.detectChanges();
+      });
     } catch (err) {
       this.error = 'No se pudo enviar la solicitud. Intenta de nuevo.';
     } finally {
       this.enviando = false;
-      this.cdr.detectChanges(); // fuerza el refresco final, con éxito o error
+      this.cdr.detectChanges();
     }
   }
 
   volverAlInicio() {
     this.router.navigate(['/inicio-docente']);
   }
-cancelar() {
-  this.router.navigate(['/escanear-qr']);
-}
+
+  cancelar() {
+    this.router.navigate(['/escanear-qr']);
+  }
 }

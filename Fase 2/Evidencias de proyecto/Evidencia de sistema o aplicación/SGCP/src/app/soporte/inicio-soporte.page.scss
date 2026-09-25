@@ -646,11 +646,144 @@
 
 
 @media (max-width: 600px) {
+  .soporte-layout { padding: 14px; }
+  .brand-section, .soporte-card { padding: 20px; border-radius: 14px; }
+  .brand-text h1 { font-size: 24px; }
+  .card-header h2 { font-size: 21px; }
+  .solicitudes-grid { grid-template-columns: 1fr; }
+  .solicitud-info { grid-template-columns: 1fr; }
+  .info-item.full-width { grid-column: auto; }
+  .solicitud-header { flex-direction: column; }
+} // <-- se cierra aquí
 
+/* ============================
+   SECCIONES ACTIVAS / HISTORIAL
+============================ */
+.section-block { margin-top: 34px; }
+
+.history-section {
+  margin-top: 48px;
+  padding-top: 32px;
+  border-top: 1px solid #e2e8f0;
+}
+
+.section-title-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 20px;
+  margin-bottom: 20px;
+}
+
+.section-title-row h3 {
+  margin: 4px 0 0 0;
+  color: #002c46;
+  font-size: 21px;
+  font-weight: 800;
+}
+
+.counter-badge {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 40px;
+  height: 40px;
+  padding: 0 12px;
+  border-radius: 20px;
+  background: #003b5c;
+  color: white;
+  font-size: 14px;
+  font-weight: 800;
+}
+
+.counter-badge.history {
+  background: #e2e8f0;
+  color: #475569;
+}
+
+.empty-history {
+  padding: 22px;
+  border-radius: 12px;
+  background: #f8fafc;
+  border: 1px dashed #cbd5e1;
+  color: #64748b;
+  text-align: center;
+  font-size: 14px;
+  font-weight: 600;
+}
+
+.historial-card {
+  background: #fafafa;
+}
+
+@media (max-width: 600px) {
   .section-title-row {
     align-items: flex-start;
   }
-
 }
 
+.urgencia-badge {
+  &.critica { background: #d32f2f; color: white; }
+  &.alta { background: #f57c00; color: white; }
+  &.media { background: #fbc02d; color: #333; }
+  &.baja { background: #90a4ae; color: white; }
+}
+}
+
+.urgencia-badge {
+  &.critica { background: #d32f2f; color: white; }
+  &.alta { background: #f57c00; color: white; }
+  &.media { background: #fbc02d; color: #333; }
+  &.baja { background: #90a4ae; color: white; }
+}
+/* =========================================
+   SEGMENTO DE DISPONIBILIDAD
+========================================= */
+
+.segmento-disponibilidad {
+  --background: #f1f5f9;
+
+  width: auto;
+  min-width: 260px;
+
+  padding: 4px;
+  border-radius: 999px;
+
+  border: 1px solid #e2e8f0;
+
+  ion-segment-button {
+    --border-radius: 999px;
+    --indicator-box-shadow: none;
+
+    min-height: 38px;
+
+    font-size: 13px;
+    font-weight: 800;
+    letter-spacing: 0.5px;
+    text-transform: none;
+
+    &::part(indicator-background) {
+      border-radius: 999px;
+    }
+  }
+
+  /* Botón "Disponible" */
+  ion-segment-button[value="si"] {
+    --color: #64748b;
+    --color-checked: #ffffff;
+
+    &.segment-button-checked::part(indicator-background) {
+      background: #027a48;
+    }
+  }
+
+  /* Botón "No disponible" */
+  ion-segment-button[value="no"] {
+    --color: #64748b;
+    --color-checked: #ffffff;
+
+    &.segment-button-checked::part(indicator-background) {
+      background: #b42318;
+    }
+  }
 }
