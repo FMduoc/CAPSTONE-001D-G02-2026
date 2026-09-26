@@ -12,8 +12,14 @@ export interface SolicitudHistorial {
 }
 
 export const solicitudService = {
+  // Función para mostrar el historial de solicitudes en HistorialPage.
   async listarHistorial(): Promise<SolicitudHistorial[]> {
     const { data } = await api.get<SolicitudHistorial[]>('/admin/solicitudes');
+    return data;
+  },
+  // Función para modificar estado a través de HistorialPage.
+  async actualizarEstado(id: number, estado: string): Promise<SolicitudHistorial> {
+    const { data } = await api.patch<SolicitudHistorial>(`/solicitudes/${id}/estado`, { estado });
     return data;
   },
 };
