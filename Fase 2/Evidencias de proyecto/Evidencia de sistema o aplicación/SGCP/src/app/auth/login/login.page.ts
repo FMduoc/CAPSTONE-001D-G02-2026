@@ -49,7 +49,7 @@ export class LoginPage implements OnInit {
   private redirigirSegunRol(rol?: string) {
     const rolesSoporte = ['tecnico', 'enfermeria', 'seguridad', 'limpieza'];
 
-    if (rol === 'solicitante') {
+    if (rol === 'docente') {
       this.router.navigate(['/inicio-docente']);
     } else if (rol === 'staff') {
       this.router.navigate(['/pendiente-aprobacion']);
