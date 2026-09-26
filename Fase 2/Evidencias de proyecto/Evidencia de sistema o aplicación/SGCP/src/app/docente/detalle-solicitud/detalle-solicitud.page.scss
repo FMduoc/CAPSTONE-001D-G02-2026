@@ -425,57 +425,32 @@ ion-button.btn-cancelar-solido {
   background: #f1f5f9;
   border-radius: 14px;
 
-  --background: transparent;
-  --background-checked: transparent;
-  --indicator-color: transparent;
+  box-sizing: border-box;
 }
 
 
 /* =========================================
-   BOTONES DE URGENCIA
+   BOTONES
    ========================================= */
 
-.segmento-urgencia ion-segment-button {
+.boton-urgencia {
   flex: 1;
   min-width: 0;
-  min-height: 42px;
+  height: 42px;
 
-  margin: 0;
-  padding: 0;
-
-  --background: transparent;
-  --background-checked: transparent;
-  --indicator-color: transparent;
-
-  /* COLOR DE LOS NO SELECCIONADOS */
-  --color: #374151;
-
-  /* Se modifica individualmente abajo */
-  --color-checked: #ffffff;
-
-  --border-radius: 10px;
-
-  font-size: 12px;
-  font-weight: 700;
-  text-transform: none;
-}
-
-
-/* =========================================
-   BOTÓN NORMAL
-   ========================================= */
-
-.segmento-urgencia ion-segment-button::part(native) {
-  min-height: 42px;
-
-  padding: 0 4px;
+  padding: 0 6px;
 
   border: 1px solid #d8dee7;
   border-radius: 10px;
 
   background: #ffffff;
-
   color: #374151;
+
+  font-family: inherit;
+  font-size: 12px;
+  font-weight: 700;
+
+  cursor: pointer;
 
   display: flex;
   align-items: center;
@@ -492,42 +467,19 @@ ion-button.btn-cancelar-solido {
 
 
 /* =========================================
-   TEXTO NO SELECCIONADO
-   ========================================= */
-
-.segmento-urgencia ion-segment-button ion-label {
-  margin: 0;
-
-  color: #374151;
-
-  font-size: 12px;
-  font-weight: 700;
-
-  white-space: nowrap;
-}
-
-
-/* =========================================
    EFECTO AL PRESIONAR
    ========================================= */
 
-.segmento-urgencia
-ion-segment-button:active::part(native) {
-  transform: scale(0.96);
+.boton-urgencia:active {
+  transform: scale(0.95);
 }
 
 
 /* =========================================
-   BAJA SELECCIONADA
+   BAJA
    ========================================= */
 
-.segmento-urgencia
-ion-segment-button.urgencia-baja.segment-button-checked {
-  --color-checked: #ffffff;
-}
-
-.segmento-urgencia
-ion-segment-button.urgencia-baja.segment-button-checked::part(native) {
+.boton-urgencia.urgencia-baja.seleccionada {
   background: #90a4ae;
   border-color: #90a4ae;
   color: #ffffff;
@@ -537,16 +489,10 @@ ion-segment-button.urgencia-baja.segment-button-checked::part(native) {
 
 
 /* =========================================
-   MEDIA SELECCIONADA
+   MEDIA
    ========================================= */
 
-.segmento-urgencia
-ion-segment-button.urgencia-media.segment-button-checked {
-  --color-checked: #333333;
-}
-
-.segmento-urgencia
-ion-segment-button.urgencia-media.segment-button-checked::part(native) {
+.boton-urgencia.urgencia-media.seleccionada {
   background: #fbc02d;
   border-color: #fbc02d;
   color: #333333;
@@ -556,16 +502,10 @@ ion-segment-button.urgencia-media.segment-button-checked::part(native) {
 
 
 /* =========================================
-   ALTA SELECCIONADA
+   ALTA
    ========================================= */
 
-.segmento-urgencia
-ion-segment-button.urgencia-alta.segment-button-checked {
-  --color-checked: #ffffff;
-}
-
-.segmento-urgencia
-ion-segment-button.urgencia-alta.segment-button-checked::part(native) {
+.boton-urgencia.urgencia-alta.seleccionada {
   background: #f57c00;
   border-color: #f57c00;
   color: #ffffff;
@@ -575,16 +515,10 @@ ion-segment-button.urgencia-alta.segment-button-checked::part(native) {
 
 
 /* =========================================
-   CRÍTICA SELECCIONADA
+   CRÍTICA
    ========================================= */
 
-.segmento-urgencia
-ion-segment-button.urgencia-critica.segment-button-checked {
-  --color-checked: #ffffff;
-}
-
-.segmento-urgencia
-ion-segment-button.urgencia-critica.segment-button-checked::part(native) {
+.boton-urgencia.urgencia-critica.seleccionada {
   background: #d32f2f;
   border-color: #d32f2f;
   color: #ffffff;
@@ -594,33 +528,14 @@ ion-segment-button.urgencia-critica.segment-button-checked::part(native) {
 
 
 /* =========================================
-   TEXTO DEL SELECCIONADO
-   ========================================= */
-
-.segmento-urgencia
-ion-segment-button.segment-button-checked ion-label {
-  color: #ffffff;
-}
-
-
-/* Media necesita texto oscuro
-   porque el amarillo es claro */
-.segmento-urgencia
-ion-segment-button.urgencia-media.segment-button-checked ion-label {
-  color: #333333;
-}
-
-/* =========================================
    CELULARES PEQUEÑOS
    ========================================= */
 
 @media (max-width: 400px) {
 
-  .segmento-urgencia ion-segment-button {
-    min-height: 40px;
-  }
-
-  .segmento-urgencia ion-label {
+  .boton-urgencia {
+    height: 40px;
     font-size: 11px;
+    padding: 0 4px;
   }
 }

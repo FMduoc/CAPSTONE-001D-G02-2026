@@ -56,24 +56,24 @@
 
       <label class="campo-label">¿Qué tan urgente es?</label>
 
-      <ion-segment
-        class="segmento-urgencia"
-        [(ngModel)]="urgencia"
-        mode="md">
+        <div class="segmento-urgencia">
 
-        <ion-segment-button
-          *ngFor="let op of opcionesUrgencia"
-          [value]="op.valor"
-          [class.urgencia-baja]="op.valor === 'baja'"
-          [class.urgencia-media]="op.valor === 'media'"
-          [class.urgencia-alta]="op.valor === 'alta'"
-          [class.urgencia-critica]="op.valor === 'critica'">
+          <button
+            type="button"
+            *ngFor="let op of opcionesUrgencia"
+            class="boton-urgencia"
+            [class.urgencia-baja]="op.valor === 'baja'"
+            [class.urgencia-media]="op.valor === 'media'"
+            [class.urgencia-alta]="op.valor === 'alta'"
+            [class.urgencia-critica]="op.valor === 'critica'"
+            [class.seleccionada]="urgencia === op.valor"
+            (click)="seleccionarUrgencia(op.valor)">
 
-          <ion-label>{{ op.etiqueta }}</ion-label>
+            {{ op.etiqueta }}
 
-        </ion-segment-button>
+          </button>
 
-      </ion-segment>
+        </div>
     </div>
 
     <ion-text class="mensaje-error" color="danger" *ngIf="error">
