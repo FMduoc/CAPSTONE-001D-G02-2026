@@ -136,6 +136,11 @@ export class DetalleSolicitudPage implements OnInit {
     this.error = '';
   }
 
+  seleccionarUrgencia(valor: string) {
+  this.urgencia = valor;
+  this.error = '';
+}
+
   async enviarSolicitud() {
     if (!this.categoria) {
       this.error = 'Selecciona una categoría antes de enviar';
