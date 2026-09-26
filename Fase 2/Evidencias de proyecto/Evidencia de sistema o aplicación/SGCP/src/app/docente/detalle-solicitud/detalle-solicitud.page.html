@@ -55,10 +55,24 @@
       </ion-textarea>
 
       <label class="campo-label">¿Qué tan urgente es?</label>
-      <ion-segment [(ngModel)]="urgencia">
-        <ion-segment-button *ngFor="let op of opcionesUrgencia" [value]="op.valor">
+
+      <ion-segment
+        class="segmento-urgencia"
+        [(ngModel)]="urgencia"
+        mode="md">
+
+        <ion-segment-button
+          *ngFor="let op of opcionesUrgencia"
+          [value]="op.valor"
+          [class.urgencia-baja]="op.valor === 'baja'"
+          [class.urgencia-media]="op.valor === 'media'"
+          [class.urgencia-alta]="op.valor === 'alta'"
+          [class.urgencia-critica]="op.valor === 'critica'">
+
           <ion-label>{{ op.etiqueta }}</ion-label>
+
         </ion-segment-button>
+
       </ion-segment>
     </div>
 

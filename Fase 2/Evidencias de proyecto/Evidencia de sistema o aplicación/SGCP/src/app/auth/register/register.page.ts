@@ -25,14 +25,14 @@ export class RegisterPage {
   contrasena = '';
   confirmarContrasena = '';
 
-  rol = 'docente';
+  rol = 'solicitante';
 
   error = '';
   cargando = false;
 
   roles = [
     {
-      valor: 'docente',
+      valor: 'solicitante',
       etiqueta: 'Docente (solicitante)'
     },
     {
