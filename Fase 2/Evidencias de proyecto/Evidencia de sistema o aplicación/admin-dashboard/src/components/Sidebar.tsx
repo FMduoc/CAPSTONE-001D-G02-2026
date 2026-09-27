@@ -16,6 +16,7 @@ import MeetingRoomIcon from '@mui/icons-material/MeetingRoom';
 import LogoutIcon from '@mui/icons-material/Logout';
 import { authService } from '../services/authService';
 import HistoryIcon from '@mui/icons-material/History';
+import ViewKanbanIcon from '@mui/icons-material/ViewKanban';
 
 const DRAWER_WIDTH = 240;
 
@@ -23,6 +24,7 @@ const opciones = [
   { texto: 'Usuarios', ruta: '/usuarios', icono: <PeopleIcon /> },
   { texto: 'Salas y QR', ruta: '/salas', icono: <MeetingRoomIcon /> },
   { texto: 'Historial', ruta: '/historial', icono: <HistoryIcon /> },
+  { texto: 'Tablero', ruta: '/kanban', icono: <ViewKanbanIcon /> },
 ];
 
 export function Sidebar() {

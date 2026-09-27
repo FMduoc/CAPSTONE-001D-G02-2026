@@ -6,6 +6,7 @@ import { SalasPage } from './pages/SalasPage';
 import { ProtectedRoute } from './guards/ProtectedRoute';
 import { DashboardLayout } from './layouts/DashboardLayout';
 import { HistorialPage } from './pages/HistorialPage';
+import { KanbanPage } from './pages/KanbanPage';
 
 function App() {
   return (
@@ -20,6 +21,7 @@ function App() {
             <Route path="/usuarios" element={<UsuariosPage />} />
             <Route path="/salas" element={<SalasPage />} />
             <Route path="/historial" element={<HistorialPage />} />
+            <Route path="/kanban" element={<KanbanPage />} />
           </Route>
         </Route>
 
