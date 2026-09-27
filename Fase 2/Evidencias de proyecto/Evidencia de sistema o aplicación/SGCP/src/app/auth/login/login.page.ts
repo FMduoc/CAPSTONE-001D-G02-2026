@@ -1,3 +1,4 @@
+//login.page.ts
 import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
@@ -49,7 +50,7 @@ export class LoginPage implements OnInit {
   private redirigirSegunRol(rol?: string) {
     const rolesSoporte = ['tecnico', 'enfermeria', 'seguridad', 'limpieza'];
 
-    if (rol === 'docente') {
+    if (rol === 'solicitante') {
       this.router.navigate(['/inicio-docente']);
     } else if (rol === 'staff') {
       this.router.navigate(['/pendiente-aprobacion']);
