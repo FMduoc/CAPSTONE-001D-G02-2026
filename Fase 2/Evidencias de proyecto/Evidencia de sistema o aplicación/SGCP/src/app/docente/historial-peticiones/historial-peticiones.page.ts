@@ -1,3 +1,4 @@
+//historial-peticiones.ts
 import { Component, OnInit, ChangeDetectorRef } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { IonicModule } from '@ionic/angular/lazy';
@@ -26,8 +27,8 @@ export class HistorialPeticionesPage implements OnInit {
 
   private etiquetasEstado: Record<string, string> = {
     pendiente: 'Pendiente',
-    en_proceso: 'En proceso',
-    resuelta: 'Resuelta',
+    atendida: 'En proceso',
+    terminada: 'Resuelta',
   };
 
   private etiquetasCategoria: Record<string, string> = {

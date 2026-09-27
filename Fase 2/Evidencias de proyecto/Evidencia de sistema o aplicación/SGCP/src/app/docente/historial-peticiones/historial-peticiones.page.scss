@@ -152,24 +152,37 @@ ion-header {
   }
 }
 
+/* =========================================
+   ESTADO DE LA SOLICITUD
+   ========================================= */
+
 .estado-badge {
   font-size: 11px;
   font-weight: 700;
-  padding: 4px 10px;
+  padding: 5px 10px;
   border-radius: 20px;
   white-space: nowrap;
 
+  /* -------------------------
+     PENDIENTE
+     ------------------------- */
   &.estado-pendiente {
     background: rgba(217, 119, 6, 0.12);
     color: #d97706;
   }
 
-  &.estado-en_proceso {
+  /* -------------------------
+     ATENDIDA / EN PROCESO
+     ------------------------- */
+  &.estado-atendida {
     background: rgba(37, 99, 235, 0.12);
     color: #2563eb;
   }
 
-  &.estado-resuelta {
+  /* -------------------------
+     TERMINADA / RESUELTA
+     ------------------------- */
+  &.estado-terminada {
     background: rgba(5, 150, 105, 0.12);
     color: #059669;
   }
