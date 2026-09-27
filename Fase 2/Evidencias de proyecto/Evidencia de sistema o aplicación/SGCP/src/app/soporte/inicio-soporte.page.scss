@@ -740,50 +740,174 @@
    SEGMENTO DE DISPONIBILIDAD
 ========================================= */
 
-.segmento-disponibilidad {
-  --background: #f1f5f9;
+/* =========================================
+   DISPONIBILIDAD
+========================================= */
 
-  width: auto;
-  min-width: 260px;
+.segmento-disponibilidad {
+  display: flex;
+  align-items: center;
+  gap: 5px;
 
   padding: 4px;
-  border-radius: 999px;
+
+  min-width: 260px;
+
+  background: #f1f5f9;
 
   border: 1px solid #e2e8f0;
+  border-radius: 999px;
 
-  ion-segment-button {
-    --border-radius: 999px;
-    --indicator-box-shadow: none;
+  box-sizing: border-box;
+}
 
-    min-height: 38px;
 
-    font-size: 13px;
-    font-weight: 800;
-    letter-spacing: 0.5px;
-    text-transform: none;
+/* =========================================
+   BOTONES
+========================================= */
 
-    &::part(indicator-background) {
-      border-radius: 999px;
-    }
-  }
+.boton-disponibilidad {
+  position: relative;
 
-  /* Botón "Disponible" */
-  ion-segment-button[value="si"] {
-    --color: #64748b;
-    --color-checked: #ffffff;
+  flex: 1;
 
-    &.segment-button-checked::part(indicator-background) {
-      background: #027a48;
-    }
-  }
+  height: 38px;
 
-  /* Botón "No disponible" */
-  ion-segment-button[value="no"] {
-    --color: #64748b;
-    --color-checked: #ffffff;
+  padding: 0 14px;
 
-    &.segment-button-checked::part(indicator-background) {
-      background: #b42318;
-    }
-  }
+  border: 1px solid transparent;
+  border-radius: 999px;
+
+  background: transparent;
+
+  color: #64748b;
+
+  font-family: inherit;
+  font-size: 13px;
+  font-weight: 800;
+
+  white-space: nowrap;
+
+  cursor: pointer;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 7px;
+
+  box-sizing: border-box;
+
+  transition:
+    background 0.2s ease,
+    color 0.2s ease,
+    border-color 0.2s ease,
+    box-shadow 0.2s ease,
+    transform 0.15s ease;
+}
+
+
+/* =========================================
+   PUNTO INDICADOR
+========================================= */
+
+.boton-disponibilidad .indicador {
+  width: 7px;
+  height: 7px;
+
+  border-radius: 50%;
+
+  background: #94a3b8;
+
+  transition:
+    background 0.2s ease,
+    box-shadow 0.2s ease;
+}
+
+
+/* =========================================
+   EFECTO AL PRESIONAR
+========================================= */
+
+.boton-disponibilidad:active:not(:disabled) {
+  transform: scale(0.96);
+}
+
+
+/* =========================================
+   DISPONIBLE SELECCIONADO
+========================================= */
+
+.boton-disponibilidad.disponible.seleccionado {
+  background: #ecfdf3;
+
+  border-color: #86efac;
+
+  color: #027a48;
+
+  box-shadow:
+    0 3px 8px rgba(2, 122, 72, 0.15);
+}
+
+
+.boton-disponibilidad.disponible.seleccionado .indicador {
+  background: #16a34a;
+
+  box-shadow:
+    0 0 0 3px rgba(22, 163, 74, 0.12);
+}
+
+
+/* =========================================
+   NO DISPONIBLE SELECCIONADO
+========================================= */
+
+.boton-disponibilidad.no-disponible.seleccionado {
+  background: #fff1f2;
+
+  border-color: #fca5a5;
+
+  color: #b42318;
+
+  box-shadow:
+    0 3px 8px rgba(180, 35, 24, 0.15);
+}
+
+
+.boton-disponibilidad.no-disponible.seleccionado .indicador {
+  background: #dc2626;
+
+  box-shadow:
+    0 0 0 3px rgba(220, 38, 38, 0.12);
+}
+
+
+/* =========================================
+   BOTONES NO SELECCIONADOS
+========================================= */
+
+.boton-disponibilidad:not(.seleccionado) {
+  background: #ffffff;
+
+  border-color: #e2e8f0;
+}
+
+
+/* =========================================
+   HOVER
+========================================= */
+
+.boton-disponibilidad:hover:not(:disabled) {
+  background: #ffffff;
+
+  border-color: #cbd5e1;
+}
+
+
+/* =========================================
+   DESHABILITADO MIENTRAS ACTUALIZA
+========================================= */
+
+.boton-disponibilidad:disabled {
+  cursor: default;
+  opacity: 0.65;
 }

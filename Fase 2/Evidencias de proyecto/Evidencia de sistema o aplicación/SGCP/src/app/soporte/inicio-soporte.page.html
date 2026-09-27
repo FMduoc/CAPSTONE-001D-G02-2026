@@ -28,14 +28,33 @@
         </p>
 
       </div>
-    <ion-segment [value]="usuario?.disponible ? 'si' : 'no'" (ionChange)="toggleDisponibilidad($event.detail.value === 'si')">
-      <ion-segment-button value="si">
-        <ion-label>Disponible</ion-label>
-      </ion-segment-button>
-      <ion-segment-button value="no">
-        <ion-label>No disponible</ion-label>
-      </ion-segment-button>
-    </ion-segment>
+      <div class="segmento-disponibilidad">
+
+        <button
+          type="button"
+          class="boton-disponibilidad disponible"
+          [class.seleccionado]="usuario?.disponible === true"
+          [disabled]="actualizandoDisponibilidad"
+          (click)="toggleDisponibilidad(true)">
+
+          <span class="indicador"></span>
+          Disponible
+
+        </button>
+
+        <button
+          type="button"
+          class="boton-disponibilidad no-disponible"
+          [class.seleccionado]="usuario?.disponible === false"
+          [disabled]="actualizandoDisponibilidad"
+          (click)="toggleDisponibilidad(false)">
+
+          <span class="indicador"></span>
+          No disponible
+
+        </button>
+
+      </div>
 
       <ion-button
         fill="outline"

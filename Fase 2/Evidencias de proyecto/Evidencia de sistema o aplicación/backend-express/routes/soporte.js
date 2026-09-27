@@ -55,6 +55,14 @@ router.get('/solicitudes', verificarToken, async (req, res) => {
   }
 
   try {
+    // Consultamos el estado actual de disponibilidad directo de la BD,
+    // no del token, porque puede haber cambiado desde el login.
+    const usuarioResult = await pool.query(
+      'SELECT disponible FROM usuario WHERE id = $1',
+      [usuarioId]
+    );
+    const disponible = usuarioResult.rows[0]?.disponible ?? true;
+
     const result = await pool.query(
       `
       SELECT
@@ -74,19 +82,21 @@ router.get('/solicitudes', verificarToken, async (req, res) => {
       JOIN sala sa
         ON s.sala_id = sa.id
       WHERE s.categoria = $1
+        AND (
+          s.estado = 'terminada'
+          OR $2 = true
+          OR (s.estado = 'atendida' AND s.atendido_por = $3)
+        )
       ORDER BY ${ORDEN_PRIORIDAD}
       `,
-      [categoria]
+      [categoria, disponible, usuarioId]
     );
 
     res.json(result.rows);
 
   } catch (err) {
     console.error('Error al obtener solicitudes de soporte:', err);
-
-    res.status(500).json({
-      error: err.message
-    });
+    res.status(500).json({ error: err.message });
   }
 });
 
@@ -96,6 +106,7 @@ router.get('/solicitudes', verificarToken, async (req, res) => {
 // =====================================================
 
 router.get('/notificaciones', verificarToken, async (req, res) => {
+  const usuarioId = req.usuario.id;
   const rol = req.usuario.rol;
 
   const categoria = obtenerCategoriaPorRol(rol);
@@ -107,6 +118,17 @@ router.get('/notificaciones', verificarToken, async (req, res) => {
   }
 
   try {
+    const usuarioResult = await pool.query(
+      'SELECT disponible FROM usuario WHERE id = $1',
+      [usuarioId]
+    );
+    const disponible = usuarioResult.rows[0]?.disponible ?? true;
+
+    // Si no está disponible, no debe recibir notificaciones de pendientes nuevas
+    if (!disponible) {
+      return res.json({ cantidad: 0, solicitudes: [] });
+    }
+
     const result = await pool.query(
       `
       SELECT
@@ -142,10 +164,7 @@ router.get('/notificaciones', verificarToken, async (req, res) => {
 
   } catch (err) {
     console.error('Error al obtener notificaciones:', err);
-
-    res.status(500).json({
-      error: err.message
-    });
+    res.status(500).json({ error: err.message });
   }
 });
 
