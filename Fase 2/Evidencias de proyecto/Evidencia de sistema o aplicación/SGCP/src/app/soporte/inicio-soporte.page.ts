@@ -116,24 +116,25 @@ export class InicioSoportePage implements OnInit {
   }
 
   async toggleDisponibilidad(disponible: boolean) {
-    this.actualizandoDisponibilidad = true;
-    try {
-      const result = await firstValueFrom(
-        this.http.patch<any>(
-          `${this.apiUrl}/disponibilidad`,
-          { disponible },
-          { headers: await this.obtenerHeaders() }
-        )
-      );
-      this.usuario.disponible = result.disponible;
-    } catch (err) {
-      console.error('Error al actualizar disponibilidad:', err);
-      this.error = 'No se pudo actualizar tu disponibilidad';
-    } finally {
-      this.actualizandoDisponibilidad = false;
-      this.cdr.detectChanges();
-    }
+  this.actualizandoDisponibilidad = true;
+  try {
+    const result = await firstValueFrom(
+      this.http.patch<any>(
+        `${this.apiUrl}/disponibilidad`,
+        { disponible },
+        { headers: await this.obtenerHeaders() }
+      )
+    );
+    this.usuario.disponible = result.disponible;
+    await this.cargarSolicitudes(); // refleja el cambio de visibilidad al instante
+  } catch (err) {
+    console.error('Error al actualizar disponibilidad:', err);
+    this.error = 'No se pudo actualizar tu disponibilidad';
+  } finally {
+    this.actualizandoDisponibilidad = false;
+    this.cdr.detectChanges();
   }
+}
 
   mostrarCategoria(categoria: string): string {
     const categorias: any = {

@@ -21,7 +21,7 @@ router.post('/register', async (req, res) => {
     });
   }
 
-  const rolesPermitidos = ['docente', 'staff'];
+  const rolesPermitidos = ['solicitante', 'staff'];
 
   if (!rolesPermitidos.includes(rol)) {
     return res.status(400).json({
@@ -78,6 +78,7 @@ router.post('/register', async (req, res) => {
 });
 
 // Login de usuarios
+// Login de usuarios
 router.post('/login', async (req, res) => {
   const { email, contrasena } = req.body;
 
@@ -86,8 +87,6 @@ router.post('/login', async (req, res) => {
   }
 
   try {
-    // En caso de tener estados de usuario. Activos, suspendidos, ocupado, etcétera.
-    //const result = await pool.query('SELECT * FROM usuario WHERE email = $1 AND activo = TRUE', [email]);
     const result = await pool.query('SELECT * FROM usuario WHERE email = $1', [email]);
     const usuario = result.rows[0];
 
@@ -108,7 +107,14 @@ router.post('/login', async (req, res) => {
 
     res.json({
       token,
-      usuario: { id: usuario.id, nombre: usuario.nombre, apellido: usuario.apellido, email: usuario.email, rol: usuario.rol }
+      usuario: {
+        id: usuario.id,
+        nombre: usuario.nombre,
+        apellido: usuario.apellido,
+        email: usuario.email,
+        rol: usuario.rol,
+        disponible: usuario.disponible, // <-- agregado
+      }
     });
   } catch (err) {
     res.status(500).json({ error: err.message });
