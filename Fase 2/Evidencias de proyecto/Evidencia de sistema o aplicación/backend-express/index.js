@@ -163,5 +163,8 @@ app.use('/api/salas', salasRoutes);
 
 const soporteRoutes = require('./routes/soporte');
 app.use('/api/soporte', soporteRoutes);
+// Ruta a routes/solicitudes.js
+const solicitudesAdminRoutes = require('./routes/solicitudes');
+app.use('/api/admin/solicitudes', solicitudesAdminRoutes);
 
 app.listen(3000, () => console.log('Servidor corriendo en puerto 3000'));

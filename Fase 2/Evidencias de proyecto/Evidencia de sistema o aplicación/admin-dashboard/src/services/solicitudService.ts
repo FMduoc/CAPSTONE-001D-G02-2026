@@ -4,6 +4,7 @@ export interface SolicitudHistorial {
   id: number;
   descripcion: string;
   estado: string;
+  urgencia: string;
   fecha_creacion: string;
   sala_nombre: string;
   usuario_nombre: string | null;
