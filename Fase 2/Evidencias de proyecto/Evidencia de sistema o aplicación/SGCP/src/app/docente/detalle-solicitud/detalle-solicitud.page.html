@@ -1,3 +1,4 @@
+<!-- detalle-solicitud.html -->
 <ion-content>
   <div *ngIf="!enviado" class="contenido-central">
 
@@ -52,6 +53,27 @@
         placeholder="ej. El proyector hace un ruido extraño al encenderlo"
         rows="4">
       </ion-textarea>
+
+      <label class="campo-label">¿Qué tan urgente es?</label>
+
+        <div class="segmento-urgencia">
+
+          <button
+            type="button"
+            *ngFor="let op of opcionesUrgencia"
+            class="boton-urgencia"
+            [class.urgencia-baja]="op.valor === 'baja'"
+            [class.urgencia-media]="op.valor === 'media'"
+            [class.urgencia-alta]="op.valor === 'alta'"
+            [class.urgencia-critica]="op.valor === 'critica'"
+            [class.seleccionada]="urgencia === op.valor"
+            (click)="seleccionarUrgencia(op.valor)">
+
+            {{ op.etiqueta }}
+
+          </button>
+
+        </div>
     </div>
 
     <ion-text class="mensaje-error" color="danger" *ngIf="error">
@@ -76,6 +98,11 @@
     </div>
     <h2>Solicitud enviada</h2>
     <p>Tu solicitud para {{ salaNombre }} fue registrada correctamente.</p>
+
+    <ion-text class="mensaje-aviso" color="warning" *ngIf="avisoCobertura">
+      <p>{{ avisoCobertura }}</p>
+    </ion-text>
+
     <ion-button class="btn-principal" expand="block" (click)="volverAlInicio()">
       Volver al inicio
     </ion-button>

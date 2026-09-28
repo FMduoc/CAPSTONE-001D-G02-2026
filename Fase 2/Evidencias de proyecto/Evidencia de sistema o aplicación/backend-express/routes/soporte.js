@@ -20,8 +20,26 @@ function obtenerCategoriaPorRol(rol) {
   return categoriaPorRol[rol];
 }
 
+// Orden reutilizable: primero por estado, luego por urgencia, luego por antigüedad
+const ORDEN_PRIORIDAD = `
+  CASE
+    WHEN s.estado = 'pendiente' THEN 1
+    WHEN s.estado = 'atendida' THEN 2
+    WHEN s.estado = 'terminada' THEN 3
+    ELSE 4
+  END,
+  CASE s.urgencia
+    WHEN 'critica' THEN 1
+    WHEN 'alta'    THEN 2
+    WHEN 'media'   THEN 3
+    ELSE 4
+  END,
+  s.fecha_creacion ASC
+`;
+
 // =====================================================
 // LISTAR SOLICITUDES SEGÚN EL ROL DEL USUARIO
+// (ahora priorizadas también por urgencia, no solo por estado)
 // =====================================================
 
 router.get('/solicitudes', verificarToken, async (req, res) => {
@@ -37,6 +55,14 @@ router.get('/solicitudes', verificarToken, async (req, res) => {
   }
 
   try {
+    // Consultamos el estado actual de disponibilidad directo de la BD,
+    // no del token, porque puede haber cambiado desde el login.
+    const usuarioResult = await pool.query(
+      'SELECT disponible FROM usuario WHERE id = $1',
+      [usuarioId]
+    );
+    const disponible = usuarioResult.rows[0]?.disponible ?? true;
+
     const result = await pool.query(
       `
       SELECT
@@ -47,6 +73,7 @@ router.get('/solicitudes', verificarToken, async (req, res) => {
         s.nombre_solicitante,
         s.descripcion,
         s.categoria,
+        s.urgencia,
         s.estado,
         s.atendido_por,
         s.fecha_creacion,
@@ -55,34 +82,31 @@ router.get('/solicitudes', verificarToken, async (req, res) => {
       JOIN sala sa
         ON s.sala_id = sa.id
       WHERE s.categoria = $1
-      ORDER BY
-        CASE
-          WHEN s.estado = 'pendiente' THEN 1
-          WHEN s.estado = 'atendida' THEN 2
-          WHEN s.estado = 'terminada' THEN 3
-          ELSE 4
-        END,
-        s.fecha_creacion DESC
+        AND (
+          s.estado = 'terminada'
+          OR $2 = true
+          OR (s.estado = 'atendida' AND s.atendido_por = $3)
+        )
+      ORDER BY ${ORDEN_PRIORIDAD}
       `,
-      [categoria]
+      [categoria, disponible, usuarioId]
     );
 
     res.json(result.rows);
 
   } catch (err) {
     console.error('Error al obtener solicitudes de soporte:', err);
-
-    res.status(500).json({
-      error: err.message
-    });
+    res.status(500).json({ error: err.message });
   }
 });
 
 // =====================================================
 // NOTIFICACIONES / SOLICITUDES PENDIENTES SEGÚN ROL
+// (también ordenadas por urgencia)
 // =====================================================
 
 router.get('/notificaciones', verificarToken, async (req, res) => {
+  const usuarioId = req.usuario.id;
   const rol = req.usuario.rol;
 
   const categoria = obtenerCategoriaPorRol(rol);
@@ -94,12 +118,24 @@ router.get('/notificaciones', verificarToken, async (req, res) => {
   }
 
   try {
+    const usuarioResult = await pool.query(
+      'SELECT disponible FROM usuario WHERE id = $1',
+      [usuarioId]
+    );
+    const disponible = usuarioResult.rows[0]?.disponible ?? true;
+
+    // Si no está disponible, no debe recibir notificaciones de pendientes nuevas
+    if (!disponible) {
+      return res.json({ cantidad: 0, solicitudes: [] });
+    }
+
     const result = await pool.query(
       `
       SELECT
         s.id,
         s.descripcion,
         s.categoria,
+        s.urgencia,
         s.estado,
         s.fecha_creacion,
         sa.nombre AS sala_nombre
@@ -109,7 +145,14 @@ router.get('/notificaciones', verificarToken, async (req, res) => {
       WHERE
         s.categoria = $1
         AND s.estado = 'pendiente'
-      ORDER BY s.fecha_creacion DESC
+      ORDER BY
+        CASE s.urgencia
+          WHEN 'critica' THEN 1
+          WHEN 'alta'    THEN 2
+          WHEN 'media'   THEN 3
+          ELSE 4
+        END,
+        s.fecha_creacion DESC
       `,
       [categoria]
     );
@@ -121,10 +164,7 @@ router.get('/notificaciones', verificarToken, async (req, res) => {
 
   } catch (err) {
     console.error('Error al obtener notificaciones:', err);
-
-    res.status(500).json({
-      error: err.message
-    });
+    res.status(500).json({ error: err.message });
   }
 });
 
@@ -255,5 +295,89 @@ router.patch(
     }
   }
 );
+
+// =====================================================
+// DISPONIBILIDAD DEL PERSONAL DE SOPORTE
+// =====================================================
+
+router.patch('/disponibilidad', verificarToken, async (req, res) => {
+  const { disponible } = req.body;
+  const usuarioId = req.usuario.id;
+  const rol = req.usuario.rol;
+
+  const categoria = obtenerCategoriaPorRol(rol);
+
+  if (!categoria) {
+    return res.status(403).json({
+      error: 'Solo el personal de soporte puede actualizar su disponibilidad'
+    });
+  }
+
+  if (typeof disponible !== 'boolean') {
+    return res.status(400).json({
+      error: 'disponible debe ser true o false'
+    });
+  }
+
+  try {
+    const result = await pool.query(
+      `
+      UPDATE usuario
+      SET disponible = $1
+      WHERE id = $2
+      RETURNING id, nombre, apellido, rol, disponible
+      `,
+      [disponible, usuarioId]
+    );
+
+    res.json(result.rows[0]);
+
+  } catch (err) {
+    console.error('Error al actualizar disponibilidad:', err);
+
+    res.status(500).json({
+      error: err.message
+    });
+  }
+});
+
+// =====================================================
+// COBERTURA: ¿HAY PERSONAL DISPONIBLE PARA UNA CATEGORÍA?
+// (usado por el solicitante antes/después de enviar una solicitud)
+// =====================================================
+
+router.get('/cobertura/:categoria', verificarToken, async (req, res) => {
+  const { categoria } = req.params;
+  const categoriasValidas = Object.values(categoriaPorRol);
+
+  if (!categoriasValidas.includes(categoria)) {
+    return res.status(400).json({
+      error: 'Categoría no válida'
+    });
+  }
+
+  try {
+    const result = await pool.query(
+      `
+      SELECT COUNT(*) 
+      FROM usuario
+      WHERE rol = $1::rol_usuario
+        AND disponible = true
+      `,
+      [categoria]
+    );
+
+    const hayDisponibles = parseInt(result.rows[0].count, 10) > 0;
+
+    res.json({ categoria, hayDisponibles });
+
+  } catch (err) {
+    console.error('Error al consultar cobertura:', err);
+
+    res.status(500).json({
+      error: err.message
+    });
+  }
+});
 
 module.exports = router;

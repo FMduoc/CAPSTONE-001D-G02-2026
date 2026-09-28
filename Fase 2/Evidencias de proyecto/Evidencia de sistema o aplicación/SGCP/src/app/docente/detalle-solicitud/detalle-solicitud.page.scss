@@ -410,3 +410,132 @@ ion-button.btn-cancelar-solido {
     margin: 0;
   }
 }
+/* =========================================
+   SELECTOR DE URGENCIA
+   ========================================= */
+
+.segmento-urgencia {
+  width: 100%;
+  margin-top: 8px;
+  padding: 4px;
+
+  display: flex;
+  gap: 5px;
+
+  background: #f1f5f9;
+  border-radius: 14px;
+
+  box-sizing: border-box;
+}
+
+
+/* =========================================
+   BOTONES
+   ========================================= */
+
+.boton-urgencia {
+  flex: 1;
+  min-width: 0;
+  height: 42px;
+
+  padding: 0 6px;
+
+  border: 1px solid #d8dee7;
+  border-radius: 10px;
+
+  background: #ffffff;
+  color: #374151;
+
+  font-family: inherit;
+  font-size: 12px;
+  font-weight: 700;
+
+  cursor: pointer;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  box-sizing: border-box;
+
+  transition:
+    background 0.2s ease,
+    border-color 0.2s ease,
+    box-shadow 0.2s ease,
+    transform 0.15s ease;
+}
+
+
+/* =========================================
+   EFECTO AL PRESIONAR
+   ========================================= */
+
+.boton-urgencia:active {
+  transform: scale(0.95);
+}
+
+
+/* =========================================
+   BAJA
+   ========================================= */
+
+.boton-urgencia.urgencia-baja.seleccionada {
+  background: #90a4ae;
+  border-color: #90a4ae;
+  color: #ffffff;
+
+  box-shadow: 0 4px 10px rgba(144, 164, 174, 0.35);
+}
+
+
+/* =========================================
+   MEDIA
+   ========================================= */
+
+.boton-urgencia.urgencia-media.seleccionada {
+  background: #fbc02d;
+  border-color: #fbc02d;
+  color: #333333;
+
+  box-shadow: 0 4px 10px rgba(251, 192, 45, 0.35);
+}
+
+
+/* =========================================
+   ALTA
+   ========================================= */
+
+.boton-urgencia.urgencia-alta.seleccionada {
+  background: #f57c00;
+  border-color: #f57c00;
+  color: #ffffff;
+
+  box-shadow: 0 4px 10px rgba(245, 124, 0, 0.35);
+}
+
+
+/* =========================================
+   CRÍTICA
+   ========================================= */
+
+.boton-urgencia.urgencia-critica.seleccionada {
+  background: #d32f2f;
+  border-color: #d32f2f;
+  color: #ffffff;
+
+  box-shadow: 0 4px 10px rgba(211, 47, 47, 0.35);
+}
+
+
+/* =========================================
+   CELULARES PEQUEÑOS
+   ========================================= */
+
+@media (max-width: 400px) {
+
+  .boton-urgencia {
+    height: 40px;
+    font-size: 11px;
+    padding: 0 4px;
+  }
+}
