@@ -7,13 +7,14 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { firstValueFrom } from 'rxjs';
 import { AuthService } from '../services/auth';
 import { environment } from '../../environments/environment';
+import { FormsModule } from '@angular/forms';
 
 @Component({
   selector: 'app-inicio-soporte',
   templateUrl: './inicio-soporte.page.html',
   styleUrls: ['./inicio-soporte.page.scss'],
   standalone: true,
-  imports: [CommonModule, IonicModule],
+  imports: [CommonModule, IonicModule, FormsModule],
 })
 export class InicioSoportePage implements OnInit {
   solicitudes: any[] = [];
@@ -22,10 +23,8 @@ export class InicioSoportePage implements OnInit {
   error = '';
   actualizandoDisponibilidad = false;
 
-  // Filtros
+  // Filtro de urgencia
   filtroUrgencia = 'todas';
-  filtroSala = 'todas';
-
   opcionesUrgenciaFiltro = [
     { valor: 'todas', etiqueta: 'Todas' },
     { valor: 'critica', etiqueta: 'Crítica' },
@@ -33,6 +32,10 @@ export class InicioSoportePage implements OnInit {
     { valor: 'media', etiqueta: 'Media' },
     { valor: 'baja', etiqueta: 'Baja' },
   ];
+
+  // Filtro de sala (buscador con autocompletado propio)
+  filtroSala = 'todas';
+  busquedaSala = '';
 
   private apiUrl = `${environment.apiUrl}/soporte`;
 
@@ -48,10 +51,17 @@ export class InicioSoportePage implements OnInit {
     await this.cargarSolicitudes();
   }
 
-  // Salas únicas presentes en las solicitudes actuales, para poblar el select
+  // Salas únicas presentes en las solicitudes actuales
   get salasDisponibles(): string[] {
     const salas = this.solicitudes.map((s) => s.sala_nombre).filter(Boolean);
     return Array.from(new Set(salas)).sort();
+  }
+
+  // Salas que coinciden con lo que el usuario está escribiendo
+  get salasFiltradas(): string[] {
+    const termino = this.busquedaSala.trim().toLowerCase();
+    if (!termino) return this.salasDisponibles;
+    return this.salasDisponibles.filter((s) => s.toLowerCase().includes(termino));
   }
 
   get hayFiltrosActivos(): boolean {
@@ -78,21 +88,30 @@ export class InicioSoportePage implements OnInit {
     return this.aplicarFiltros(historial);
   }
 
-  busquedaSala = '';
-
   seleccionarFiltroUrgencia(valor: string | number | undefined) {
     this.filtroUrgencia = valor !== undefined ? String(valor) : 'todas';
   }
 
-  seleccionarFiltroSala(valor: string | number | undefined) {
-    this.filtroSala = valor !== undefined ? String(valor) : 'todas';
+  onBuscarSala(valor: string | number | null | undefined) {
+    this.busquedaSala = valor !== null && valor !== undefined ? String(valor) : '';
+    this.filtroSala = 'todas';
   }
 
-limpiarFiltros() {
-  this.filtroUrgencia = 'todas';
-  this.filtroSala = 'todas';
-  this.busquedaSala = '';
-}
+  seleccionarSala(sala: string) {
+    this.filtroSala = sala;
+    this.busquedaSala = sala;
+  }
+
+  limpiarFiltroSala() {
+    this.filtroSala = 'todas';
+    this.busquedaSala = '';
+  }
+
+  limpiarFiltros() {
+    this.filtroUrgencia = 'todas';
+    this.filtroSala = 'todas';
+    this.busquedaSala = '';
+  }
 
   private async obtenerHeaders(): Promise<HttpHeaders> {
     const token = await this.authService.getToken();

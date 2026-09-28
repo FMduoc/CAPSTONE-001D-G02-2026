@@ -124,7 +124,7 @@
         {{ error }}
 
       </div>
-<!-- FILTROS -->
+      <!-- FILTROS -->
       <div class="filtros-bar">
 
         <div class="filtro-grupo">
@@ -147,9 +147,11 @@
           <div class="buscador-sala">
             <ion-input
               class="input-sala"
+              name="buscador-sala-solicitudes"
+              autocomplete="off"
               placeholder="Buscar sala..."
-              [(ngModel)]="busquedaSala"
-              (ionInput)="filtroSala = 'todas'">
+              [value]="busquedaSala"
+              (ionInput)="onBuscarSala($event.detail.value)">
             </ion-input>
 
             <div class="resultados-sala" *ngIf="busquedaSala && salasFiltradas.length > 0">
@@ -185,7 +187,7 @@
           Limpiar filtros
         </ion-button>
 
-</div>
+      </div>
 
       <!-- ============================== -->
       <!-- SOLICITUDES ACTIVAS -->
