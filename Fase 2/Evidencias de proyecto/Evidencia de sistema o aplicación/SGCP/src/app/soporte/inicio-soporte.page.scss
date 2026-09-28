@@ -653,4 +653,69 @@
 
 }
 
+/* =========================================
+   REPORTE SOPORTE
+========================================= */
+
+.reporte-soporte {
+  display: flex;
+  flex-direction: column;
+
+  gap: 12px;
+
+  margin-top: 10px;
+}
+
+
+.reporte-soporte ion-textarea {
+
+  --background: #f8fafc;
+
+  --border-color: #d8e0e7;
+
+  --border-radius: 10px;
+
+  --color: #17212b;
+
+  font-size: 14px;
+}
+
+/* =========================================
+   SELECT TIPO DE CUENTA
+========================================= */
+
+.premium-select {
+
+  width: 100%;
+  min-height: 56px;
+
+  padding: 0 16px;
+
+  background: var(--surface-soft);
+
+  color: var(--text-primary);
+
+  border: 1px solid var(--border);
+  border-radius: 12px;
+
+  font-size: 15px;
+
+  outline: none;
+
+  cursor: pointer;
+
+  appearance: auto;
+}
+
+
+.premium-select:focus {
+
+  border-color: var(--duoc-blue);
+
+  box-shadow:
+    0 0 0 1px
+    var(--duoc-blue);
+
+}
+
 }

@@ -1,12 +1,14 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable, tap } from 'rxjs';
+
 @Injectable({
   providedIn: 'root'
 })
 export class AuthService {
 
-  private apiUrl = 'http://localhost:3000/api/auth';
+  private apiUrl =
+    'http://localhost:3000/api/auth';
 
   constructor(
     private http: HttpClient
@@ -30,6 +32,14 @@ export class AuthService {
     ).pipe(
 
       tap((respuesta) => {
+
+        // Borra cualquier sesión anterior
+        // antes de guardar la nueva
+        localStorage.removeItem('token');
+        localStorage.removeItem('usuario');
+
+        sessionStorage.removeItem('token');
+        sessionStorage.removeItem('usuario');
 
         if (respuesta.token) {
 
@@ -77,7 +87,7 @@ export class AuthService {
   }
 
   // ==========================================
-  // SABER SI HAY SESIÓN
+  // AUTENTICACIÓN
   // ==========================================
 
   async isAuthenticated(): Promise<boolean> {
@@ -90,7 +100,7 @@ export class AuthService {
   }
 
   // ==========================================
-  // OBTENER TOKEN
+  // TOKEN
   // ==========================================
 
   getToken(): string | null {
@@ -102,7 +112,7 @@ export class AuthService {
   }
 
   // ==========================================
-  // OBTENER USUARIO
+  // USUARIO
   // ==========================================
 
   getUsuario(): any {
@@ -114,12 +124,20 @@ export class AuthService {
       return null;
     }
 
-    return JSON.parse(usuario);
+    try {
+
+      return JSON.parse(usuario);
+
+    } catch {
+
+      return null;
+
+    }
 
   }
 
   // ==========================================
-  // OBTENER ROL
+  // ROL
   // ==========================================
 
   getRol(): string | null {
@@ -132,13 +150,16 @@ export class AuthService {
   }
 
   // ==========================================
-  // CERRAR SESIÓN
+  // LOGOUT
   // ==========================================
 
   logout(): void {
 
     localStorage.removeItem('token');
     localStorage.removeItem('usuario');
+
+    sessionStorage.removeItem('token');
+    sessionStorage.removeItem('usuario');
 
   }
 

@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { IonicModule } from '@ionic/angular/lazy';
@@ -17,7 +17,7 @@ import { AuthService } from '../../services/auth';
     RouterLink
   ],
 })
-export class LoginPage implements OnInit {
+export class LoginPage {
 
   email = '';
   contrasena = '';
@@ -28,31 +28,41 @@ export class LoginPage implements OnInit {
     private router: Router
   ) {}
 
-  async ngOnInit() {
 
-    const autenticado =
-      await this.authService.isAuthenticated();
-
-    if (autenticado) {
-      this.redirigirSegunRol();
-    }
-
-  }
-
+  // ==========================================
+  // INICIAR SESIÓN
+  // ==========================================
 
   iniciarSesion() {
 
     this.error = '';
 
+    const email =
+      this.email.trim().toLowerCase();
+
+    if (!email || !this.contrasena) {
+
+      this.error =
+        'Ingresa tu correo y contraseña';
+
+      return;
+
+    }
+
     this.authService
       .login(
-        this.email.trim().toLowerCase(),
+        email,
         this.contrasena
       )
       .subscribe({
 
-        next: () => {
-          this.redirigirSegunRol();
+        next: (respuesta) => {
+
+          const rol =
+            respuesta.usuario?.rol;
+
+          this.redirigirSegunRol(rol);
+
         },
 
         error: (err) => {
@@ -73,10 +83,13 @@ export class LoginPage implements OnInit {
   }
 
 
-  private redirigirSegunRol() {
+  // ==========================================
+  // REDIRECCIÓN SEGÚN ROL
+  // ==========================================
 
-    const rol =
-      this.authService.getRol();
+  private redirigirSegunRol(
+    rol: string | null
+  ) {
 
     const rolesSoporte = [
       'tecnico',
@@ -89,17 +102,24 @@ export class LoginPage implements OnInit {
       rolesSoporte.includes(rol)
     ) {
 
-      this.router.navigate([
-        '/inicio-soporte'
-      ]);
+      this.router.navigateByUrl(
+        '/inicio-soporte',
+        {
+          replaceUrl: true
+        }
+      );
 
       return;
 
     }
 
-    this.router.navigate([
-      '/home'
-    ]);
+
+    this.router.navigateByUrl(
+      '/home',
+      {
+        replaceUrl: true
+      }
+    );
 
   }
 

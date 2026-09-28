@@ -11,7 +11,9 @@
         class="duoc-logo"
       />
 
-      <h1>Crear cuenta</h1>
+      <h1>
+        Crear cuenta
+      </h1>
 
       <p>
         Sistema de Gestión y Control de Peticiones
@@ -26,6 +28,7 @@
       <div class="card-header">
 
         <div class="card-heading">
+
           <span class="eyebrow">
             NUEVA CUENTA
           </span>
@@ -37,6 +40,7 @@
           <p>
             Ingresa tus datos para comenzar a utilizar la plataforma.
           </p>
+
         </div>
 
         <div class="card-accent"></div>
@@ -46,7 +50,10 @@
 
       <div class="form-grid">
 
+        <!-- ====================================== -->
         <!-- NOMBRE -->
+        <!-- ====================================== -->
+
         <div class="field-group">
 
           <span class="field-label">
@@ -63,7 +70,10 @@
         </div>
 
 
+        <!-- ====================================== -->
         <!-- APELLIDO -->
+        <!-- ====================================== -->
+
         <div class="field-group">
 
           <span class="field-label">
@@ -80,7 +90,10 @@
         </div>
 
 
+        <!-- ====================================== -->
         <!-- CORREO -->
+        <!-- ====================================== -->
+
         <div class="field-group full-width">
 
           <span class="field-label">
@@ -98,33 +111,67 @@
         </div>
 
 
-        <!-- TIPO CUENTA -->
+        <!-- ====================================== -->
+        <!-- TIPO DE CUENTA -->
+        <!-- ====================================== -->
+
         <div class="field-group full-width">
 
           <span class="field-label">
             Tipo de cuenta
           </span>
 
-          <ion-select
-            class="premium-input"
-            fill="outline"
-            interface="popover"
-            [(ngModel)]="rol">
+          <select
+            class="premium-select"
+            [(ngModel)]="tipoCuenta">
 
-            <ion-select-option
-              *ngFor="let r of roles"
-              [value]="r.valor">
+            <option
+              *ngFor="let tipo of tiposCuenta"
+              [value]="tipo.valor">
 
-              {{ r.etiqueta }}
+              {{ tipo.etiqueta }}
 
-            </ion-select-option>
+            </option>
 
-          </ion-select>
+          </select>
 
         </div>
 
 
+        <!-- ====================================== -->
+        <!-- ÁREA DE SOPORTE -->
+        <!-- SOLO APARECE SI ELIGE PERSONAL -->
+        <!-- ====================================== -->
+
+        <div
+          class="field-group full-width"
+          *ngIf="tipoCuenta === 'personal'">
+
+          <span class="field-label">
+            Área de soporte
+          </span>
+
+          <select
+            class="premium-select"
+            [(ngModel)]="areaSoporte">
+
+            <option
+              *ngFor="let area of areasSoporte"
+              [value]="area.valor">
+
+              {{ area.etiqueta }}
+
+            </option>
+
+          </select>
+
+        </div>
+
+
+        <!-- ====================================== -->
         <!-- CONTRASEÑA -->
+        <!-- ====================================== -->
+
         <div class="field-group">
 
           <span class="field-label">
@@ -142,7 +189,10 @@
         </div>
 
 
-        <!-- CONFIRMAR -->
+        <!-- ====================================== -->
+        <!-- CONFIRMAR CONTRASEÑA -->
+        <!-- ====================================== -->
+
         <div class="field-group">
 
           <span class="field-label">
@@ -162,7 +212,10 @@
       </div>
 
 
+      <!-- ====================================== -->
       <!-- ERROR -->
+      <!-- ====================================== -->
+
       <div
         class="error-box"
         *ngIf="error">
@@ -172,7 +225,10 @@
       </div>
 
 
-      <!-- BOTÓN -->
+      <!-- ====================================== -->
+      <!-- BOTÓN REGISTRO -->
+      <!-- ====================================== -->
+
       <ion-button
         expand="block"
         class="register-button"
@@ -184,10 +240,14 @@
       </ion-button>
 
 
-      <!-- LOGIN -->
+      <!-- ====================================== -->
+      <!-- IR AL LOGIN -->
+      <!-- ====================================== -->
+
       <div class="login-section">
 
         <div class="separator">
+
           <span></span>
 
           <p>
@@ -195,6 +255,7 @@
           </p>
 
           <span></span>
+
         </div>
 
         <a routerLink="/login">

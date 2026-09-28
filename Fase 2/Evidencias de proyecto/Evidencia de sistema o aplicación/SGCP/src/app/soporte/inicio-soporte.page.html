@@ -2,7 +2,10 @@
 
   <div class="soporte-layout">
 
+    <!-- ====================================== -->
     <!-- CABECERA -->
+    <!-- ====================================== -->
+
     <header class="brand-section">
 
       <img
@@ -40,7 +43,10 @@
     </header>
 
 
-    <!-- CONTENIDO -->
+    <!-- ====================================== -->
+    <!-- CONTENIDO PRINCIPAL -->
+    <!-- ====================================== -->
+
     <section class="soporte-card">
 
       <div class="card-header">
@@ -62,6 +68,7 @@
 
         </div>
 
+
         <ion-button
           fill="outline"
           class="refresh-button"
@@ -75,7 +82,10 @@
       </div>
 
 
+      <!-- ====================================== -->
       <!-- CARGA INICIAL -->
+      <!-- ====================================== -->
+
       <div
         class="status-message"
         *ngIf="
@@ -88,7 +98,10 @@
       </div>
 
 
+      <!-- ====================================== -->
       <!-- ERROR -->
+      <!-- ====================================== -->
+
       <div
         class="error-box"
         *ngIf="error">
@@ -98,9 +111,9 @@
       </div>
 
 
-      <!-- ============================== -->
+      <!-- ====================================== -->
       <!-- SOLICITUDES ACTIVAS -->
-      <!-- ============================== -->
+      <!-- ====================================== -->
 
       <div class="section-block">
 
@@ -118,6 +131,7 @@
 
           </div>
 
+
           <span class="counter-badge">
             {{ solicitudesActivas.length }}
           </span>
@@ -125,7 +139,8 @@
         </div>
 
 
-        <!-- SIN ACTIVAS -->
+        <!-- SIN SOLICITUDES ACTIVAS -->
+
         <div
           class="empty-state"
           *ngIf="
@@ -146,7 +161,8 @@
         </div>
 
 
-        <!-- LISTA ACTIVAS -->
+        <!-- LISTADO DE SOLICITUDES ACTIVAS -->
+
         <div
           class="solicitudes-grid"
           *ngIf="solicitudesActivas.length > 0">
@@ -154,6 +170,9 @@
           <article
             class="solicitud-card"
             *ngFor="let solicitud of solicitudesActivas">
+
+
+            <!-- ENCABEZADO -->
 
             <div class="solicitud-header">
 
@@ -169,16 +188,19 @@
 
               </div>
 
+
               <span
                 class="estado-badge"
                 [ngClass]="solicitud.estado">
 
-                {{ solicitud.estado }}
+                {{ mostrarEstado(solicitud.estado) }}
 
               </span>
 
             </div>
 
+
+            <!-- INFORMACIÓN -->
 
             <div class="solicitud-info">
 
@@ -236,9 +258,15 @@
             </div>
 
 
+            <!-- ====================================== -->
+            <!-- ACCIONES -->
+            <!-- ====================================== -->
+
             <div class="solicitud-actions">
 
+
               <!-- PENDIENTE -->
+
               <ion-button
                 *ngIf="solicitud.estado === 'pendiente'"
                 expand="block"
@@ -250,16 +278,37 @@
               </ion-button>
 
 
-              <!-- ATENDIDA -->
-              <ion-button
-                *ngIf="solicitud.estado === 'atendida'"
-                expand="block"
-                class="terminar-button"
-                (click)="terminarSolicitud(solicitud.id)">
+              <!-- ====================================== -->
+              <!-- EN CURSO -->
+              <!-- ====================================== -->
 
-                Marcar como terminada
+              <div
+                class="reporte-soporte"
+                *ngIf="solicitud.estado === 'atendida'">
 
-              </ion-button>
+                <span class="field-label">
+                  Reporte del trabajo realizado
+                </span>
+
+                <ion-textarea
+                  fill="outline"
+                  [autoGrow]="true"
+                  rows="4"
+                  placeholder="Describe brevemente el trabajo realizado antes de finalizar la solicitud."
+                  [(ngModel)]="reportes[solicitud.id]">
+                </ion-textarea>
+
+
+                <ion-button
+                  expand="block"
+                  class="terminar-button"
+                  (click)="terminarSolicitud(solicitud.id)">
+
+                  Finalizar solicitud
+
+                </ion-button>
+
+              </div>
 
             </div>
 
@@ -270,9 +319,9 @@
       </div>
 
 
-      <!-- ============================== -->
+      <!-- ====================================== -->
       <!-- HISTORIAL -->
-      <!-- ============================== -->
+      <!-- ====================================== -->
 
       <div class="section-block history-section">
 
@@ -290,6 +339,7 @@
 
           </div>
 
+
           <span class="counter-badge history">
             {{ solicitudesHistorial.length }}
           </span>
@@ -298,6 +348,7 @@
 
 
         <!-- SIN HISTORIAL -->
+
         <div
           class="empty-history"
           *ngIf="
@@ -310,7 +361,8 @@
         </div>
 
 
-        <!-- HISTORIAL -->
+        <!-- LISTADO HISTORIAL -->
+
         <div
           class="solicitudes-grid"
           *ngIf="solicitudesHistorial.length > 0">
@@ -318,6 +370,9 @@
           <article
             class="solicitud-card historial-card"
             *ngFor="let solicitud of solicitudesHistorial">
+
+
+            <!-- ENCABEZADO -->
 
             <div class="solicitud-header">
 
@@ -333,15 +388,18 @@
 
               </div>
 
+
               <span
                 class="estado-badge terminada">
 
-                Terminada
+                {{ mostrarEstado(solicitud.estado) }}
 
               </span>
 
             </div>
 
+
+            <!-- INFORMACIÓN -->
 
             <div class="solicitud-info">
 
@@ -374,11 +432,28 @@
               <div class="info-item full-width">
 
                 <span>
-                  Descripción
+                  Descripción de la solicitud
                 </span>
 
                 <strong>
                   {{ solicitud.descripcion }}
+                </strong>
+
+              </div>
+
+
+              <!-- REPORTE DE SOPORTE -->
+
+              <div
+                class="info-item full-width"
+                *ngIf="solicitud.reporte_soporte">
+
+                <span>
+                  Reporte del trabajo realizado
+                </span>
+
+                <strong>
+                  {{ solicitud.reporte_soporte }}
                 </strong>
 
               </div>
@@ -400,7 +475,7 @@
               <div class="info-item">
 
                 <span>
-                  Última actualización
+                  Fecha finalización
                 </span>
 
                 <strong>
@@ -413,7 +488,9 @@
 
 
             <div class="solicitud-finalizada">
+
               Solicitud finalizada
+
             </div>
 
           </article>

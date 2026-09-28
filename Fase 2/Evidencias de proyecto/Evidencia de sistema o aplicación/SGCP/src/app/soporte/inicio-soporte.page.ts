@@ -1,20 +1,34 @@
 import {
   Component,
-  OnInit,
   ChangeDetectorRef
 } from '@angular/core';
 
 import { CommonModule } from '@angular/common';
-import { IonicModule } from '@ionic/angular/lazy';
-import { Router } from '@angular/router';
+import {
+  IonicModule
+} from '@ionic/angular/lazy';
+
+import {
+  Router
+} from '@angular/router';
+
 import {
   HttpClient,
   HttpHeaders
 } from '@angular/common/http';
 
-import { firstValueFrom } from 'rxjs';
+import {
+  FormsModule
+} from '@angular/forms';
 
-import { AuthService } from '../services/auth';
+import {
+  firstValueFrom
+} from 'rxjs';
+
+import {
+  AuthService
+} from '../services/auth';
+
 
 @Component({
   selector: 'app-inicio-soporte',
@@ -23,10 +37,11 @@ import { AuthService } from '../services/auth';
   standalone: true,
   imports: [
     CommonModule,
-    IonicModule
+    IonicModule,
+    FormsModule
   ],
 })
-export class InicioSoportePage implements OnInit {
+export class InicioSoportePage {
 
   solicitudes: any[] = [];
 
@@ -35,8 +50,13 @@ export class InicioSoportePage implements OnInit {
   cargando = false;
   error = '';
 
+  reportes: {
+    [id: number]: string
+  } = {};
+
   private apiUrl =
     'http://localhost:3000/api/soporte';
+
 
   constructor(
     private authService: AuthService,
@@ -45,18 +65,28 @@ export class InicioSoportePage implements OnInit {
     private cdr: ChangeDetectorRef
   ) {}
 
-  ngOnInit() {
+
+  // ==========================================
+  // IMPORTANTE PARA IONIC
+  // Se ejecuta CADA VEZ que entras a la página
+  // ==========================================
+
+  ionViewWillEnter() {
 
     this.usuario =
       this.authService.getUsuario();
+
+    this.solicitudes = [];
+
+    this.error = '';
 
     this.cargarSolicitudes();
 
   }
 
+
   // ==========================================
   // SOLICITUDES ACTIVAS
-  // pendiente + atendida
   // ==========================================
 
   get solicitudesActivas(): any[] {
@@ -69,9 +99,9 @@ export class InicioSoportePage implements OnInit {
 
   }
 
+
   // ==========================================
   // HISTORIAL
-  // terminadas
   // ==========================================
 
   get solicitudesHistorial(): any[] {
@@ -83,8 +113,9 @@ export class InicioSoportePage implements OnInit {
 
   }
 
+
   // ==========================================
-  // HEADERS CON JWT
+  // HEADERS JWT
   // ==========================================
 
   private obtenerHeaders(): HttpHeaders {
@@ -98,8 +129,9 @@ export class InicioSoportePage implements OnInit {
 
   }
 
+
   // ==========================================
-  // ACTUALIZAR SOLICITUDES
+  // CARGAR SOLICITUDES
   // ==========================================
 
   async cargarSolicitudes() {
@@ -113,7 +145,13 @@ export class InicioSoportePage implements OnInit {
 
     if (!token) {
 
-      this.router.navigate(['/login']);
+      this.router.navigateByUrl(
+        '/login',
+        {
+          replaceUrl: true
+        }
+      );
+
       return;
 
     }
@@ -130,7 +168,8 @@ export class InicioSoportePage implements OnInit {
           this.http.get<any[]>(
             `${this.apiUrl}/solicitudes`,
             {
-              headers: this.obtenerHeaders()
+              headers:
+                this.obtenerHeaders()
             }
           )
         );
@@ -158,6 +197,7 @@ export class InicioSoportePage implements OnInit {
 
   }
 
+
   // ==========================================
   // ATENDER
   // ==========================================
@@ -173,7 +213,8 @@ export class InicioSoportePage implements OnInit {
           `${this.apiUrl}/solicitudes/${id}/atender`,
           {},
           {
-            headers: this.obtenerHeaders()
+            headers:
+              this.obtenerHeaders()
           }
         )
       );
@@ -195,25 +236,34 @@ export class InicioSoportePage implements OnInit {
 
   }
 
+
   // ==========================================
-  // TERMINAR
+  // TERMINAR + REPORTE
   // ==========================================
 
   async terminarSolicitud(id: number) {
 
     this.error = '';
 
+    const reporte =
+      this.reportes[id]?.trim() || '';
+
     try {
 
       await firstValueFrom(
         this.http.patch(
           `${this.apiUrl}/solicitudes/${id}/terminar`,
-          {},
           {
-            headers: this.obtenerHeaders()
+            reporte_soporte: reporte
+          },
+          {
+            headers:
+              this.obtenerHeaders()
           }
         )
       );
+
+      delete this.reportes[id];
 
       await this.cargarSolicitudes();
 
@@ -232,31 +282,78 @@ export class InicioSoportePage implements OnInit {
 
   }
 
+
   // ==========================================
-  // MOSTRAR CATEGORÍA BONITA
+  // MOSTRAR ESTADO PROFESIONAL
   // ==========================================
 
-  mostrarCategoria(categoria: string): string {
+  mostrarEstado(
+    estado: string
+  ): string {
 
-    const categorias: any = {
-      servicio_tecnico: 'Servicio técnico',
-      emergencia_medica: 'Emergencia médica',
-      limpieza: 'Limpieza'
+    const estados: any = {
+
+      pendiente:
+        'Pendiente',
+
+      atendida:
+        'En curso',
+
+      terminada:
+        'Finalizada'
+
     };
 
-    return categorias[categoria] || categoria;
+    return estados[estado] || estado;
 
   }
 
+
   // ==========================================
-  // CERRAR SESIÓN
+  // MOSTRAR CATEGORÍA
+  // ==========================================
+
+  mostrarCategoria(
+    categoria: string
+  ): string {
+
+    const categorias: any = {
+
+      servicio_tecnico:
+        'Servicio técnico',
+
+      emergencia_medica:
+        'Emergencia médica',
+
+      limpieza:
+        'Limpieza'
+
+    };
+
+    return categorias[categoria]
+      || categoria;
+
+  }
+
+
+  // ==========================================
+  // LOGOUT
   // ==========================================
 
   cerrarSesion() {
 
     this.authService.logout();
 
-    this.router.navigate(['/login']);
+    this.usuario = null;
+
+    this.solicitudes = [];
+
+    this.router.navigateByUrl(
+      '/login',
+      {
+        replaceUrl: true
+      }
+    );
 
   }
 
