@@ -124,7 +124,68 @@
         {{ error }}
 
       </div>
+<!-- FILTROS -->
+      <div class="filtros-bar">
 
+        <div class="filtro-grupo">
+          <span class="filtro-label">Urgencia</span>
+          <div class="filtro-chips">
+            <button
+              type="button"
+              *ngFor="let op of opcionesUrgenciaFiltro"
+              class="chip-filtro"
+              [class]="'chip-' + op.valor"
+              [class.activo]="filtroUrgencia === op.valor"
+              (click)="seleccionarFiltroUrgencia(op.valor)">
+              {{ op.etiqueta }}
+            </button>
+          </div>
+        </div>
+
+        <div class="filtro-grupo filtro-sala-grupo">
+          <span class="filtro-label">Sala</span>
+          <div class="buscador-sala">
+            <ion-input
+              class="input-sala"
+              placeholder="Buscar sala..."
+              [(ngModel)]="busquedaSala"
+              (ionInput)="filtroSala = 'todas'">
+            </ion-input>
+
+            <div class="resultados-sala" *ngIf="busquedaSala && salasFiltradas.length > 0">
+              <button
+                type="button"
+                *ngFor="let sala of salasFiltradas"
+                class="resultado-item"
+                (click)="seleccionarSala(sala)">
+                {{ sala }}
+              </button>
+            </div>
+
+            <div class="sin-resultados" *ngIf="busquedaSala && salasFiltradas.length === 0">
+              Sin coincidencias
+            </div>
+          </div>
+
+          <button
+            type="button"
+            class="chip-sala-activa"
+            *ngIf="filtroSala !== 'todas'"
+            (click)="limpiarFiltroSala()">
+            {{ filtroSala }} ✕
+          </button>
+        </div>
+
+        <ion-button
+          fill="clear"
+          size="small"
+          class="limpiar-filtros"
+          *ngIf="hayFiltrosActivos"
+          (click)="limpiarFiltros()">
+          Limpiar filtros
+        </ion-button>
+
+</div>
 
       <!-- ============================== -->
       <!-- SOLICITUDES ACTIVAS -->
