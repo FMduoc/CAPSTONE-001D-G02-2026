@@ -1,4 +1,4 @@
-const admin = require('../firebase');
+const { messaging } = require('../firebase');
 const pool = require('../db');
 
 async function notificarStaffDisponible(categoria, solicitud) {
@@ -30,7 +30,7 @@ async function notificarStaffDisponible(categoria, solicitud) {
       tokens,
     };
 
-    const respuesta = await admin.messaging().sendEachForMulticast(mensaje);
+    const respuesta = await messaging.sendEachForMulticast(mensaje);
 
     const tokensInvalidos = [];
     respuesta.responses.forEach((r, i) => {
