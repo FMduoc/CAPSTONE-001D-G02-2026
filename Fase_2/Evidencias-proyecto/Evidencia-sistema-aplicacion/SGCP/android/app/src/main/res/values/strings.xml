@@ -1,0 +1,7 @@
+<?xml version='1.0' encoding='utf-8'?>
+<resources>
+    <string name="app_name">SGCP</string>
+    <string name="title_activity_main">SGCP</string>
+    <string name="package_name">com.gestion.solicitudes</string>
+    <string name="custom_url_scheme">com.gestion.solicitudes</string>
+</resources>
