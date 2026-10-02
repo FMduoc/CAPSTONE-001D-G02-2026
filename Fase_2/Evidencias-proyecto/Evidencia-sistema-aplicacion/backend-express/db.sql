@@ -1,7 +1,3 @@
--- =====================================================
--- SCRIPT COMPLETO DE MIGRACIÓN A RENDER
--- =====================================================
-
 CREATE TYPE rol_usuario AS ENUM (
     'solicitante',
     'administrador',
