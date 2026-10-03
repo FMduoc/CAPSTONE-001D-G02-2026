@@ -13,6 +13,8 @@ router.get('/', verificarToken, soloAdmin, async (req, res) => {
         s.id,
         s.descripcion,
         s.estado,
+        s.categoria,
+        s.urgencia,
         s.fecha_creacion,
         sa.nombre AS sala_nombre,
         u.nombre AS usuario_nombre,

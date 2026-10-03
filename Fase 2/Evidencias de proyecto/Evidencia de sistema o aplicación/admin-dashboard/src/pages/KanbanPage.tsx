@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useMemo } from 'react';
 import {
   Typography,
   Box,
@@ -10,8 +10,22 @@ import {
   Chip,
   Alert,
   CircularProgress,
+  TextField,
+  MenuItem,
 } from '@mui/material';
 import { solicitudService, type SolicitudHistorial } from '../services/solicitudService';
+
+// const para realizar los filtros de peticiones visualizadas.
+const NIVELES_URGENCIA = ['baja', 'media', 'alta', 'critica'];
+const CATEGORIAS = ['tecnico', 'enfermeria', 'seguridad', 'limpieza'];
+
+// const para estilizar peticiones por nivel de urgencia.
+const coloresUrgencia: Record<string, 'default' | 'info' | 'warning' | 'error'> = {
+  baja: 'default',
+  media: 'info',
+  alta: 'warning',
+  critica: 'error',
+};
 
 const COLUMNAS = [
   { estado: 'pendiente', titulo: 'Pendiente', color: 'warning.main' },
@@ -26,6 +40,7 @@ const SIGUIENTE_ESTADO: Record<string, string | null> = {
   terminada: null, // ya no avanza más
 };
 
+// Texto de botón interactivo para mover la petición al siguiente estado.
 const TEXTO_BOTON: Record<string, string> = {
   pendiente: 'Mover a en progreso',
   atendida: 'Marcar como finalizado',
@@ -36,6 +51,11 @@ export function KanbanPage() {
   const [cargando, setCargando] = useState(true);
   const [error, setError] = useState('');
   const [moviendoId, setMoviendoId] = useState<number | null>(null);
+
+  // Variables const para realizar los filtros.
+  const [filtroUrgencia, setFiltroUrgencia] = useState('todas');
+  const [filtroCategoria, setFiltroCategoria] = useState('todas');
+  const [filtroFecha, setFiltroFecha] = useState('todas');
 
   useEffect(() => {
     cargar();
@@ -52,6 +72,26 @@ export function KanbanPage() {
       setCargando(false);
     }
   };
+
+  // Se utiliza useMemo para evitar recalcular el filtrado completo en cada render si las dependencias no cambiaron.
+  const solicitudesFiltradas = useMemo(() => {
+    const ahora = new Date();
+
+    return solicitudes.filter((s) => {
+      if (filtroUrgencia !== 'todas' && s.urgencia !== filtroUrgencia) return false;
+      if (filtroCategoria !== 'todas' && s.categoria !== filtroCategoria) return false;
+
+      if (filtroFecha !== 'todas') {
+        const fecha = new Date(s.fecha_creacion);
+        const diferenciaDias = (ahora.getTime() - fecha.getTime()) / (1000 * 60 * 60 * 24);
+
+        if (filtroFecha === 'hoy' && diferenciaDias > 1) return false;
+        if (filtroFecha === 'semana' && diferenciaDias > 7) return false;
+      }
+
+      return true;
+    });
+  }, [solicitudes, filtroUrgencia, filtroCategoria, filtroFecha]);
 
   const avanzarEstado = async (solicitud: SolicitudHistorial) => {
     const nuevoEstado = SIGUIENTE_ESTADO[solicitud.estado];
@@ -98,9 +138,55 @@ export function KanbanPage() {
         </Alert>
       )}
 
+      {/* BOX de display de filtros. */}
+      <Box sx={{ display: 'flex', gap: 2, mb: 2, flexWrap: 'wrap' }}>
+        <TextField
+          select
+          label="Urgencia"
+          value={filtroUrgencia}
+          onChange={(e) => setFiltroUrgencia(e.target.value)}
+          size="small"
+          sx={{ minWidth: 160 }}
+        >
+          <MenuItem value="todas">Todas</MenuItem>
+          {NIVELES_URGENCIA.map((u) => (
+            <MenuItem key={u} value={u}>{u}</MenuItem>
+          ))}
+        </TextField>
+
+        <TextField
+          select
+          label="Categoría"
+          value={filtroCategoria}
+          onChange={(e) => setFiltroCategoria(e.target.value)}
+          size="small"
+          sx={{ minWidth: 160 }}
+        >
+          <MenuItem value="todas">Todas</MenuItem>
+          {CATEGORIAS.map((c) => (
+            <MenuItem key={c} value={c}>{c}</MenuItem>
+          ))}
+        </TextField>
+
+        <TextField
+          select
+          label="Fecha"
+          value={filtroFecha}
+          onChange={(e) => setFiltroFecha(e.target.value)}
+          size="small"
+          sx={{ minWidth: 160 }}
+        >
+          <MenuItem value="todas">Todas</MenuItem>
+          <MenuItem value="hoy">Hoy</MenuItem>
+          <MenuItem value="semana">Última semana</MenuItem>
+        </TextField>
+      </Box>
+
+      {/* Box de display de columnas en formato Kanban. */}
       <Box sx={{ display: 'flex', gap: 2, alignItems: 'flex-start' }}>
         {COLUMNAS.map((columna) => {
-          const solicitudesColumna = solicitudes.filter((s) => s.estado === columna.estado);
+          {/* Filtro anterior: const solicitudesColumna = solicitudes.filter((s) => s.estado === columna.estado);*/}
+          const solicitudesColumna = solicitudesFiltradas.filter((s) => s.estado === columna.estado);
 
           return (
             <Paper
@@ -131,7 +217,17 @@ export function KanbanPage() {
                       <Typography variant="caption" color="text.secondary">
                         {formatearFecha(s.fecha_creacion)}
                       </Typography>
+                      <Typography>
+                        <Chip
+                        label={s.urgencia}
+                        color={coloresUrgencia[s.urgencia] || 'default'}
+                        size="small"
+                        sx={{ mt: 0.5 }}
+                        />
+                      </Typography>
                     </CardContent>
+                    {/* COMENTADO. ESTO PERMITE AL ADMINISTRADOR ACTUALIZAR MANUALMENTE EL ESTADO DE UNA SOLICITUD.
+                    DEBIDO A QUE ESTÁ COMENTADO, ALGUNOS COMPONENTES MUESTRAN ERROR EN VSCODE. SE PUEDE IGNORAR POR AHORA.
                     {SIGUIENTE_ESTADO[s.estado] && (
                       <CardActions>
                         <Button
@@ -144,6 +240,7 @@ export function KanbanPage() {
                         </Button>
                       </CardActions>
                     )}
+                    */}
                   </Card>
                 ))}
 
