@@ -12,37 +12,40 @@ export class PushService {
 
   constructor(private http: HttpClient, private authService: AuthService) {}
 
-  async inicializar() {
-    if (!Capacitor.isNativePlatform()) {
-      console.log('Push notifications: entorno web, se omite registro');
-      return;
-    }
-
-    const permiso = await PushNotifications.requestPermissions();
-    if (permiso.receive !== 'granted') {
-      console.warn('Permiso de notificaciones no otorgado');
-      return;
-    }
-
-    await PushNotifications.register();
-
-    PushNotifications.addListener('registration', async (token) => {
-      const plataforma = Capacitor.getPlatform() as 'android' | 'ios';
-      await this.registrarToken(token.value, plataforma);
-    });
-
-    PushNotifications.addListener('registrationError', (err) => {
-      console.error('Error al registrar para push:', err);
-    });
-
-    PushNotifications.addListener('pushNotificationReceived', (notification) => {
-      console.log('Notificación recibida en primer plano:', notification);
-    });
-
-    PushNotifications.addListener('pushNotificationActionPerformed', (action) => {
-      console.log('Notificación tocada:', action.notification);
-    });
+async inicializar() {
+  if (!Capacitor.isNativePlatform()) {
+    console.log('Push notifications: entorno web, se omite registro');
+    return;
   }
+
+  const permiso = await PushNotifications.requestPermissions();
+  if (permiso.receive !== 'granted') {
+    console.warn('Permiso de notificaciones no otorgado');
+    return;
+  }
+
+  // Listeners PRIMERO, antes de llamar a register()
+  PushNotifications.addListener('registration', async (token) => {
+    console.log('Token de push recibido:', token.value); // log temporal para depurar
+    const plataforma = Capacitor.getPlatform() as 'android' | 'ios';
+    await this.registrarToken(token.value, plataforma);
+  });
+
+  PushNotifications.addListener('registrationError', (err) => {
+    console.error('Error al registrar para push:', JSON.stringify(err)); // log más detallado
+  });
+
+  PushNotifications.addListener('pushNotificationReceived', (notification) => {
+    console.log('Notificación recibida en primer plano:', notification);
+  });
+
+  PushNotifications.addListener('pushNotificationActionPerformed', (action) => {
+    console.log('Notificación tocada:', action.notification);
+  });
+
+  // register() AL FINAL, después de que los listeners ya estén activos
+  await PushNotifications.register();
+}
 
   private async registrarToken(token: string, plataforma: 'android' | 'ios' | 'web') {
     const authToken = await this.authService.getToken();
