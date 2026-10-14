@@ -1119,3 +1119,23 @@
 
   cursor: pointer;
 }
+
+/* =========================================
+   AVISO: ATENDIDA POR OTRO MIEMBRO
+========================================= */
+
+.info-atendida-otro {
+  padding: 14px;
+
+  text-align: center;
+
+  border-radius: 10px;
+
+  background: #e7f3f8;
+  color: #075985;
+  border: 1px solid #7dd3fc;
+
+  font-size: 13px;
+  font-weight: 700;
+  line-height: 1.4;
+}
