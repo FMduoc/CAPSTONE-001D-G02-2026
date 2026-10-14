@@ -66,13 +66,18 @@ export class AuthService {
   }
 
   // Conexión con verificación de rol en backend-express/routes/auth.js
-  async obtenerPerfilActual(): Promise<Usuario> {
-    const response = await firstValueFrom(
-      this.http.get<Usuario>(`${environment.apiUrl}/auth/me`, {
-        headers: { Authorization: `Bearer ${await this.getToken()}` },
-      })
-    );
-    await Preferences.set({ key: 'usuario', value: JSON.stringify(response) });
-    return response;
+async obtenerPerfilActual(): Promise<Usuario> {
+  const response = await firstValueFrom(
+    this.http.get<Usuario & { token?: string }>(`${environment.apiUrl}/auth/me`, {
+      headers: { Authorization: `Bearer ${await this.getToken()}` },
+    })
+  );
+
+  const { token, ...usuario } = response;
+  if (token) {
+    await Preferences.set({ key: 'auth_token', value: token });
   }
+  await Preferences.set({ key: 'usuario', value: JSON.stringify(usuario) });
+  return usuario as Usuario;
+}
 }
