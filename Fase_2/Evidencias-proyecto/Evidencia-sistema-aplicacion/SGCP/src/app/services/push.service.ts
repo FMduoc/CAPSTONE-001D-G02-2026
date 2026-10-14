@@ -12,9 +12,16 @@ export class PushService {
 
   constructor(private http: HttpClient, private authService: AuthService) {}
 
+private inicializado = false;
+
 async inicializar() {
   if (!Capacitor.isNativePlatform()) {
     console.log('Push notifications: entorno web, se omite registro');
+    return;
+  }
+  if (this.inicializado) {
+    // Ya hay listeners: solo vuelve a pedir el token para asociarlo al usuario actual
+    await PushNotifications.register();
     return;
   }
 
@@ -24,15 +31,15 @@ async inicializar() {
     return;
   }
 
-  // Listeners PRIMERO, antes de llamar a register()
+  this.inicializado = true;
+
   PushNotifications.addListener('registration', async (token) => {
-    console.log('Token de push recibido:', token.value); // log temporal para depurar
     const plataforma = Capacitor.getPlatform() as 'android' | 'ios';
     await this.registrarToken(token.value, plataforma);
   });
 
   PushNotifications.addListener('registrationError', (err) => {
-    console.error('Error al registrar para push:', JSON.stringify(err)); // log más detallado
+    console.error('Error al registrar para push:', JSON.stringify(err));
   });
 
   PushNotifications.addListener('pushNotificationReceived', (notification) => {
@@ -43,7 +50,6 @@ async inicializar() {
     console.log('Notificación tocada:', action.notification);
   });
 
-  // register() AL FINAL, después de que los listeners ya estén activos
   await PushNotifications.register();
 }
 
