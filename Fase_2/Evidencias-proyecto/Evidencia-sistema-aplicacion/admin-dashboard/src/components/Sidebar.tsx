@@ -17,6 +17,8 @@ import LogoutIcon from '@mui/icons-material/Logout';
 import { authService } from '../services/authService';
 import HistoryIcon from '@mui/icons-material/History';
 import ViewKanbanIcon from '@mui/icons-material/ViewKanban';
+import { useState } from 'react'; // Para información de usuario en localStorage
+import logo from '../assets/logoDuoc.png'; 
 
 const DRAWER_WIDTH = 240;
 
@@ -30,6 +32,7 @@ const opciones = [
 export function Sidebar() {
   const navigate = useNavigate();
   const location = useLocation();
+  const [usuario] = useState(() => authService.getUsuario()); // Guarda información de localStorage en const usuario
 
   const cerrarSesion = () => {
     authService.logout();
@@ -48,13 +51,36 @@ export function Sidebar() {
         },
       }}
     >
-      <Toolbar>
-        <Typography variant="h6" noWrap>
-          AsisteQR Admin
-        </Typography>
+      <Toolbar sx={{ justifyContent: 'center' }}>
+        <Box
+          component="img"
+          src={logo}
+          alt="AsisteQR Admin"
+          sx={{ maxWidth: '100%', maxHeight: 40, objectFit: 'contain' }}
+        />
       </Toolbar>
 
-      <Divider />
+      {usuario && (
+        <Box
+          sx={{
+            m: 0,
+            p: 2,
+            borderRadius: 0,
+            bgcolor: 'primary.main',
+            color: 'primary.contrastText',
+          }}
+        >
+          <Typography variant="subtitle1" sx={{ fontWeight: 600 }}>
+            {usuario.nombre} {usuario.apellido}
+          </Typography>
+          <Typography
+            variant="body2"
+            sx={{ opacity: 0.85, wordBreak: 'break-all' }}
+          >
+            {usuario.email}
+          </Typography>
+        </Box>
+      )}
 
       <List>
         {opciones.map((opcion) => (

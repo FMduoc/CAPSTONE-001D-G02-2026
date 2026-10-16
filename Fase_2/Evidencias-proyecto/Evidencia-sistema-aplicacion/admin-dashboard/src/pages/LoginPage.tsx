@@ -11,6 +11,7 @@ import {
   CircularProgress,
 } from '@mui/material';
 import { authService } from '../services/authService';
+import logo from '../assets/logoDuoc.png';
 
 export function LoginPage() {
   const [email, setEmail] = useState('');
@@ -46,6 +47,12 @@ export function LoginPage() {
           alignItems: 'center',
         }}
       >
+        <Box
+          component="img"
+          src={logo}
+          alt="Logo de Duoc UC"
+          sx={{ width: 200, height: 'auto', mb: 2 }}
+        />
         <Typography variant="h5" component="h1" gutterBottom>
           SGCP — Panel de administración
         </Typography>
