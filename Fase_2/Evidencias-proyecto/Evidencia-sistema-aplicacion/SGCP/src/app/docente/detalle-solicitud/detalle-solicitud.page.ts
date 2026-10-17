@@ -3,8 +3,9 @@ import { Component, OnInit, ChangeDetectorRef } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { IonicModule } from '@ionic/angular/lazy';
-import { Router } from '@angular/router';
+import { Router, ActivatedRoute } from '@angular/router';
 import { SolicitudService } from '../../services/solicitud';
+
 
 @Component({
   selector: 'app-detalle-solicitud',
@@ -93,18 +94,22 @@ export class DetalleSolicitudPage implements OnInit {
   constructor(
     private solicitudService: SolicitudService,
     private router: Router,
-    private cdr: ChangeDetectorRef
+    private cdr: ChangeDetectorRef,
+    private route: ActivatedRoute,
   ) {}
 
-  ngOnInit() {
-    const state = history.state;
-    if (!state?.salaId) {
-      this.error = 'No se pudo identificar la sala. Vuelve a escanear el código.';
-      return;
-    }
-    this.salaId = state.salaId;
-    this.salaNombre = state.salaNombre;
+ngOnInit() {
+  const params = this.route.snapshot.queryParamMap;
+  const id = Number(params.get('salaId') ?? history.state?.salaId);
+  const nombre = params.get('salaNombre') ?? history.state?.salaNombre ?? '';
+
+  if (!id) {
+    this.error = 'No se pudo identificar la sala. Vuelve a escanear el código.';
+    return;
   }
+  this.salaId = id;
+  this.salaNombre = nombre;
+}
 
   get sugerenciasActuales(): string[] {
     return this.sugerenciasPorCategoria[this.categoria] || [];

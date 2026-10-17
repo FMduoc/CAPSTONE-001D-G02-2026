@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Preferences } from '@capacitor/preferences';
-import { Observable, tap, firstValueFrom } from 'rxjs';
+import { Observable, switchMap, firstValueFrom } from 'rxjs';
 import { environment } from '../../environments/environment';
 
 interface Usuario {
@@ -10,6 +10,7 @@ interface Usuario {
   apellido: string;
   email: string;
   rol: string;
+  disponible?: boolean; // el backend ya lo envía en el login
 }
 
 interface LoginResponse {
@@ -25,12 +26,14 @@ export class AuthService {
 
   login(email: string, contrasena: string): Observable<LoginResponse> {
     return this.http.post<LoginResponse>(`${this.apiUrl}/login`, { email, contrasena }).pipe(
-      tap(async (res) => {
+      switchMap(async (res) => {
         await Preferences.set({ key: 'auth_token', value: res.token });
         await Preferences.set({ key: 'usuario', value: JSON.stringify(res.usuario) });
+        return res; // recién aquí se emite next, con todo ya guardado
       })
     );
   }
+
 
   register(datos: { nombre: string; apellido: string; email: string; contrasena: string; rol: string }): Observable<any> {
     return this.http.post(`${this.apiUrl}/register`, datos);
@@ -63,13 +66,18 @@ export class AuthService {
   }
 
   // Conexión con verificación de rol en backend-express/routes/auth.js
-  async obtenerPerfilActual(): Promise<Usuario> {
-    const response = await firstValueFrom(
-      this.http.get<Usuario>(`${environment.apiUrl}/auth/me`, {
-        headers: { Authorization: `Bearer ${await this.getToken()}` },
-      })
-    );
-    await Preferences.set({ key: 'usuario', value: JSON.stringify(response) });
-    return response;
+async obtenerPerfilActual(): Promise<Usuario> {
+  const response = await firstValueFrom(
+    this.http.get<Usuario & { token?: string }>(`${environment.apiUrl}/auth/me`, {
+      headers: { Authorization: `Bearer ${await this.getToken()}` },
+    })
+  );
+
+  const { token, ...usuario } = response;
+  if (token) {
+    await Preferences.set({ key: 'auth_token', value: token });
   }
+  await Preferences.set({ key: 'usuario', value: JSON.stringify(usuario) });
+  return usuario as Usuario;
+}
 }

@@ -1,0 +1,153 @@
+.pendiente-page {
+  --background: #f4f6f8;
+}
+
+.pendiente-layout {
+  min-height: 100%;
+  padding: 32px;
+  box-sizing: border-box;
+
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 24px;
+
+  background: linear-gradient(
+    135deg,
+    #003b5c 0%,
+    #003b5c 50%,
+    #f4f6f8 30%,
+    #f4f6f8 100%
+  );
+}
+
+.brand-section {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+  text-align: center;
+
+  .duoc-logo {
+    width: 170px;
+    max-width: 100%;
+    height: auto;
+  }
+
+  p {
+    margin: 0;
+    color: #ffffff;
+    font-size: 14px;
+  }
+}
+
+.pendiente-card {
+  width: 100%;
+  max-width: 480px;
+  box-sizing: border-box;
+
+  padding: 36px 32px;
+  text-align: center;
+
+  background: #ffffff;
+  border-radius: 18px;
+  border-top: 5px solid #fdbb30;
+  box-shadow: 0 14px 35px rgba(15, 23, 42, 0.12);
+}
+
+.icono-circulo {
+  width: 84px;
+  height: 84px;
+  margin: 0 auto 20px auto;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  border-radius: 50%;
+  background: #fff7e6;
+  border: 2px solid #fdbb30;
+
+  ion-icon {
+    font-size: 42px;
+    color: #9a6700;
+  }
+}
+
+.eyebrow {
+  display: block;
+  margin-bottom: 6px;
+
+  color: #0c5578;
+  font-size: 12px;
+  font-weight: 800;
+  letter-spacing: 1.5px;
+}
+
+h2 {
+  margin: 0 0 14px 0;
+
+  color: #002c46;
+  font-size: 24px;
+  font-weight: 800;
+}
+
+.descripcion {
+  margin: 0 0 12px 0;
+
+  color: #64748b;
+  font-size: 14px;
+  line-height: 1.55;
+
+  &.secundaria {
+    margin-bottom: 22px;
+  }
+}
+
+.mensaje-estado {
+  margin-bottom: 18px;
+  padding: 14px;
+
+  border-radius: 10px;
+  background: #eef6fa;
+  border: 1px solid #7dd3fc;
+
+  color: #075985;
+  font-size: 13px;
+  font-weight: 700;
+}
+
+.verificar-button {
+  --background: #003b5c;
+  --background-hover: #002c46;
+  --color: #ffffff;
+  --border-radius: 10px;
+
+  margin-bottom: 10px;
+  font-weight: 800;
+  text-transform: none;
+}
+
+.logout-button {
+  --border-color: #003b5c;
+  --color: #003b5c;
+  --border-radius: 10px;
+
+  font-weight: 700;
+  text-transform: none;
+}
+
+@media (max-width: 600px) {
+  .pendiente-layout {
+    padding: 20px 14px;
+  }
+
+  .pendiente-card {
+    padding: 28px 20px;
+  }
+
+  h2 {
+    font-size: 21px;
+  }
+}

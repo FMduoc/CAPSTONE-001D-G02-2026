@@ -12,6 +12,8 @@ const CATEGORIAS_PERMITIDAS = ['tecnico', 'enfermeria', 'seguridad', 'limpieza']
 const URGENCIAS_PERMITIDAS = ['baja', 'media', 'alta', 'critica'];
 
 // Crear una solicitud
+const { notificarStaffDisponible } = require('./utils/notificaciones');
+
 app.post('/api/solicitudes', verificarToken, async (req, res) => {
   const { sala_id, descripcion, categoria, urgencia = 'media' } = req.body;
   const usuario_id = req.usuario.id;
@@ -35,7 +37,15 @@ app.post('/api/solicitudes', verificarToken, async (req, res) => {
        VALUES ($1, $2, $3, $4, $5, $6) RETURNING *`,
       [sala_id, usuario_id, nombre_solicitante, descripcion, categoria, urgencia]
     );
-    res.status(201).json(result.rows[0]);
+
+    const solicitudCreada = result.rows[0];
+
+    const salaResult = await pool.query('SELECT nombre FROM sala WHERE id = $1', [sala_id]);
+    const solicitudConSala = { ...solicitudCreada, sala_nombre: salaResult.rows[0]?.nombre || '' };
+
+    notificarStaffDisponible(categoria, solicitudConSala); // sin await: no bloquea la respuesta
+
+    res.status(201).json(solicitudCreada);
   } catch (err) {
     console.error('Error en /api/solicitudes:', err);
     res.status(500).json({ error: err.message });
@@ -166,5 +176,7 @@ app.use('/api/soporte', soporteRoutes);
 // Ruta a routes/solicitudes.js
 const solicitudesAdminRoutes = require('./routes/solicitudes');
 app.use('/api/admin/solicitudes', solicitudesAdminRoutes);
+const pushRoutes = require('./routes/push');
+app.use('/api/push', pushRoutes);
 
 app.listen(3000, () => console.log('Servidor corriendo en puerto 3000'));

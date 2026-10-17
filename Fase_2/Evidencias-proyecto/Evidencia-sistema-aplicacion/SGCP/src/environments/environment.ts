@@ -3,9 +3,9 @@
 // The list of file replacements can be found in `angular.json`.
 
 export const environment = {
-  production: false,
+  production: true,
   //apiUrl con localhost debe ser cambiada una vez esto entra a producción!!!!!!
-  apiUrl: 'http://localhost:3000/api'
+  apiUrl: 'https://capstone-001d-g02-2026.onrender.com/api',
 };
 
 /*
