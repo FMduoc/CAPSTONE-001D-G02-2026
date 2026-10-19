@@ -2,10 +2,11 @@
 
 CREATE TYPE rol_usuario AS ENUM (
     'administrador',
-    'docente',
-    'staff',
+    'solicitante',
+    'staff',         -- registrado, pendiente de asignación de categoría
     'tecnico',
     'enfermeria',
+    'seguridad',
     'limpieza'
 );
 
@@ -16,8 +17,8 @@ CREATE TABLE usuario (
     email VARCHAR(150) UNIQUE NOT NULL,
     contrasena_hash VARCHAR(255) NOT NULL,
     rol rol_usuario NOT NULL,
-    activo BOOLEAN NOT NULL DEFAULT TRUE,
-    fecha_creacion TIMESTAMP NOT NULL DEFAULT NOW()
+    fecha_creacion TIMESTAMP NOT NULL DEFAULT NOW(),
+    disponible BOOLEAN NOT NULL DEFAULT TRUE
 );
 
 CREATE TABLE sala (
@@ -32,9 +33,20 @@ CREATE TABLE solicitud (
     usuario_id INTEGER REFERENCES usuario(id),
     nombre_solicitante VARCHAR(100),
     descripcion TEXT NOT NULL,
-    estado VARCHAR(20) NOT NULL DEFAULT 'pendiente',
-    fecha_creacion TIMESTAMP NOT NULL DEFAULT NOW()
+    categoria VARCHAR(30),
+    urgencia VARCHAR(10) NOT NULL DEFAULT 'media',
+    estado VARCHAR(20) NOT NULL DEFAULT 'pendiente',  -- pendiente, atendida, terminada
+    atendido_por INTEGER REFERENCES usuario(id),
+    fecha_creacion TIMESTAMP NOT NULL DEFAULT NOW(),
+    fecha_actualizacion TIMESTAMP,
+    CONSTRAINT solicitud_categoria_check
+        CHECK (categoria IN ('tecnico', 'enfermeria', 'seguridad', 'limpieza')),
+    CONSTRAINT solicitud_urgencia_check
+        CHECK (urgencia IN ('baja', 'media', 'alta', 'critica'))
 );
+
+CREATE INDEX idx_solicitud_categoria_estado ON solicitud (categoria, estado);
+
 
 -- CREACION USUARIO ADMIN
 -- Para conseguir la contraseña hash, correr el siguiente script en CMD/powershell backend-express
@@ -42,3 +54,4 @@ CREATE TABLE solicitud (
 -- El resultado debe ser pegado en las comillas para contrasena_hash.
 --INSERT INTO usuario (nombre, apellido, email, contrasena_hash, rol)
 --VALUES ('', '', '', '', 'administrador');
+
