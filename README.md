@@ -14,8 +14,6 @@ Se incluye dentro de evidencias de sistema/aplicación, los tres componentes pri
 ## Fichas semanales:
 Las fichas semanales se encuentran en Fase 2/Evidencias de proyecto/Fichas iteracion
 
-# SGCP
-
 ## Sobre el proyecto
 
 El proyecto busca agilizar el proceso de realizar solicitudes dentro de una institución, reemplazando los procesos actuales que retrasan innecesariamente las diversas complicaciones que uno puede encontrar dentro de una sede.
@@ -29,6 +27,12 @@ Se debe configurar la base de datos PostgreSQL. El script para crear las tablas 
 Adicionalmente, las carpetas backend-express y admin-dashboard deben tener un archivo .env cada uno respectivamente. Para esto, se incluye un archivo .env.ejemplo como guía.
 
 La aplicación móvil se inicia con `ionic serve`, mientras que backend-express y admin-dashboard se inician con `npm run dev`.
+
+## Demo de caso de uso
+
+Se incluye un enlace a un vídeo en google Drive que demuestra la funcionalidad actual. 19 de Octubre, 2026.
+
+https://drive.google.com/file/d/1O-CQP1A2WCy0wPxg7vtshZgMT5Dc3oLU/view?usp=sharing
 
 ## Diseño UI/UX
 
