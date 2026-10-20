@@ -104,9 +104,10 @@
       <ion-button
         expand="block"
         class="login-button"
-        (click)="iniciarSesion()">
+        (click)="iniciarSesion()"
+        [disabled]="cargando">
 
-        Iniciar sesión
+        {{ cargando ? 'Iniciando sesión...' : 'Iniciar sesión' }}
 
       </ion-button>
 

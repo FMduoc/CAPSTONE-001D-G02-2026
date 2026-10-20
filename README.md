@@ -6,10 +6,13 @@ Repositorio para el proceso de Capstone 2026, sección 001D, Grupo 02.
 - Esteban Toro
 - Felipe Andrés Madariaga Navarro
 
+# SGCP
+
+## Instalación
+
+Se incluye dentro de evidencias de sistema/aplicación, los tres componentes principales de la solución. Para cada componente, se debe correr npm install para instalar dependencias.
 ## Fichas semanales:
 Las fichas semanales se encuentran en Fase 2/Evidencias de proyecto/Fichas iteracion
-
-# SGCP
 
 ## Sobre el proyecto
 
@@ -25,6 +28,12 @@ Adicionalmente, las carpetas backend-express y admin-dashboard deben tener un ar
 
 La aplicación móvil se inicia con `ionic serve`, mientras que backend-express y admin-dashboard se inician con `npm run dev`.
 
+## Demo de caso de uso
+
+Se incluye un enlace a un vídeo en google Drive que demuestra la funcionalidad actual. 19 de Octubre, 2026.
+
+https://drive.google.com/file/d/1O-CQP1A2WCy0wPxg7vtshZgMT5Dc3oLU/view?usp=sharing
+
 ## Diseño UI/UX
 
 Los prototipos de UI/UX fueron diseñados en Figma.
@@ -37,6 +46,10 @@ Los prototipos de UI/UX fueron diseñados en Figma.
 
 | Vista | Preview |
 |---|---|
+| Frontpage | [View](Fase 2/Evidencias de proyecto/Evidencia de documentación/Diseño de interfaz/UserSide/Front-Page.png) |
+| Options | [View](Fase 2/Evidencias de proyecto/Evidencia de documentación/Diseño de interfaz/UserSide/Option-Selection.png) |
+| Historial de peticiones | [View](Fase 2/Evidencias de proyecto/Evidencia de documentación/Diseño de interfaz/SupportSide/All-Petitions-Status-Page.png) |
+| Admin Dashboard | [View](Fase 2/Evidencias de proyecto/Evidencia de documentación/Diseño de interfaz/AdminDashboard/Admin-Dashboard-SGCP.png) |
 | Frontpage | [View](Fase%202/Evidencias%20de%20proyecto/Evidencia%20de%20documentación/Diseño%20de%20interfaz/UserSide/Front-Page.png) |
 | Options | [View](Fase%202/Evidencias%20de%20proyecto/Evidencia%20de%20documentación/Diseño%20de%20interfaz/UserSide/Option-Selection.png) |
 | Historial de peticiones | [View](Fase%202/Evidencias%20de%20proyecto/Evidencia%20de%20documentación/Diseño%20de%20interfaz/SupportSide/All-Petitions-Status-Page.png) |

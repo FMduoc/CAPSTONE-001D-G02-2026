@@ -22,37 +22,69 @@ export class RegisterPage {
   nombre = '';
   apellido = '';
   email = '';
+
   contrasena = '';
   confirmarContrasena = '';
 
-  rol = 'solicitante';
+  // Lo que el usuario selecciona visualmente
+  tipoCuenta = 'solicitante';
+
+  // Área cuando selecciona Personal
+  areaSoporte = 'staff';
 
   error = '';
   cargando = false;
 
-  roles = [
+
+  tiposCuenta = [
     {
       valor: 'solicitante',
-      etiqueta: 'Docente (solicitante)'
+      etiqueta: 'Docente'
     },
     {
       valor: 'staff',
-      etiqueta: 'Personal (staff)'
+      etiqueta: 'Personal'
     }
   ];
+
+
+  areasSoporte = [
+    {
+      valor: 'tecnico',
+      etiqueta: 'Servicio técnico'
+    },
+    {
+      valor: 'enfermeria',
+      etiqueta: 'Enfermería'
+    },
+    {
+      valor: 'limpieza',
+      etiqueta: 'Limpieza'
+    }
+  ];
+
 
   constructor(
     private authService: AuthService,
     private router: Router
   ) {}
 
+
   registrarse() {
 
     this.error = '';
 
-    const nombre = this.nombre.trim();
-    const apellido = this.apellido.trim();
-    const email = this.email.trim().toLowerCase();
+    const nombre =
+      this.nombre.trim();
+
+    const apellido =
+      this.apellido.trim();
+
+    const email =
+      this.email
+        .trim()
+        .toLowerCase();
+
 
     if (
       !nombre ||
@@ -60,58 +92,114 @@ export class RegisterPage {
       !email ||
       !this.contrasena ||
       !this.confirmarContrasena ||
-      !this.rol
+      !this.tipoCuenta
     ) {
-      this.error = 'Todos los campos son obligatorios';
+
+      this.error =
+        'Todos los campos son obligatorios';
+
       return;
+
     }
 
-    if (this.contrasena !== this.confirmarContrasena) {
-      this.error = 'Las contraseñas no coinciden';
+
+    if (
+      this.tipoCuenta === 'staff' &&
+      !this.areaSoporte
+    ) {
+
+      this.error =
+        'Debes seleccionar un área de soporte';
+
       return;
+
     }
+
+
+    if (
+      this.contrasena !==
+      this.confirmarContrasena
+    ) {
+
+      this.error =
+        'Las contraseñas no coinciden';
+
+      return;
+
+    }
+
 
     if (this.contrasena.length < 8) {
-      this.error = 'La contraseña debe tener al menos 8 caracteres';
+
+      this.error =
+        'La contraseña debe tener al menos 8 caracteres';
+
       return;
+
     }
+
+
+    // ==========================================
+    // DEFINIR ROL REAL PARA EL BACKEND
+    // ==========================================
+
+    let rolBackend = 'solicitante';
+
+
+    if (this.tipoCuenta === 'staff') {
+
+      rolBackend =
+        this.areaSoporte;
+
+    }
+
 
     this.cargando = true;
 
-    this.authService.register({
-      nombre: nombre,
-      apellido: apellido,
-      email: email,
-      contrasena: this.contrasena,
-      rol: this.rol
-    }).subscribe({
 
-      next: () => {
+    this.authService
+      .register({
 
-        this.cargando = false;
+        nombre,
+        apellido,
+        email,
 
-        this.router.navigate(
-          ['/login'],
-          {
-            queryParams: {
-              registrado: 'true'
+        contrasena:
+          this.contrasena,
+
+        rol:
+          rolBackend
+
+      })
+      .subscribe({
+
+        next: () => {
+
+          this.cargando = false;
+
+          this.router.navigate(
+            ['/login'],
+            {
+              queryParams: {
+                registrado: 'true'
+              }
             }
-          }
-        );
+          );
 
-      },
+        },
 
-      error: (err) => {
 
-        this.cargando = false;
+        error: (err) => {
 
-        this.error =
-          err.error?.error ||
-          'No se pudo completar el registro';
+          this.cargando = false;
 
-      }
+          this.error =
+            err.error?.error ||
+            'No se pudo completar el registro';
 
-    });
+        }
+
+      });
 
   }
 

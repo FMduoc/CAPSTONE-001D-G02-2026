@@ -2,7 +2,7 @@ const express = require('express');
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
 const pool = require('../db');
-
+const verificarToken = require('../middleware/auth');
 const router = express.Router();
 
 // Registro de usuarios
@@ -77,7 +77,7 @@ router.post('/register', async (req, res) => {
   }
 });
 
-// Login de usuarios
+
 // Login de usuarios
 router.post('/login', async (req, res) => {
   const { email, contrasena } = req.body;
@@ -117,6 +117,35 @@ router.post('/login', async (req, res) => {
       }
     });
   } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+});
+
+// Perfil actual del usuario autenticado (datos frescos desde la BD)
+router.get('/me', verificarToken, async (req, res) => {
+  try {
+    const result = await pool.query(
+      `SELECT id, nombre, apellido, email, rol, disponible
+       FROM usuario
+       WHERE id = $1`,
+      [req.usuario.id]
+    );
+
+    if (result.rows.length === 0) {
+      return res.status(404).json({ error: 'Usuario no encontrado' });
+    }
+const usuario = result.rows[0];
+
+// Token renovado con el rol actual, para que las rutas protegidas lo reconozcan
+const token = jwt.sign(
+  { id: usuario.id, rol: usuario.rol, email: usuario.email },
+  process.env.JWT_SECRET,
+  { expiresIn: process.env.JWT_EXPIRES_IN }
+);
+
+res.json({ ...usuario, token });
+  } catch (err) {
+    console.error('Error en /api/auth/me:', err);
     res.status(500).json({ error: err.message });
   }
 });

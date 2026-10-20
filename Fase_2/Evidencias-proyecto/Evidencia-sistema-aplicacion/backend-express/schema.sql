@@ -1,13 +1,15 @@
--- backend-express/schema.sql
+-- =====================================================
+-- SCRIPT COMPLETO DE MIGRACIÓN A RENDER
+-- =====================================================
 
 CREATE TYPE rol_usuario AS ENUM (
-    'administrador',
     'solicitante',
-    'staff',         -- registrado, pendiente de asignación de categoría
+    'administrador',
     'tecnico',
-    'enfermeria',
+    'staff',
     'seguridad',
-    'limpieza'
+    'limpieza',
+    'enfermeria'
 );
 
 CREATE TABLE usuario (
@@ -16,9 +18,9 @@ CREATE TABLE usuario (
     apellido VARCHAR(100) NOT NULL,
     email VARCHAR(150) UNIQUE NOT NULL,
     contrasena_hash VARCHAR(255) NOT NULL,
-    rol rol_usuario NOT NULL,
-    fecha_creacion TIMESTAMP NOT NULL DEFAULT NOW(),
-    disponible BOOLEAN NOT NULL DEFAULT TRUE
+    rol rol_usuario NOT NULL DEFAULT 'solicitante',
+    disponible BOOLEAN NOT NULL DEFAULT TRUE,
+    fecha_creacion TIMESTAMP NOT NULL DEFAULT NOW()
 );
 
 CREATE TABLE sala (
@@ -33,25 +35,26 @@ CREATE TABLE solicitud (
     usuario_id INTEGER REFERENCES usuario(id),
     nombre_solicitante VARCHAR(100),
     descripcion TEXT NOT NULL,
-    categoria VARCHAR(30),
-    urgencia VARCHAR(10) NOT NULL DEFAULT 'media',
-    estado VARCHAR(20) NOT NULL DEFAULT 'pendiente',  -- pendiente, atendida, terminada
+    categoria VARCHAR(30) CHECK (categoria IN ('tecnico', 'enfermeria', 'seguridad', 'limpieza')),
+    urgencia VARCHAR(10) NOT NULL DEFAULT 'media'
+      CHECK (urgencia IN ('baja', 'media', 'alta', 'critica')),
+    estado VARCHAR(20) NOT NULL DEFAULT 'pendiente',
     atendido_por INTEGER REFERENCES usuario(id),
     fecha_creacion TIMESTAMP NOT NULL DEFAULT NOW(),
-    fecha_actualizacion TIMESTAMP,
-    CONSTRAINT solicitud_categoria_check
-        CHECK (categoria IN ('tecnico', 'enfermeria', 'seguridad', 'limpieza')),
-    CONSTRAINT solicitud_urgencia_check
-        CHECK (urgencia IN ('baja', 'media', 'alta', 'critica'))
+    fecha_actualizacion TIMESTAMP
 );
 
-CREATE INDEX idx_solicitud_categoria_estado ON solicitud (categoria, estado);
+CREATE INDEX idx_solicitud_categoria_estado
+  ON solicitud (categoria, estado);
 
+CREATE TABLE push_token (
+    id SERIAL PRIMARY KEY,
+    usuario_id INTEGER NOT NULL REFERENCES usuario(id) ON DELETE CASCADE,
+    token VARCHAR(255) NOT NULL UNIQUE,
+    plataforma VARCHAR(20) NOT NULL CHECK (plataforma IN ('android', 'ios', 'web')),
+    fecha_creacion TIMESTAMP NOT NULL DEFAULT NOW()
+);
 
--- CREACION USUARIO ADMIN
--- Para conseguir la contraseña hash, correr el siguiente script en CMD/powershell backend-express
--- node -e "const bcrypt = require('bcrypt'); bcrypt.hash('CAMBIAR-CONTRASEÑA-ADMIN', 10).then(console.log)"
--- El resultado debe ser pegado en las comillas para contrasena_hash.
---INSERT INTO usuario (nombre, apellido, email, contrasena_hash, rol)
---VALUES ('', '', '', '', 'administrador');
+CREATE INDEX idx_push_token_usuario ON push_token (usuario_id);
 
+INSERT INTO sala (nombre, codigo_qr) VALUES ('Sala 204', 'QR-SALA-204');

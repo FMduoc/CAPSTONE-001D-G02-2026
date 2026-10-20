@@ -7,13 +7,14 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { firstValueFrom } from 'rxjs';
 import { AuthService } from '../services/auth';
 import { environment } from '../../environments/environment';
+import { FormsModule } from '@angular/forms';
 
 @Component({
   selector: 'app-inicio-soporte',
   templateUrl: './inicio-soporte.page.html',
   styleUrls: ['./inicio-soporte.page.scss'],
   standalone: true,
-  imports: [CommonModule, IonicModule],
+  imports: [CommonModule, IonicModule, FormsModule],
 })
 export class InicioSoportePage implements OnInit {
   solicitudes: any[] = [];
@@ -21,6 +22,20 @@ export class InicioSoportePage implements OnInit {
   cargando = false;
   error = '';
   actualizandoDisponibilidad = false;
+
+  // Filtro de urgencia
+  filtroUrgencia = 'todas';
+  opcionesUrgenciaFiltro = [
+    { valor: 'todas', etiqueta: 'Todas' },
+    { valor: 'critica', etiqueta: 'Crítica' },
+    { valor: 'alta', etiqueta: 'Alta' },
+    { valor: 'media', etiqueta: 'Media' },
+    { valor: 'baja', etiqueta: 'Baja' },
+  ];
+
+  // Filtro de sala (buscador con autocompletado propio)
+  filtroSala = 'todas';
+  busquedaSala = '';
 
   private apiUrl = `${environment.apiUrl}/soporte`;
 
@@ -36,14 +51,66 @@ export class InicioSoportePage implements OnInit {
     await this.cargarSolicitudes();
   }
 
+  // Salas únicas presentes en las solicitudes actuales
+  get salasDisponibles(): string[] {
+    const salas = this.solicitudes.map((s) => s.sala_nombre).filter(Boolean);
+    return Array.from(new Set(salas)).sort();
+  }
+
+  // Salas que coinciden con lo que el usuario está escribiendo
+  get salasFiltradas(): string[] {
+    const termino = this.busquedaSala.trim().toLowerCase();
+    if (!termino) return this.salasDisponibles;
+    return this.salasDisponibles.filter((s) => s.toLowerCase().includes(termino));
+  }
+
+  get hayFiltrosActivos(): boolean {
+    return this.filtroUrgencia !== 'todas' || this.filtroSala !== 'todas';
+  }
+
+  private aplicarFiltros(lista: any[]): any[] {
+    return lista.filter((s) => {
+      const pasaUrgencia = this.filtroUrgencia === 'todas' || s.urgencia === this.filtroUrgencia;
+      const pasaSala = this.filtroSala === 'todas' || s.sala_nombre === this.filtroSala;
+      return pasaUrgencia && pasaSala;
+    });
+  }
+
   get solicitudesActivas(): any[] {
-    return this.solicitudes.filter(
+    const activas = this.solicitudes.filter(
       (solicitud) => solicitud.estado === 'pendiente' || solicitud.estado === 'atendida'
     );
+    return this.aplicarFiltros(activas);
   }
 
   get solicitudesHistorial(): any[] {
-    return this.solicitudes.filter((solicitud) => solicitud.estado === 'terminada');
+    const historial = this.solicitudes.filter((solicitud) => solicitud.estado === 'terminada');
+    return this.aplicarFiltros(historial);
+  }
+
+  seleccionarFiltroUrgencia(valor: string | number | undefined) {
+    this.filtroUrgencia = valor !== undefined ? String(valor) : 'todas';
+  }
+
+  onBuscarSala(valor: string | number | null | undefined) {
+    this.busquedaSala = valor !== null && valor !== undefined ? String(valor) : '';
+    this.filtroSala = 'todas';
+  }
+
+  seleccionarSala(sala: string) {
+    this.filtroSala = sala;
+    this.busquedaSala = sala;
+  }
+
+  limpiarFiltroSala() {
+    this.filtroSala = 'todas';
+    this.busquedaSala = '';
+  }
+
+  limpiarFiltros() {
+    this.filtroUrgencia = 'todas';
+    this.filtroSala = 'todas';
+    this.busquedaSala = '';
   }
 
   private async obtenerHeaders(): Promise<HttpHeaders> {
@@ -111,30 +178,30 @@ export class InicioSoportePage implements OnInit {
     } catch (err: any) {
       console.error('Error al terminar solicitud:', err);
       this.error = err.error?.error || 'No se pudo terminar la solicitud. Puede que ya haya sido actualizada por otro usuario.';
-      await this.cargarSolicitudes(); // refresca para reflejar el estado real
+      await this.cargarSolicitudes();
     }
   }
 
   async toggleDisponibilidad(disponible: boolean) {
-  this.actualizandoDisponibilidad = true;
-  try {
-    const result = await firstValueFrom(
-      this.http.patch<any>(
-        `${this.apiUrl}/disponibilidad`,
-        { disponible },
-        { headers: await this.obtenerHeaders() }
-      )
-    );
-    this.usuario.disponible = result.disponible;
-    await this.cargarSolicitudes(); // refleja el cambio de visibilidad al instante
-  } catch (err) {
-    console.error('Error al actualizar disponibilidad:', err);
-    this.error = 'No se pudo actualizar tu disponibilidad';
-  } finally {
-    this.actualizandoDisponibilidad = false;
-    this.cdr.detectChanges();
+    this.actualizandoDisponibilidad = true;
+    try {
+      const result = await firstValueFrom(
+        this.http.patch<any>(
+          `${this.apiUrl}/disponibilidad`,
+          { disponible },
+          { headers: await this.obtenerHeaders() }
+        )
+      );
+      this.usuario.disponible = result.disponible;
+      await this.cargarSolicitudes();
+    } catch (err) {
+      console.error('Error al actualizar disponibilidad:', err);
+      this.error = 'No se pudo actualizar tu disponibilidad';
+    } finally {
+      this.actualizandoDisponibilidad = false;
+      this.cdr.detectChanges();
+    }
   }
-}
 
   mostrarCategoria(categoria: string): string {
     const categorias: any = {
