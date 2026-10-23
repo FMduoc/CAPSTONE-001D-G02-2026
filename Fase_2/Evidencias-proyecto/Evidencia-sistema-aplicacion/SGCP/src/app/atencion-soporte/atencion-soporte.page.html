@@ -1,0 +1,71 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-back-button defaultHref="/inicio-soporte" text="Volver"></ion-back-button>
+    </ion-buttons>
+    <ion-title>En atención</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content class="atencion-page">
+  <div class="contenedor">
+
+    <div class="error-box" *ngIf="error">{{ error }}</div>
+
+    <p class="estado-carga" *ngIf="cargando && solicitudes.length === 0">
+      Cargando solicitudes...
+    </p>
+
+    <div class="vacio" *ngIf="!cargando && !error && enAtencion.length === 0">
+      <h2>No tienes solicitudes en atención</h2>
+      <p>Cuando aceptes una solicitud pendiente, aparecerá aquí con todos sus detalles.</p>
+      <ion-button (click)="volverAPendientes()">Ver solicitudes pendientes</ion-button>
+    </div>
+
+    <article
+      class="solicitud-card"
+      *ngFor="let s of enAtencion"
+      [class.destacada]="s.id === idDestacado">
+
+      <header>
+        <div>
+          <span class="solicitud-id">Solicitud #{{ s.id }}</span>
+          <h2>{{ s.sala_nombre }}</h2>
+        </div>
+        <span class="urgencia-badge" [ngClass]="s.urgencia">
+          {{ etiquetaUrgencia(s.urgencia) }}
+        </span>
+      </header>
+
+      <p class="descripcion">{{ s.descripcion }}</p>
+
+      <dl class="datos">
+        <div>
+          <dt>Solicitante</dt>
+          <dd>{{ s.nombre_solicitante }}</dd>
+        </div>
+        <div>
+          <dt>Categoría</dt>
+          <dd>{{ etiquetaCategoria(s.categoria) }}</dd>
+        </div>
+        <div>
+          <dt>Creada</dt>
+          <dd>{{ s.fecha_creacion | date:'dd/MM/yyyy HH:mm' }}</dd>
+        </div>
+        <div>
+          <dt>Aceptada</dt>
+          <dd>{{ s.fecha_actualizacion | date:'dd/MM/yyyy HH:mm' }}</dd>
+        </div>
+      </dl>
+
+      <ion-button
+        expand="block"
+        (click)="terminar(s.id)"
+        [disabled]="terminandoId === s.id">
+        {{ terminandoId === s.id ? 'Finalizando...' : 'Marcar como terminada' }}
+      </ion-button>
+
+    </article>
+
+  </div>
+</ion-content>

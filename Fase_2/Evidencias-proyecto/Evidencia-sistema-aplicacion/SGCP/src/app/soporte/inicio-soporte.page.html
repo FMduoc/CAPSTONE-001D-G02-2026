@@ -90,15 +90,25 @@
 
         </div>
 
-        <ion-button
-          fill="outline"
-          class="refresh-button"
-          (click)="cargarSolicitudes()"
-          [disabled]="cargando">
+        // ------------------------
 
-          {{ cargando ? 'Actualizando...' : 'Actualizar' }}
+        <div class="acciones-header">
+          <ion-button
+            [fill]="cantidadEnAtencion > 0 ? 'solid' : 'outline'"
+            (click)="irAAtencion()">
+            En atención ({{ cantidadEnAtencion }})
+          </ion-button>
+          <!-- aquí queda el botón "Actualizar" que ya existe -->
+          <ion-button
+            fill="outline"
+            class="refresh-button"
+            (click)="cargarSolicitudes()"
+            [disabled]="cargando">
 
-        </ion-button>
+            {{ cargando ? 'Actualizando...' : 'Actualizar' }}
+
+          </ion-button>
+        </div>
 
       </div>
 
@@ -210,7 +220,7 @@
           </div>
 
           <span class="counter-badge">
-            {{ solicitudesActivas.length }}
+            {{ solicitudesPendientes.length }}
           </span>
 
         </div>
@@ -222,7 +232,7 @@
           *ngIf="
             !cargando &&
             !error &&
-            solicitudesActivas.length === 0
+            solicitudesPendientes.length === 0
           ">
 
           <h3>
@@ -240,11 +250,11 @@
         <!-- LISTA ACTIVAS -->
         <div
           class="solicitudes-grid"
-          *ngIf="solicitudesActivas.length > 0">
+          *ngIf="solicitudesPendientes.length > 0">
 
           <article
             class="solicitud-card"
-            *ngFor="let solicitud of solicitudesActivas">
+            *ngFor="let solicitud of solicitudesPendientes">
 
             <div class="solicitud-header">
 

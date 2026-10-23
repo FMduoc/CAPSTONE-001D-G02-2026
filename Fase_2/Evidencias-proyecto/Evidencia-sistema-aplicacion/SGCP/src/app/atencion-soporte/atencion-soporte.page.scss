@@ -1,0 +1,100 @@
+.atencion-page {
+  --background: #f4f6f8;
+}
+
+.contenedor {
+  max-width: 720px;
+  margin: 0 auto;
+  padding: 16px;
+}
+
+.error-box {
+  background: #fdecea;
+  color: #b3261e;
+  border-radius: 8px;
+  padding: 12px;
+  margin-bottom: 16px;
+}
+
+.estado-carga {
+  text-align: center;
+  color: var(--ion-color-medium);
+}
+
+.vacio {
+  text-align: center;
+  padding: 48px 16px;
+  color: var(--ion-color-medium);
+
+  h2 {
+    color: var(--ion-color-dark);
+  }
+}
+
+.solicitud-card {
+  background: #fff;
+  border-radius: 12px;
+  border: 2px solid transparent;
+  padding: 16px;
+  margin-bottom: 16px;
+  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.08);
+
+  &.destacada {
+    border-color: var(--ion-color-primary);
+  }
+
+  header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    gap: 12px;
+
+    h2 {
+      margin: 4px 0 0;
+    }
+  }
+
+  .solicitud-id {
+    font-size: 12px;
+    color: var(--ion-color-medium);
+  }
+
+  .descripcion {
+    font-size: 16px;
+    margin: 12px 0;
+  }
+}
+
+.datos {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+  margin: 0 0 16px;
+
+  div {
+    min-width: 0;
+  }
+
+  dt {
+    font-size: 12px;
+    color: var(--ion-color-medium);
+  }
+
+  dd {
+    margin: 2px 0 0;
+    font-weight: 600;
+  }
+}
+
+.urgencia-badge {
+  padding: 4px 10px;
+  border-radius: 999px;
+  font-size: 12px;
+  font-weight: 600;
+  white-space: nowrap;
+
+  &.baja { background: #e8f5e9; color: #2e7d32; }
+  &.media { background: #e3f2fd; color: #1565c0; }
+  &.alta { background: #fff3e0; color: #e65100; }
+  &.critica { background: #fdecea; color: #b3261e; }
+}

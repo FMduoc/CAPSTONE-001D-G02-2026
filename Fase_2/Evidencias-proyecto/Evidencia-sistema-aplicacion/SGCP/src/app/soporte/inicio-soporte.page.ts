@@ -48,8 +48,12 @@ export class InicioSoportePage implements OnInit {
 
   async ngOnInit() {
     this.usuario = await this.authService.getUsuario();
-    await this.cargarSolicitudes();
+    //await this.cargarSolicitudes();
   }
+
+  async ionViewWillEnter() {
+    await this.cargarSolicitudes();
+}
 
   // Salas únicas presentes en las solicitudes actuales
   get salasDisponibles(): string[] {
@@ -76,9 +80,11 @@ export class InicioSoportePage implements OnInit {
     });
   }
 
-  get solicitudesActivas(): any[] {
+  // Listado de las solicitudes pendientes.
+  // Anteriormente solicitudesActivas
+  get solicitudesPendientes(): any[] {
     const activas = this.solicitudes.filter(
-      (solicitud) => solicitud.estado === 'pendiente' || solicitud.estado === 'atendida'
+      (solicitud) => solicitud.estado === 'pendiente' // || solicitud.estado === 'atendida'
     );
     return this.aplicarFiltros(activas);
   }
@@ -157,10 +163,13 @@ export class InicioSoportePage implements OnInit {
           { headers: await this.obtenerHeaders() }
         )
       );
-      await this.cargarSolicitudes();
+      // Se mueve la recarga de solicitudes al catch
+      //await this.cargarSolicitudes();
+      this.router.navigate(['/atencion-soporte'], { queryParams: { id } });
     } catch (err: any) {
       console.error('Error al atender solicitud:', err);
       this.error = err.error?.error || 'No se pudo atender la solicitud';
+      await this.cargarSolicitudes();
     }
   }
 
@@ -221,6 +230,18 @@ export class InicioSoportePage implements OnInit {
       critica: 'Crítica',
     };
     return urgencias[urgencia] || urgencia;
+  }
+
+  // Pantalla atencion-soporte
+  get cantidadEnAtencion(): number {
+    return this.solicitudes.filter(
+      (s) => s.estado === 'atendida' && s.atendido_por === this.usuario?.id
+    ).length;
+  }
+
+   // Pantalla atencion-soporte
+  irAAtencion() {
+    this.router.navigate(['/atencion-soporte']);
   }
 
   async cerrarSesion() {
