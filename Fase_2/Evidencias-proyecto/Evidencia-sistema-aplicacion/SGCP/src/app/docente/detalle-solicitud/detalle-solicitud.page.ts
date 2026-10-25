@@ -1,11 +1,9 @@
-//detalle-solicitud.ts
 import { Component, OnInit, ChangeDetectorRef } from '@angular/core';
-import { CommonModule } from '@angular/common';
+import { CommonModule, Location } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { IonicModule } from '@ionic/angular/lazy';
 import { Router, ActivatedRoute } from '@angular/router';
 import { SolicitudService } from '../../services/solicitud';
-
 
 @Component({
   selector: 'app-detalle-solicitud',
@@ -94,22 +92,25 @@ export class DetalleSolicitudPage implements OnInit {
   constructor(
     private solicitudService: SolicitudService,
     private router: Router,
-    private cdr: ChangeDetectorRef,
     private route: ActivatedRoute,
+    private cdr: ChangeDetectorRef,
+    private location: Location
   ) {}
 
-ngOnInit() {
-  const params = this.route.snapshot.queryParamMap;
-  const id = Number(params.get('salaId') ?? history.state?.salaId);
-  const nombre = params.get('salaNombre') ?? history.state?.salaNombre ?? '';
+  ngOnInit() {
+    // La sala llega por la URL (sobrevive a una recreación del WebView)
+    // y, como respaldo, por el state de la navegación.
+    const params = this.route.snapshot.queryParamMap;
+    const id = Number(params.get('salaId') ?? history.state?.salaId);
+    const nombre = params.get('salaNombre') ?? history.state?.salaNombre ?? '';
 
-  if (!id) {
-    this.error = 'No se pudo identificar la sala. Vuelve a escanear el código.';
-    return;
+    if (!id) {
+      this.error = 'No se pudo identificar la sala. Vuelve a escanear el código.';
+      return;
+    }
+    this.salaId = id;
+    this.salaNombre = nombre;
   }
-  this.salaId = id;
-  this.salaNombre = nombre;
-}
 
   get sugerenciasActuales(): string[] {
     return this.sugerenciasPorCategoria[this.categoria] || [];
@@ -141,10 +142,10 @@ ngOnInit() {
     this.error = '';
   }
 
-  seleccionarUrgencia(valor: string) {
-  this.urgencia = valor;
-  this.error = '';
-}
+  seleccionarUrgencia(valor: string | number | undefined) {
+    this.urgencia = valor !== undefined ? String(valor) : 'media';
+    this.error = '';
+  }
 
   async enviarSolicitud() {
     if (!this.categoria) {
@@ -192,6 +193,11 @@ ngOnInit() {
   }
 
   cancelar() {
-    this.router.navigate(['/escanear-qr']);
+    // Vuelve a la pantalla anterior (el escáner) en vez de navegar de nuevo a ella
+    if (window.history.length > 1) {
+      this.location.back();
+    } else {
+      this.router.navigate(['/escanear-qr']);
+    }
   }
 }
