@@ -19,6 +19,7 @@ const routes: Routes = [
   // Usuario receptor / Soporte
   { path: 'inicio-soporte', canActivate: [authGuard], loadComponent: () => import('./soporte/inicio-soporte.page').then(m => m.InicioSoportePage) },
   { path: 'atencion-soporte', canActivate: [authGuard], loadComponent: () => import('./atencion-soporte/atencion-soporte.page').then(m => m.AtencionSoportePage) },
+  { path: 'historial-soporte', canActivate: [authGuard], loadComponent: () => import('./historial-soporte/historial-soporte.page').then(m => m.HistorialSoportePage) },
 
   // Cualquier ruta que no exista
   { path: '**', redirectTo: 'login' },

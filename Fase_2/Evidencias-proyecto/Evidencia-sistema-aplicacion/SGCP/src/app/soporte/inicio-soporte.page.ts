@@ -239,9 +239,14 @@ export class InicioSoportePage implements OnInit {
     ).length;
   }
 
-   // Pantalla atencion-soporte
+  // Pantalla atencion-soporte
   irAAtencion() {
     this.router.navigate(['/atencion-soporte']);
+  }
+
+  // Pantalla historial-soporte
+  irAHistorial() {
+    this.router.navigate(['/historial-soporte']);
   }
 
   async cerrarSesion() {

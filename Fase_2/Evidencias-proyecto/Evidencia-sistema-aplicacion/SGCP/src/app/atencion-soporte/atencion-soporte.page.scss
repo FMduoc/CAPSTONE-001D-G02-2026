@@ -1,11 +1,29 @@
 .atencion-page {
   --background: #f4f6f8;
+  min-height: 100%;
 }
 
 .contenedor {
-  max-width: 720px;
+  min-height: 100vh;
+  padding: 32px;
+  background:
+    linear-gradient(
+      135deg,
+      #003b5c 0%,
+      #003b5c 30%,
+      #f4f6f8 30%,
+      #f4f6f8 100%
+    );
+}
+
+.contenedor-section {
+  max-width: 1200px;
   margin: 0 auto;
-  padding: 16px;
+  padding: 32px;
+  background: #ffffff;
+  border-radius: 18px;
+  box-shadow:
+    0 14px 35px rgba(15, 23, 42, 0.10);
 }
 
 .error-box {

@@ -1,0 +1,250 @@
+import { Component, OnInit, ChangeDetectorRef } from '@angular/core';
+import { CommonModule } from '@angular/common';
+import { IonicModule } from '@ionic/angular/lazy';
+import { Router } from '@angular/router';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { firstValueFrom } from 'rxjs';
+import { AuthService } from '../services/auth';
+import { environment } from '../../environments/environment';
+import { FormsModule } from '@angular/forms';
+
+@Component({
+  selector: 'app-historial-soporte',
+  templateUrl: './historial-soporte.page.html',
+  styleUrls: ['./historial-soporte.page.scss'],
+  standalone: true,
+  imports: [CommonModule, IonicModule, FormsModule],
+})
+export class HistorialSoportePage implements OnInit {
+  solicitudes: any[] = [];
+  usuario: any = null;
+  cargando = false;
+  error = '';
+  actualizandoDisponibilidad = false;
+
+  // Filtro de urgencia
+  filtroUrgencia = 'todas';
+  opcionesUrgenciaFiltro = [
+    { valor: 'todas', etiqueta: 'Todas' },
+    { valor: 'critica', etiqueta: 'Crítica' },
+    { valor: 'alta', etiqueta: 'Alta' },
+    { valor: 'media', etiqueta: 'Media' },
+    { valor: 'baja', etiqueta: 'Baja' },
+  ];
+
+  // Filtro de sala (buscador con autocompletado propio)
+  filtroSala = 'todas';
+  busquedaSala = '';
+
+  private apiUrl = `${environment.apiUrl}/soporte`;
+
+  constructor(
+    private authService: AuthService,
+    private router: Router,
+    private http: HttpClient,
+    private cdr: ChangeDetectorRef
+  ) {}
+
+  async ngOnInit() {
+    this.usuario = await this.authService.getUsuario();
+    //await this.cargarSolicitudes();
+  }
+
+  async ionViewWillEnter() {
+    await this.cargarSolicitudes();
+}
+
+  // Salas únicas presentes en las solicitudes actuales
+  get salasDisponibles(): string[] {
+    const salas = this.solicitudes.map((s) => s.sala_nombre).filter(Boolean);
+    return Array.from(new Set(salas)).sort();
+  }
+
+  // Salas que coinciden con lo que el usuario está escribiendo
+  get salasFiltradas(): string[] {
+    const termino = this.busquedaSala.trim().toLowerCase();
+    if (!termino) return this.salasDisponibles;
+    return this.salasDisponibles.filter((s) => s.toLowerCase().includes(termino));
+  }
+
+  get hayFiltrosActivos(): boolean {
+    return this.filtroUrgencia !== 'todas' || this.filtroSala !== 'todas';
+  }
+
+  private aplicarFiltros(lista: any[]): any[] {
+    return lista.filter((s) => {
+      const pasaUrgencia = this.filtroUrgencia === 'todas' || s.urgencia === this.filtroUrgencia;
+      const pasaSala = this.filtroSala === 'todas' || s.sala_nombre === this.filtroSala;
+      return pasaUrgencia && pasaSala;
+    });
+  }
+
+  // Listado de las solicitudes pendientes.
+  // Anteriormente solicitudesActivas
+  get solicitudesPendientes(): any[] {
+    const activas = this.solicitudes.filter(
+      (solicitud) => solicitud.estado === 'pendiente' // || solicitud.estado === 'atendida'
+    );
+    return this.aplicarFiltros(activas);
+  }
+
+  get solicitudesHistorial(): any[] {
+    const historial = this.solicitudes.filter((solicitud) => solicitud.estado === 'terminada');
+    return this.aplicarFiltros(historial);
+  }
+
+  seleccionarFiltroUrgencia(valor: string | number | undefined) {
+    this.filtroUrgencia = valor !== undefined ? String(valor) : 'todas';
+  }
+
+  onBuscarSala(valor: string | number | null | undefined) {
+    this.busquedaSala = valor !== null && valor !== undefined ? String(valor) : '';
+    this.filtroSala = 'todas';
+  }
+
+  seleccionarSala(sala: string) {
+    this.filtroSala = sala;
+    this.busquedaSala = sala;
+  }
+
+  limpiarFiltroSala() {
+    this.filtroSala = 'todas';
+    this.busquedaSala = '';
+  }
+
+  limpiarFiltros() {
+    this.filtroUrgencia = 'todas';
+    this.filtroSala = 'todas';
+    this.busquedaSala = '';
+  }
+
+  private async obtenerHeaders(): Promise<HttpHeaders> {
+    const token = await this.authService.getToken();
+    return new HttpHeaders({ Authorization: `Bearer ${token}` });
+  }
+
+  async cargarSolicitudes() {
+    if (this.cargando) return;
+
+    const token = await this.authService.getToken();
+    if (!token) {
+      this.router.navigate(['/login']);
+      return;
+    }
+
+    this.cargando = true;
+    this.error = '';
+    this.cdr.detectChanges();
+
+    try {
+      const data = await firstValueFrom(
+        this.http.get<any[]>(`${this.apiUrl}/solicitudes`, {
+          headers: await this.obtenerHeaders(),
+        })
+      );
+      this.solicitudes = data || [];
+    } catch (err) {
+      console.error('Error al cargar solicitudes:', err);
+      this.error = 'No se pudieron cargar las solicitudes';
+    } finally {
+      this.cargando = false;
+      this.cdr.detectChanges();
+    }
+  }
+
+  async atenderSolicitud(id: number) {
+    this.error = '';
+    try {
+      await firstValueFrom(
+        this.http.patch(
+          `${this.apiUrl}/solicitudes/${id}/atender`,
+          {},
+          { headers: await this.obtenerHeaders() }
+        )
+      );
+      // Se mueve la recarga de solicitudes al catch
+      //await this.cargarSolicitudes();
+      this.router.navigate(['/atencion-soporte'], { queryParams: { id } });
+    } catch (err: any) {
+      console.error('Error al atender solicitud:', err);
+      this.error = err.error?.error || 'No se pudo atender la solicitud';
+      await this.cargarSolicitudes();
+    }
+  }
+
+  async terminarSolicitud(id: number) {
+    this.error = '';
+    try {
+      await firstValueFrom(
+        this.http.patch(
+          `${this.apiUrl}/solicitudes/${id}/terminar`,
+          {},
+          { headers: await this.obtenerHeaders() }
+        )
+      );
+      await this.cargarSolicitudes();
+    } catch (err: any) {
+      console.error('Error al terminar solicitud:', err);
+      this.error = err.error?.error || 'No se pudo terminar la solicitud. Puede que ya haya sido actualizada por otro usuario.';
+      await this.cargarSolicitudes();
+    }
+  }
+
+  async toggleDisponibilidad(disponible: boolean) {
+    this.actualizandoDisponibilidad = true;
+    try {
+      const result = await firstValueFrom(
+        this.http.patch<any>(
+          `${this.apiUrl}/disponibilidad`,
+          { disponible },
+          { headers: await this.obtenerHeaders() }
+        )
+      );
+      this.usuario.disponible = result.disponible;
+      await this.cargarSolicitudes();
+    } catch (err) {
+      console.error('Error al actualizar disponibilidad:', err);
+      this.error = 'No se pudo actualizar tu disponibilidad';
+    } finally {
+      this.actualizandoDisponibilidad = false;
+      this.cdr.detectChanges();
+    }
+  }
+
+  mostrarCategoria(categoria: string): string {
+    const categorias: any = {
+      tecnico: 'Servicio técnico',
+      enfermeria: 'Emergencia médica',
+      limpieza: 'Limpieza',
+      seguridad: 'Seguridad',
+    };
+    return categorias[categoria] || categoria;
+  }
+
+  mostrarUrgencia(urgencia: string): string {
+    const urgencias: any = {
+      baja: 'Baja',
+      media: 'Media',
+      alta: 'Alta',
+      critica: 'Crítica',
+    };
+    return urgencias[urgencia] || urgencia;
+  }
+
+  // Pantalla atencion-soporte
+  get cantidadEnAtencion(): number {
+    return this.solicitudes.filter(
+      (s) => s.estado === 'atendida' && s.atendido_por === this.usuario?.id
+    ).length;
+  }
+
+   // Pantalla atencion-soporte
+  irAAtencion() {
+    this.router.navigate(['/atencion-soporte']);
+  }
+
+  async cerrarSesion() {
+    await this.authService.logout();
+    this.router.navigate(['/login']);
+  }
+}

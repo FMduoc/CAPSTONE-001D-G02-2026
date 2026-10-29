@@ -10,17 +10,19 @@
 <ion-content class="atencion-page">
   <div class="contenedor">
 
-    <div class="error-box" *ngIf="error">{{ error }}</div>
+    <section class="contenedor-section">
+      <div class="error-box" *ngIf="error">{{ error }}</div>
 
-    <p class="estado-carga" *ngIf="cargando && solicitudes.length === 0">
-      Cargando solicitudes...
-    </p>
+      <p class="estado-carga" *ngIf="cargando && solicitudes.length === 0">
+        Cargando solicitudes...
+      </p>
 
-    <div class="vacio" *ngIf="!cargando && !error && enAtencion.length === 0">
-      <h2>No tienes solicitudes en atención</h2>
-      <p>Cuando aceptes una solicitud pendiente, aparecerá aquí con todos sus detalles.</p>
-      <ion-button (click)="volverAPendientes()">Ver solicitudes pendientes</ion-button>
-    </div>
+      <div class="vacio" *ngIf="!cargando && !error && enAtencion.length === 0">
+        <h2>No tienes solicitudes en atención</h2>
+        <p>Cuando aceptes una solicitud pendiente, aparecerá aquí con todos sus detalles.</p>
+        <ion-button (click)="volverAPendientes()">Ver solicitudes pendientes</ion-button>
+      </div>
+    </section>
 
     <article
       class="solicitud-card"

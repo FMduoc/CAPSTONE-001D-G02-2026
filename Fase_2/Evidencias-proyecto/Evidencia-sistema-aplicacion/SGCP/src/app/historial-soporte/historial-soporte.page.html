@@ -1,0 +1,120 @@
+<!--inicio-soporte.page.html-->
+<ion-content class="soporte-page">
+
+  <div class="soporte-layout">
+
+    <!-- CONTENIDO -->
+    <section class="soporte-card">
+
+      <!-- ============================== -->
+      <!-- HISTORIAL -->
+      <!-- ============================== -->
+
+      <div class="section-block history-section">
+        <div class="section-title-row">
+          <div>
+            <span class="section-label">
+              HISTORIAL
+            </span>
+            <h3>
+              Solicitudes finalizadas
+            </h3>
+          </div>
+          <span class="counter-badge history">
+            {{ solicitudesHistorial.length }}
+          </span>
+        </div>
+
+        <!-- SIN HISTORIAL -->
+        <div
+          class="empty-history"
+          *ngIf="
+            !cargando &&
+            solicitudesHistorial.length === 0
+          ">
+          Aún no existen solicitudes finalizadas.
+        </div>
+
+
+        <!-- HISTORIAL -->
+        <div
+          class="solicitudes-grid"
+          *ngIf="solicitudesHistorial.length > 0">
+
+          <article
+            class="solicitud-card historial-card"
+            *ngFor="let solicitud of solicitudesHistorial">
+
+            <div class="solicitud-header">
+              <div>
+                <span class="solicitud-id">
+                  Solicitud #{{ solicitud.id }}
+                </span>
+                <h3>
+                  {{ solicitud.sala_nombre }}
+                </h3>
+              </div>
+              <span
+                class="estado-badge terminada">
+                Terminada
+              </span>
+            </div>
+
+            <div class="solicitud-info">
+
+              <div class="info-item">
+                <span>
+                  Solicitante
+                </span>
+                <strong>
+                  {{ solicitud.nombre_solicitante }}
+                </strong>
+              </div>
+
+              <div class="info-item">
+                <span>
+                  Categoría
+                </span>
+                <strong>
+                  {{ mostrarCategoria(solicitud.categoria) }}
+                </strong>
+              </div>
+
+              <div class="info-item full-width">
+                <span>
+                  Descripción
+                </span>
+                <strong>
+                  {{ solicitud.descripcion }}
+                </strong>
+              </div>
+
+              <div class="info-item">
+                <span>
+                  Fecha creación
+                </span>
+                <strong>
+                  {{ solicitud.fecha_creacion | date:'dd/MM/yyyy HH:mm' }}
+                </strong>
+              </div>
+
+              <div class="info-item">
+                <span>
+                  Última actualización
+                </span>
+                <strong>
+                  {{ solicitud.fecha_actualizacion | date:'dd/MM/yyyy HH:mm' }}
+                </strong>
+              </div>
+
+            </div>
+
+            <div class="solicitud-finalizada">
+              Solicitud finalizada
+            </div>
+          </article>
+        </div>
+      </div>
+    </section>
+  </div>
+</ion-content>

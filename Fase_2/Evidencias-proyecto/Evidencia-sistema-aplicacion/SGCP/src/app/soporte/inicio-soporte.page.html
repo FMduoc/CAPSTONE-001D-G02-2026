@@ -95,10 +95,15 @@
         <div class="acciones-header">
           <ion-button
             [fill]="cantidadEnAtencion > 0 ? 'solid' : 'outline'"
+            class="refresh-button"
             (click)="irAAtencion()">
             En atención ({{ cantidadEnAtencion }})
           </ion-button>
-          <!-- aquí queda el botón "Actualizar" que ya existe -->
+          <ion-button
+            class="refresh-button"
+            (click)="irAHistorial()">
+            Historial de peticiones
+          </ion-button>
           <ion-button
             fill="outline"
             class="refresh-button"
