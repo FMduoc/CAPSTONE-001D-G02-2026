@@ -42,38 +42,41 @@ export class EscanearQrPage implements OnDestroy {
 
   // Ionic conserva esta pantalla en memoria al navegar al detalle.
   // Cada vez que se vuelve a mostrar, partimos de un estado limpio.
-ionViewWillEnter() {
-  this.controlsWeb?.stop();
-  this.buscando = false;
-  this.procesando = false;
-  this.escaneandoWeb = false;
-  this.error = '';
-  this.codigoManual = '';
+  ionViewWillEnter() {
+    this.controlsWeb?.stop();
+    this.buscando = false;
+    this.procesando = false;
+    this.escaneandoWeb = false;
+    this.error = '';
+    this.codigoManual = '';
 
-  // 1) El escaneo terminó bien, pero la app se reinició: procesar el código recuperado
-  const codigoRestaurado = this.route.snapshot.queryParamMap.get('codigoRestaurado');
-  if (codigoRestaurado) {
+    const params = this.route.snapshot.queryParamMap;
+
+    // 1) El escaneo terminó bien, pero la app se reinició: procesar el código recuperado
+    const codigoRestaurado = params.get('codigoRestaurado');
+    if (codigoRestaurado) {
+      this.limpiarQueryParams();
+      this.resolverCodigo(codigoRestaurado);
+      return;
+    }
+
+    // 2) La app se reinició mientras la cámara estaba abierta
+    if (params.get('interrumpido')) {
+      this.error = 'El escaneo se interrumpió porque el celular cerró la app. Intenta de nuevo.';
+      this.limpiarQueryParams();
+    }
+
+    this.cdr.detectChanges();
+  }
+
+  // Limpia los parámetros para que no reaparezcan al volver desde otra pantalla
+  private limpiarQueryParams() {
     this.router.navigate([], {
       relativeTo: this.route,
       queryParams: {},
       replaceUrl: true,
     });
-    this.resolverCodigo(codigoRestaurado);
-    return;
   }
-
-  // 2) La app se reinició mientras la cámara estaba abierta
-  if (this.route.snapshot.queryParamMap.get('interrumpido')) {
-    this.error = 'El escaneo se interrumpió porque el celular cerró la app. Intenta de nuevo.';
-    this.router.navigate([], {
-      relativeTo: this.route,
-      queryParams: {},
-      replaceUrl: true,
-    });
-  }
-
-  this.cdr.detectChanges();
-}
 
   async escanear() {
     if (this.procesando) return;
