@@ -42,27 +42,38 @@ export class EscanearQrPage implements OnDestroy {
 
   // Ionic conserva esta pantalla en memoria al navegar al detalle.
   // Cada vez que se vuelve a mostrar, partimos de un estado limpio.
-  ionViewWillEnter() {
-    this.controlsWeb?.stop();
-    this.buscando = false;
-    this.procesando = false;
-    this.escaneandoWeb = false;
-    this.error = '';
-    this.codigoManual = '';
+ionViewWillEnter() {
+  this.controlsWeb?.stop();
+  this.buscando = false;
+  this.procesando = false;
+  this.escaneandoWeb = false;
+  this.error = '';
+  this.codigoManual = '';
 
-    // La app se reinició mientras la cámara estaba abierta
-    if (this.route.snapshot.queryParamMap.get('interrumpido')) {
-      this.error = 'El escaneo se interrumpió porque el celular cerró la app. Intenta de nuevo.';
-      // Limpia el parámetro para que no reaparezca al volver desde otra pantalla
-      this.router.navigate([], {
-        relativeTo: this.route,
-        queryParams: {},
-        replaceUrl: true,
-      });
-    }
-
-    this.cdr.detectChanges();
+  // 1) El escaneo terminó bien, pero la app se reinició: procesar el código recuperado
+  const codigoRestaurado = this.route.snapshot.queryParamMap.get('codigoRestaurado');
+  if (codigoRestaurado) {
+    this.router.navigate([], {
+      relativeTo: this.route,
+      queryParams: {},
+      replaceUrl: true,
+    });
+    this.resolverCodigo(codigoRestaurado);
+    return;
   }
+
+  // 2) La app se reinició mientras la cámara estaba abierta
+  if (this.route.snapshot.queryParamMap.get('interrumpido')) {
+    this.error = 'El escaneo se interrumpió porque el celular cerró la app. Intenta de nuevo.';
+    this.router.navigate([], {
+      relativeTo: this.route,
+      queryParams: {},
+      replaceUrl: true,
+    });
+  }
+
+  this.cdr.detectChanges();
+}
 
   async escanear() {
     if (this.procesando) return;
